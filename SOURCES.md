@@ -74,7 +74,14 @@
 | [Anthropic — Effective context engineering for agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) | Engineering report | Context selection, just-in-time retrieval, compaction, memory |
 | [Anthropic — Multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system) | Production case study | Orchestrator-workers, parallel research, evals, durability и cost |
 | [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/) | Official SDK docs | Agent loop, tools, handoffs, guardrails, sessions, tracing |
-| [LangGraph overview](https://langchain-ai.github.io/langgraph/index.html) | Project docs | Durable execution, persistence и human-in-the-loop |
+| [LangGraph overview](https://docs.langchain.com/oss/python/langgraph/overview) | Project docs | Stateful graph orchestration, durable execution, persistence и human-in-the-loop |
+| [LangGraph repository](https://github.com/langchain-ai/langgraph) | Official repository | Releases, activity, contributors и implementation |
+| [LangGraph custom RAG agent](https://docs.langchain.com/oss/python/langgraph/agentic-rag) | Project tutorial | Conditional retrieval, grading, query rewrite и generation graph |
+| [Three years of graph engineering](https://www.langchain.com/blog/3-years-of-graph-engineering-with-langgraph) | Vendor engineering retrospective | Когда graph полезен и когда open-ended harness проще; vendor-reported adoption |
+| [GitHub dependents](https://github.com/langchain-ai/langgraph/network/dependents) | Platform metadata | Breadth proxy; включает production, prototypes и transitive dependencies |
+| [Elastic Security + LangGraph](https://www.elastic.co/blog/building-automatic-import-attack-discovery-langchain) | Company production case | ES\|QL generation, Automatic Import и controllable agent workflows |
+| [Klarna AI Assistant](https://www.langchain.com/blog/customers-klarna) | Vendor case study | Large-scale multi-agent support; product metrics нельзя приписывать одному framework |
+| [AppFolio Realm-X](https://www.langchain.com/blog/customers-appfolio) | Vendor case study | Parallel branches, state management, production tracing и eval workflow |
 | [Google Agent Development Kit](https://adk.dev/) | Official project docs | Graph/multi-agent workflows, runtime, evaluation, deployment |
 
 ## Protocols и interoperability
@@ -92,7 +99,7 @@ MCP и A2A решают разные задачи: первый стандарт
 | --- | --- | --- |
 | [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/) | Open standard | Vendor-neutral attributes/events/spans для GenAI и agents |
 | [OpenAI Agents SDK tracing](https://openai.github.io/openai-agents-python/tracing/) | Official SDK docs | Пример tracing model/tool/handoff/guardrail events |
-| [LangGraph persistence](https://langchain-ai.github.io/langgraph/cloud/concepts/threads/) | Project docs | Checkpoints, thread state и cross-thread store |
+| [LangGraph memory](https://docs.langchain.com/oss/python/langgraph/memory) | Project docs | Checkpoints, thread-scoped state и cross-thread store |
 
 ## Safety и governance
 
@@ -113,4 +120,3 @@ MCP и A2A решают разные задачи: первый стандарт
 3. Не добавлять vendor benchmark claim без методологии и ограничений.
 4. Для быстро меняющихся страниц хранить `last checked` и при необходимости snapshot в заметке.
 5. Любой источник, меняющий adoption status, должен быть связан с собственным experiment/eval либо оставаться `Explore/Watch`.
-

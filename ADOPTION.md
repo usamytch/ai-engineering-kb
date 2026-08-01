@@ -47,6 +47,7 @@
 | Human approval перед необратимыми действиями | **Adopt** | Approval должен быть привязан к конкретному action и diff. | — |
 | Durable state, checkpoint и idempotent tools | **Adopt** | Обязательны для long-running и state-changing agents. | — |
 | Full traces + outcome eval | **Adopt** | Оцениваем final state и ключевые invariants, не один «правильный» путь. | — |
+| LangGraph для stateful graph orchestration | **Trial** | Зрелый и широко используемый вариант для cycles, checkpoints, parallel branches и human interrupts; не default для простого loop или open-ended harness. | Fault-injection resume/idempotency, migration test, trace coverage и выигрыш против простого orchestrator. |
 | MCP для agent-to-tool интеграций | **Trial** | Полезная стандартизация; фиксировать spec version и trust boundary. | Security review, allowlist и approval policy. |
 | A2A для независимых remote agents | **Explore** | Не нужен для внутренних subagents; полезен на межсистемной границе. | Реальный interoperability use case. |
 | Long-term semantic memory | **Explore** | Память — продуктовая политика данных, а не просто vector store. | Consent, TTL, delete, poisoning и retrieval eval. |
@@ -59,4 +60,3 @@
 2. **Agent:** один agent loop с 3–7 узкими tools, лимитом turns, trace и human approval; сравнить с deterministic workflow.
 3. **Agentic RAG:** разрешить модели выбирать keyword/semantic search и чтение chunks, но задать budget и остановку; сравнить с one-shot RAG.
 4. **Протоколы:** MCP использовать только там, где стандартизация интеграции ценнее прямого typed API; A2A отложить до появления отдельного remote-agent boundary.
-

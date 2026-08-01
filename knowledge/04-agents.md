@@ -99,7 +99,41 @@ Long-running agent — распределённая state machine с nondetermin
 - version pinning для активных runs;
 - partial failure handling и compensation.
 
-[LangGraph](https://langchain-ai.github.io/langgraph/index.html) фокусируется на durable execution, persistence и human-in-the-loop; [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/) — на agent loop, tools, handoffs, guardrails, sessions и tracing; [Google ADK](https://adk.dev/) — на graph/multi-agent workflows, runtime, evaluation и deployment. Выбирать после требований и небольшого spike, а не по популярности.
+[LangGraph](https://docs.langchain.com/oss/python/langgraph/overview) фокусируется на явном state graph, durable execution, persistence и human-in-the-loop; [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/) — на agent loop, tools, handoffs, guardrails, sessions и tracing; [Google ADK](https://adk.dev/) — на graph/multi-agent workflows, runtime, evaluation и deployment. Выбирать после требований и небольшого spike, а не по популярности.
+
+### LangGraph: актуальность и adoption
+
+**Вывод на 2026-08-01:** LangGraph актуален и относится к широко используемым agent frameworks, но его правильный статус — `Trial`, а не универсальный `Adopt`. Это low-level orchestration framework для long-running stateful agents и workflows, а не готовый «умный агент» и не retrieval engine.
+
+Он особенно уместен, когда системе нужны явные state transitions, циклы и retries, parallel branches, checkpoint/resume, interrupt перед side effect и воспроизводимый путь выполнения. Для one-shot RAG, простого tool loop или open-ended research agent с постоянно меняющимся планом graph abstraction может добавить лишние nodes, state schemas и framework coupling. Сами авторы [отдельно описывают случаи, когда graph не нужен](https://www.langchain.com/blog/3-years-of-graph-engineering-with-langgraph#when-not-to-use-graphs).
+
+#### Сигналы масштаба
+
+| Сигнал | Snapshot 2026-08-01 | Что он действительно доказывает |
+| --- | --- | --- |
+| Core release | [1.2.10 от 2026-07-28](https://github.com/langchain-ai/langgraph/releases/tag/1.2.10); 1.0 вышел в октябре 2025 | Есть stable major и активное развитие, но API всё ещё меняется заметно. |
+| GitHub | [38.6k stars, 6.5k forks, 283 contributors](https://github.com/langchain-ai/langgraph) | Большое и активное OSS-сообщество; stars не равны production usage. |
+| Dependents | [42,365 repositories и 3,022 packages](https://github.com/langchain-ai/langgraph/network/dependents) | Широкое включение в manifests; сюда входят tutorials, prototypes и transitive dependencies. |
+| Активность | 227 commits в `main` и 42 monorepo releases с 2026-05-01 | Проект живой; высокая частота релизов одновременно повышает migration load. |
+| Downloads | Авторы сообщают о [65M+ downloads в месяц](https://www.langchain.com/blog/3-years-of-graph-engineering-with-langgraph) | Сильный сигнал распространения, но это vendor-reported metric без разбивки direct/transitive/prod. |
+
+#### Публичные production cases
+
+| Case | Насколько глубоко | Качество evidence |
+| --- | --- | --- |
+| [Elastic Security](https://www.elastic.co/blog/building-automatic-import-attack-discovery-langchain) | LangGraph управлял end-to-end ES\|QL generation и Automatic Import; в публикации 2024 года AI Assistant описан как production deployment с 350+ users. | Сильный технический разбор на сайте самой компании, но ранний snapshot и совместное авторство с LangChain. |
+| [Klarna AI Assistant](https://www.langchain.com/blog/customers-klarna) | Multi-agent routing для payments/refunds/escalations; case сообщает 2.5M conversations, ~70% automation repetitive support и 80% reduction resolution time. | Реальный крупный deployment и цитата CEO, но материал опубликован vendor-ом; эффект нельзя приписать только LangGraph. |
+| [AppFolio Realm-X](https://www.langchain.com/blog/customers-appfolio) | Parallel graph branches, aggregation, state management и self-validation в production copilot; ранние пользователи сообщали 10+ saved hours/week. | Есть архитектурные детали, но это vendor case study, а продуктовый результат относится ко всей системе. |
+
+[Vendor showcase](https://www.langchain.com/built-with-langgraph) также называет LinkedIn, Uber и другие компании. Это полезный breadth signal, но без собственного technical report компании не считать его независимым доказательством глубины внедрения.
+
+#### Практическая позиция
+
+- **Ширина adoption:** высокая относительно agent frameworks; ecosystem уже далеко за пределами demo-проектов.
+- **Глубина adoption:** доказаны stateful production workflows и customer-facing agents, включая крупные компании; публичных независимых данных о reliability, incident rate, migration cost и доле traffic мало.
+- **Использовать:** для контролируемого graph/workflow с agentic nodes, durable state и human interrupts.
+- **Не использовать по умолчанию:** для простого линейного pipeline, одного retrieval call или полностью open-ended harness.
+- **Promotion gate:** fault-injection на resume/idempotency, latency/cost против собственного orchestrator, version/checkpoint migration test, trace coverage, security review и возможность вынести business logic из framework-specific nodes.
 
 ## MCP и A2A
 
@@ -176,4 +210,3 @@ Harness должен ограничивать:
 - [ ] Traces содержат версии model/prompt/tool/schema/policy.
 - [ ] Есть failure-injection eval: timeout, malformed output, stale data, prompt injection.
 - [ ] Canary и rollback не ломают активные runs.
-

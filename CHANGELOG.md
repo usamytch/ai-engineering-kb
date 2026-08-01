@@ -9,4 +9,4 @@
 - Добавлены source registry, adoption radar и процесс weekly discovery / monthly synthesis.
 - Добавлен seed snapshot: MCP specification 2026-07-28, A2A 1.0, ADK 2.0, текущие agent/RAG материалы и benchmarks.
 - Добавлены локальные проверки и scheduled discovery workflow для будущего GitHub-репозитория.
-
+- Добавлен LangGraph adoption snapshot: OSS-метрики, production cases, роль в agentic RAG и статус `Trial`.

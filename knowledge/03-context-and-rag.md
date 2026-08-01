@@ -108,6 +108,10 @@ read_chunk(chunk_id)
 read_parent(document_id, section_id)
 ```
 
+[Официальный LangGraph tutorial](https://docs.langchain.com/oss/python/langgraph/agentic-rag) показывает подход как явный graph: модель решает, нужен ли retrieval; отдельные nodes выполняют search, relevance grading, query rewrite и grounded generation; conditional edges образуют retry loop. Это хорошая реализация, когда routing и циклы должны быть наблюдаемыми, ограничиваемыми и checkpointable.
+
+LangGraph здесь решает orchestration, а не качество retrieval. Он не заменяет hybrid search, reranking, ACL, provenance и RAG eval. Tutorial также не является production benchmark: перед внедрением нужны max rewrite/retrieval attempts, общий budget, обработка empty/conflicting evidence и сравнение с one-shot RAG. Подробная оценка зрелости framework — в [разделе про агентов](04-agents.md#langgraph-актуальность-и-adoption).
+
 [A-RAG](https://arxiv.org/abs/2602.03442) — свежий пример hierarchical retrieval interfaces; [Agentic-R](https://aclanthology.org/2026.findings-acl.785/) исследует retriever, обученный с учётом конечной полезности для multi-turn search. Это promising direction, но sequential decision-making добавляет over-search, under-search, loops, cost и новые security risks.
 
 Использовать agentic RAG, если query требует адаптивного multi-step поиска. Для FAQ или одной policy lookup чаще лучше предсказуемый one-shot retrieval.
@@ -155,4 +159,3 @@ read_parent(document_id, section_id)
 3. [Contextual Retrieval](https://www.anthropic.com/engineering/contextual-retrieval) — практический context-preserving pattern.
 4. [RAPTOR](https://arxiv.org/abs/2401.18059) и [GraphRAG](https://microsoft.github.io/graphrag/index/overview/) — hierarchical/relational cases.
 5. [A-RAG](https://arxiv.org/abs/2602.03442) и [Agentic-R](https://aclanthology.org/2026.findings-acl.785/) — переход к agentic search.
-
