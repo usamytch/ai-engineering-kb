@@ -68,14 +68,4 @@ make inbox       # собрать свежие записи из watchlist.json
 
 Скрипт discovery ничего не «принимает» автоматически: он создаёт Markdown-файл в `inbox/`. Решение о переносе в `knowledge/`, `SOURCES.md` или `ADOPTION.md` остаётся за человеком.
 
-## Публикация
-
-Эта папка подготовлена как отдельный репозиторий `ai-engineering-kb`. Существующий `cat-poop-game` лучше оставить отдельным проектом. После создания пустого репозитория на GitHub:
-
-```bash
-git remote add origin git@github.com:usamytch/ai-engineering-kb.git
-git push -u origin main
-```
-
-Markdown уже удобно читается в GitHub. Статический сайт (MkDocs/GitHub Pages) имеет смысл добавить после того, как устоятся taxonomy и названия разделов.
 
