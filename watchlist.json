@@ -1,0 +1,50 @@
+{
+  "feeds": [
+    {
+      "name": "arXiv: agents and RAG",
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Aagent%20OR%20all%3A%22retrieval%20augmented%20generation%22%29&sortBy=submittedDate&sortOrder=descending&max_results=40",
+      "topics": ["agents", "rag", "research"]
+    },
+    {
+      "name": "OpenAI Agents SDK releases",
+      "url": "https://github.com/openai/openai-agents-python/releases.atom",
+      "topics": ["agents", "sdk"]
+    },
+    {
+      "name": "LangGraph releases",
+      "url": "https://github.com/langchain-ai/langgraph/releases.atom",
+      "topics": ["agents", "runtime"]
+    },
+    {
+      "name": "Google ADK Python releases",
+      "url": "https://github.com/google/adk-python/releases.atom",
+      "topics": ["agents", "sdk"]
+    },
+    {
+      "name": "MCP specification releases",
+      "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/releases.atom",
+      "topics": ["agents", "protocol", "mcp"]
+    },
+    {
+      "name": "A2A releases",
+      "url": "https://github.com/a2aproject/A2A/releases.atom",
+      "topics": ["agents", "protocol", "a2a"]
+    },
+    {
+      "name": "Microsoft GraphRAG releases",
+      "url": "https://github.com/microsoft/graphrag/releases.atom",
+      "topics": ["rag", "graph"]
+    },
+    {
+      "name": "Ragas releases",
+      "url": "https://github.com/vibrantlabsai/ragas/releases.atom",
+      "topics": ["rag", "evals"]
+    },
+    {
+      "name": "vLLM releases",
+      "url": "https://github.com/vllm-project/vllm/releases.atom",
+      "topics": ["inference", "production"]
+    }
+  ]
+}
+

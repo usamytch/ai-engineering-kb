@@ -1,0 +1,43 @@
+name: Weekly AI discovery
+
+on:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  discovery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Refresh inbox
+        run: python scripts/refresh_inbox.py --days 8
+      - name: Create review pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- inbox; then
+            echo "No inbox changes"
+            exit 0
+          fi
+          discovery_date="$(date -u +%F)"
+          discovery_branch="automation/discovery-${GITHUB_RUN_ID}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$discovery_branch"
+          git add inbox
+          git commit -m "chore: refresh AI discovery inbox ${discovery_date}"
+          git push origin "$discovery_branch"
+          gh pr create \
+            --base "$GITHUB_REF_NAME" \
+            --head "$discovery_branch" \
+            --title "AI discovery inbox — ${discovery_date}" \
+            --body "Автоматическая подборка для ручного triage. Она не меняет knowledge/adoption автоматически."
+
