@@ -3,6 +3,8 @@ name: Check knowledge base
 on:
   push:
   pull_request:
+    paths-ignore:
+      - "inbox/**"
 
 jobs:
   check:
