@@ -100,43 +100,12 @@ class TriageInboxTest(unittest.TestCase):
         self.assertEqual(self.path.read_text(encoding="utf-8"), original)
         self.assertFalse((self.root / "notes").exists())
 
-    def test_legacy_triage_field_is_still_supported(self) -> None:
-        self.path.write_text(
-            inbox_content(
-                [
-                    candidate("Drop me", "https://example.com/drop", triage="drop"),
-                    candidate("Note me", "https://example.com/note", triage="note"),
-                ]
-            ),
-            encoding="utf-8",
-        )
-
-        plan = plan_inbox_file(
-            self.path, root=self.root, checked_on=date(2026, 8, 4)
-        )
-        self.assertEqual(plan.counts["drop"], 1)
-        self.assertEqual(plan.counts["note"], 1)
-        apply_plan(plan)
-
-        updated = self.path.read_text(encoding="utf-8")
-        self.assertNotIn("Drop me", updated)
-        self.assertIn("- [x] **[Note me]", updated)
-        self.assertIn("- Triage: note", updated)
-        self.assertTrue((self.root / "notes" / "2026-08-04-note-me.md").exists())
-
-    def test_conflicting_marker_and_field_outcomes_fail(self) -> None:
+    def test_legacy_triage_field_is_rejected(self) -> None:
         original = inbox_content(
-            [
-                candidate(
-                    "Conflict",
-                    "https://example.com/conflict",
-                    "note",
-                    triage="review",
-                )
-            ]
+            [candidate("Legacy", "https://example.com/legacy", triage="note")]
         )
         self.path.write_text(original, encoding="utf-8")
-        with self.assertRaisesRegex(TriageError, "conflicting triage outcomes"):
+        with self.assertRaisesRegex(TriageError, "Triage is output-only"):
             plan_inbox_file(self.path, root=self.root, checked_on=date(2026, 8, 4))
         self.assertEqual(self.path.read_text(encoding="utf-8"), original)
 
@@ -155,14 +124,25 @@ class TriageInboxTest(unittest.TestCase):
             plan_inbox_file(self.path, root=self.root, checked_on=date(2026, 8, 4))
         self.assertEqual(self.path.read_text(encoding="utf-8"), original)
 
-    def test_invalid_outcome_fails_before_writing(self) -> None:
-        original = inbox_content(
-            [candidate("Typo", "https://example.com/typo", triage="rewiew")]
-        )
-        self.path.write_text(original, encoding="utf-8")
-        with self.assertRaises(TriageError):
-            plan_inbox_file(self.path, root=self.root, checked_on=date(2026, 8, 4))
-        self.assertEqual(self.path.read_text(encoding="utf-8"), original)
+    def test_processed_marker_requires_generated_triage_field(self) -> None:
+        for triage in (None, "rewiew"):
+            with self.subTest(triage=triage):
+                original = inbox_content(
+                    [
+                        candidate(
+                            "Invalid processed entry",
+                            "https://example.com/processed",
+                            "x",
+                            triage=triage,
+                        )
+                    ]
+                )
+                self.path.write_text(original, encoding="utf-8")
+                with self.assertRaisesRegex(TriageError, "must have a generated"):
+                    plan_inbox_file(
+                        self.path, root=self.root, checked_on=date(2026, 8, 4)
+                    )
+                self.assertEqual(self.path.read_text(encoding="utf-8"), original)
 
 
 if __name__ == "__main__":

@@ -22,10 +22,6 @@ ENTRY_MARKER_RE = re.compile(r"^- \[[^\]\r\n]*\]")
 FIELD_RE = re.compile(
     r"^  - (?P<name>[^:]+):[ \t]*(?P<value>[^\r\n]*?)[ \t]*$", re.MULTILINE
 )
-TRIAGE_RE = re.compile(
-    r"^  - Triage:[ \t]*(?P<value>[^\r\n]*?)[ \t]*$", re.MULTILINE
-)
-DEFAULT_TRIAGE = "drop | watch | note | review"
 VALID_TRIAGE = {"drop", "watch", "note", "review"}
 
 
@@ -270,14 +266,7 @@ def mark_processed(raw: str, outcome: str, link_line: str | None = None) -> str:
     updated, marker_replacements = ENTRY_MARKER_RE.subn("- [x]", raw, count=1)
     if marker_replacements != 1:
         raise TriageError("candidate misses exactly one checkbox marker")
-
-    triage_fields = list(TRIAGE_RE.finditer(updated))
-    if len(triage_fields) > 1:
-        raise TriageError("candidate has more than one Triage field")
-    if triage_fields:
-        updated = TRIAGE_RE.sub(f"  - Triage: {outcome}", updated, count=1)
-    else:
-        updated = append_metadata_line(updated, f"  - Triage: {outcome}")
+    updated = append_metadata_line(updated, f"  - Triage: {outcome}")
 
     if link_line is not None:
         updated = append_metadata_line(updated, link_line)
@@ -301,33 +290,31 @@ def plan_inbox_file(
     replacements: list[tuple[int, int, str]] = []
 
     for entry in entries:
-        field_outcome = entry.fields.get("Triage", "").strip().lower()
         if entry.marker == "x":
+            recorded_outcome = entry.fields.get("Triage", "").strip().lower()
+            if recorded_outcome not in VALID_TRIAGE:
+                raise TriageError(
+                    f"{inbox_path.name}: processed entry {entry.title!r} "
+                    "must have a generated Triage field"
+                )
             plan.counts["processed"] += 1
             continue
 
+        if "Triage" in entry.fields:
+            raise TriageError(
+                f"{inbox_path.name}: Triage is output-only for {entry.title!r}; "
+                "set drop/watch/note/review in the checkbox"
+            )
         if entry.marker and entry.marker not in VALID_TRIAGE:
             raise TriageError(
                 f"{inbox_path.name}: invalid checkbox marker {entry.marker!r} "
                 f"for {entry.title!r}"
             )
-        if field_outcome and field_outcome != DEFAULT_TRIAGE:
-            if field_outcome not in VALID_TRIAGE:
-                raise TriageError(
-                    f"{inbox_path.name}: invalid triage {field_outcome!r} "
-                    f"for {entry.title!r}"
-                )
-            if entry.marker and entry.marker != field_outcome:
-                raise TriageError(
-                    f"{inbox_path.name}: conflicting triage outcomes "
-                    f"{entry.marker!r} and {field_outcome!r} for {entry.title!r}"
-                )
-
-        outcome = entry.marker or field_outcome
-        if not outcome or outcome == DEFAULT_TRIAGE:
+        if not entry.marker:
             plan.counts["untriaged"] += 1
             continue
 
+        outcome = entry.marker
         plan.counts[outcome] += 1
         if outcome == "drop":
             replacements.append((entry.start, entry.end, ""))
