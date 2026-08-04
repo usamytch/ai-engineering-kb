@@ -5,6 +5,7 @@
 ## 2026-08-04
 
 - Добавлен `make triage`: безопасная обработка `drop/watch/note/review`, dry-run и scaffolds для source notes и adoption reviews.
+- Triage-исход теперь можно указывать прямо в checkbox (`[drop]`, `[watch]`, `[note]`, `[review]`); конфликтующая или ошибочная разметка останавливает обработку с явной ошибкой.
 
 ## 2026-08-01
 

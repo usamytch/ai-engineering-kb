@@ -16,8 +16,9 @@ ROOT = Path(__file__).resolve().parents[1]
 INBOX = ROOT / "inbox"
 DATED_INBOX_RE = re.compile(r"^\d{4}-\d{2}-\d{2}\.md$")
 ENTRY_RE = re.compile(
-    r"^- \[(?P<checked>[ xX])\] \*\*\[(?P<title>.*)\]\((?P<url>.*)\)\*\*\s*$"
+    r"^- \[(?P<marker>[^\]\r\n]*)\] \*\*\[(?P<title>.*)\]\((?P<url>.*)\)\*\*\s*$"
 )
+ENTRY_MARKER_RE = re.compile(r"^- \[[^\]\r\n]*\]")
 FIELD_RE = re.compile(
     r"^  - (?P<name>[^:]+):[ \t]*(?P<value>[^\r\n]*?)[ \t]*$", re.MULTILINE
 )
@@ -37,7 +38,7 @@ class Entry:
     start: int
     end: int
     raw: str
-    checked: bool
+    marker: str
     title: str
     url: str
     fields: dict[str, str]
@@ -106,7 +107,7 @@ def parse_entries(content: str) -> list[Entry]:
                 start=start,
                 end=end,
                 raw=raw,
-                checked=match.group("checked").lower() == "x",
+                marker=match.group("marker").strip().lower(),
                 title=match.group("title").strip(),
                 url=match.group("url").strip(),
                 fields=fields,
@@ -254,7 +255,9 @@ def artifact_path(
 
 
 def mark_processed(raw: str, outcome: str, link_line: str | None = None) -> str:
-    updated = raw.replace("- [ ]", "- [x]", 1)
+    updated, marker_replacements = ENTRY_MARKER_RE.subn("- [x]", raw, count=1)
+    if marker_replacements != 1:
+        raise TriageError("candidate misses exactly one checkbox marker")
     updated, replacements = TRIAGE_RE.subn(f"  - Triage: {outcome}", updated, count=1)
     if replacements != 1:
         raise TriageError("candidate misses exactly one Triage field")
@@ -289,17 +292,32 @@ def plan_inbox_file(
     replacements: list[tuple[int, int, str]] = []
 
     for entry in entries:
-        outcome = entry.fields.get("Triage", "").strip().lower()
-        if entry.checked:
+        field_outcome = entry.fields.get("Triage", "").strip().lower()
+        if entry.marker == "x":
             plan.counts["processed"] += 1
             continue
+
+        if entry.marker and entry.marker not in VALID_TRIAGE:
+            raise TriageError(
+                f"{inbox_path.name}: invalid checkbox marker {entry.marker!r} "
+                f"for {entry.title!r}"
+            )
+        if field_outcome and field_outcome != DEFAULT_TRIAGE:
+            if field_outcome not in VALID_TRIAGE:
+                raise TriageError(
+                    f"{inbox_path.name}: invalid triage {field_outcome!r} "
+                    f"for {entry.title!r}"
+                )
+            if entry.marker and entry.marker != field_outcome:
+                raise TriageError(
+                    f"{inbox_path.name}: conflicting triage outcomes "
+                    f"{entry.marker!r} and {field_outcome!r} for {entry.title!r}"
+                )
+
+        outcome = entry.marker or field_outcome
         if not outcome or outcome == DEFAULT_TRIAGE:
             plan.counts["untriaged"] += 1
             continue
-        if outcome not in VALID_TRIAGE:
-            raise TriageError(
-                f"{inbox_path.name}: invalid triage {outcome!r} for {entry.title!r}"
-            )
 
         plan.counts[outcome] += 1
         if outcome == "drop":

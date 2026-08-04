@@ -69,4 +69,4 @@ make inbox       # собрать свежие записи из watchlist.json
 make triage      # применить ручную разметку последнего inbox
 ```
 
-Перед `make triage` заменить `drop | watch | note | review` у выбранных записей на один исход. Скрипт автоматизирует только механику: удаление `drop`, фиксацию `watch` и создание scaffolds для `note`/`review`. Решение о переносе в `knowledge/`, `SOURCES.md` или `ADOPTION.md` остаётся за человеком.
+Перед `make triage` вписать исход в checkbox (`[drop]`, `[watch]`, `[note]` или `[review]`) либо заменить `drop | watch | note | review` в поле `Triage` на один исход. Скрипт автоматизирует только механику: удаление `drop`, фиксацию `watch` и создание scaffolds для `note`/`review`. Решение о переносе в `knowledge/`, `SOURCES.md` или `ADOPTION.md` остаётся за человеком.
