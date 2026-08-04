@@ -23,7 +23,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if git diff --quiet -- inbox; then
+          # `git diff` ignores a newly created dated inbox file.
+          if [ -z "$(git status --porcelain -- inbox)" ]; then
             echo "No inbox changes"
             exit 0
           fi
