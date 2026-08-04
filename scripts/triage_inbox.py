@@ -22,7 +22,8 @@ ENTRY_MARKER_RE = re.compile(r"^- \[[^\]\r\n]*\]")
 FIELD_RE = re.compile(
     r"^  - (?P<name>[^:]+):[ \t]*(?P<value>[^\r\n]*?)[ \t]*$", re.MULTILINE
 )
-VALID_TRIAGE = {"drop", "watch", "note", "review"}
+TRIAGE_MARKERS = {"d": "drop", "w": "watch", "n": "note", "r": "review"}
+VALID_TRIAGE = set(TRIAGE_MARKERS.values())
 
 
 class TriageError(ValueError):
@@ -303,9 +304,9 @@ def plan_inbox_file(
         if "Triage" in entry.fields:
             raise TriageError(
                 f"{inbox_path.name}: Triage is output-only for {entry.title!r}; "
-                "set drop/watch/note/review in the checkbox"
+                "set d/w/n/r in the checkbox"
             )
-        if entry.marker and entry.marker not in VALID_TRIAGE:
+        if entry.marker and entry.marker not in TRIAGE_MARKERS:
             raise TriageError(
                 f"{inbox_path.name}: invalid checkbox marker {entry.marker!r} "
                 f"for {entry.title!r}"
@@ -314,7 +315,7 @@ def plan_inbox_file(
             plan.counts["untriaged"] += 1
             continue
 
-        outcome = entry.marker
+        outcome = TRIAGE_MARKERS[entry.marker]
         plan.counts[outcome] += 1
         if outcome == "drop":
             replacements.append((entry.start, entry.end, ""))

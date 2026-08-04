@@ -170,6 +170,8 @@ def render(
         f"# Discovery inbox — {generated_at.date().isoformat()}",
         "",
         "> Автоматическая подборка. Запись не считается проверенной и не меняет adoption status.",
+        ">",
+        "> Checkbox: `[ ]` — не разобрано; `[d]` — drop; `[w]` — watch; `[n]` — note; `[r]` — review; `[x]` — обработано (ставит `make triage`).",
         "",
         f"Сгенерировано: {generated_at.isoformat(timespec='seconds')}",
         "",

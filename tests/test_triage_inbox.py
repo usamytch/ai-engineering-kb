@@ -44,10 +44,10 @@ class TriageInboxTest(unittest.TestCase):
         self.path.write_text(
             inbox_content(
                 [
-                    candidate("Drop me", "https://example.com/drop", "drop"),
-                    candidate("Watch me", "https://example.com/watch", "watch"),
-                    candidate("Note me", "https://example.com/note", "note"),
-                    candidate("Review me", "https://example.com/review", "review"),
+                    candidate("Drop me", "https://example.com/drop", "d"),
+                    candidate("Watch me", "https://example.com/watch", "w"),
+                    candidate("Note me", "https://example.com/note", "n"),
+                    candidate("Review me", "https://example.com/review", "r"),
                     candidate("Untriaged", "https://example.com/open"),
                     candidate(
                         "Already done",
@@ -90,7 +90,7 @@ class TriageInboxTest(unittest.TestCase):
 
     def test_plan_does_not_write(self) -> None:
         original = inbox_content(
-            [candidate("Note me", "https://example.com/note", "note")]
+            [candidate("Note me", "https://example.com/note", "n")]
         )
         self.path.write_text(original, encoding="utf-8")
         plan = plan_inbox_file(
@@ -109,13 +109,13 @@ class TriageInboxTest(unittest.TestCase):
             plan_inbox_file(self.path, root=self.root, checked_on=date(2026, 8, 4))
         self.assertEqual(self.path.read_text(encoding="utf-8"), original)
 
-    def test_invalid_checkbox_marker_fails_instead_of_being_ignored(self) -> None:
+    def test_full_outcome_marker_is_rejected(self) -> None:
         original = inbox_content(
             [
                 candidate(
-                    "Typo",
-                    "https://example.com/typo",
-                    "rewiew",
+                    "Old format",
+                    "https://example.com/old-format",
+                    "review",
                 )
             ]
         )

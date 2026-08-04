@@ -20,6 +20,11 @@ class RefreshInboxTest(unittest.TestCase):
         content = render([entry], [], generated_at)
 
         self.assertIn("- [ ] **[Example](https://example.com/article)**", content)
+        self.assertIn("`[d]` — drop", content)
+        self.assertIn("`[w]` — watch", content)
+        self.assertIn("`[n]` — note", content)
+        self.assertIn("`[r]` — review", content)
+        self.assertIn("`[x]` — обработано", content)
         self.assertNotIn("Triage:", content)
 
 
