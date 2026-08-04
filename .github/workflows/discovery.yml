@@ -20,7 +20,7 @@ jobs:
       - name: Refresh inbox
         run: python scripts/refresh_inbox.py --days 8
       - name: Validate knowledge base
-        run: python scripts/check_kb.py
+        run: make check
       - name: Create review pull request
         env:
           GH_TOKEN: ${{ github.token }}

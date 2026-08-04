@@ -2,6 +2,10 @@
 
 Все заметные изменения содержания фиксируются здесь. Автоматически сгенерированный inbox сам по себе не считается изменением позиции базы.
 
+## 2026-08-04
+
+- Добавлен `make triage`: безопасная обработка `drop/watch/note/review`, dry-run и scaffolds для source notes и adoption reviews.
+
 ## 2026-08-01
 
 - Создана исходная taxonomy по мотивам *AI Engineering* Chip Huyen.

@@ -7,5 +7,20 @@ Inbox содержит **кандидатов на разбор**, а не пр�
 - важный источник переносится в `SOURCES.md` и тематический файл;
 - изменение инженерной позиции отдельно отражается в `ADOPTION.md` и `CHANGELOG.md`.
 
-Автогенерируемые файлы можно удалять после triage: Git history сохранит snapshot.
+После ручной замены `drop | watch | note | review` на один исход запустить:
 
+```bash
+make triage
+```
+
+По умолчанию обрабатывается последний датированный inbox. `drop` удаляется, `watch` помечается обработанным, `note` создаёт карточку в `notes/`, а `review` — adoption review в `reviews/`. Неразмеченные и уже обработанные записи не меняются.
+
+Полезные варианты:
+
+```bash
+make triage TRIAGE_ARGS=--dry-run
+make triage TRIAGE_FILE=inbox/2026-08-04.md
+make triage TRIAGE_ARGS=--all
+```
+
+Автогенерируемые файлы можно удалять после triage: Git history сохранит snapshot.
