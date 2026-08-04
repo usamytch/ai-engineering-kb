@@ -187,7 +187,6 @@ def render(
                 f"  - Feed: {entry.feed_name}",
                 f"  - Published: {published}",
                 f"  - Topics: {topics}",
-                "  - Triage: drop | watch | note | review",
             ]
         )
     if errors:

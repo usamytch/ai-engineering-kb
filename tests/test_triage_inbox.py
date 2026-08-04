@@ -8,13 +8,17 @@ from pathlib import Path
 from scripts.triage_inbox import TriageError, apply_plan, plan_inbox_file
 
 
-def candidate(title: str, url: str, outcome: str, marker: str = " ") -> str:
-    return f"""- [{marker}] **[{title}]({url})**
+def candidate(
+    title: str, url: str, marker: str = " ", triage: str | None = None
+) -> str:
+    result = f"""- [{marker}] **[{title}]({url})**
   - Feed: Test feed
   - Published: 2026-08-03
   - Topics: agents, rag
-  - Triage: {outcome}
 """
+    if triage is not None:
+        result += f"  - Triage: {triage}\n"
+    return result
 
 
 def inbox_content(entries: list[str]) -> str:
@@ -44,12 +48,13 @@ class TriageInboxTest(unittest.TestCase):
                     candidate("Watch me", "https://example.com/watch", "watch"),
                     candidate("Note me", "https://example.com/note", "note"),
                     candidate("Review me", "https://example.com/review", "review"),
+                    candidate("Untriaged", "https://example.com/open"),
                     candidate(
-                        "Untriaged",
-                        "https://example.com/open",
-                        "drop | watch | note | review",
+                        "Already done",
+                        "https://example.com/done",
+                        "x",
+                        triage="watch",
                     ),
-                    candidate("Already done", "https://example.com/done", "watch", "x"),
                 ]
             ),
             encoding="utf-8",
@@ -95,13 +100,12 @@ class TriageInboxTest(unittest.TestCase):
         self.assertEqual(self.path.read_text(encoding="utf-8"), original)
         self.assertFalse((self.root / "notes").exists())
 
-    def test_accepts_outcome_in_checkbox_marker(self) -> None:
-        default = "drop | watch | note | review"
+    def test_legacy_triage_field_is_still_supported(self) -> None:
         self.path.write_text(
             inbox_content(
                 [
-                    candidate("Drop me", "https://example.com/drop", default, "drop"),
-                    candidate("Note me", "https://example.com/note", default, "note"),
+                    candidate("Drop me", "https://example.com/drop", triage="drop"),
+                    candidate("Note me", "https://example.com/note", triage="note"),
                 ]
             ),
             encoding="utf-8",
@@ -122,7 +126,14 @@ class TriageInboxTest(unittest.TestCase):
 
     def test_conflicting_marker_and_field_outcomes_fail(self) -> None:
         original = inbox_content(
-            [candidate("Conflict", "https://example.com/conflict", "review", "note")]
+            [
+                candidate(
+                    "Conflict",
+                    "https://example.com/conflict",
+                    "note",
+                    triage="review",
+                )
+            ]
         )
         self.path.write_text(original, encoding="utf-8")
         with self.assertRaisesRegex(TriageError, "conflicting triage outcomes"):
@@ -135,7 +146,6 @@ class TriageInboxTest(unittest.TestCase):
                 candidate(
                     "Typo",
                     "https://example.com/typo",
-                    "drop | watch | note | review",
                     "rewiew",
                 )
             ]
@@ -147,7 +157,7 @@ class TriageInboxTest(unittest.TestCase):
 
     def test_invalid_outcome_fails_before_writing(self) -> None:
         original = inbox_content(
-            [candidate("Typo", "https://example.com/typo", "rewiew")]
+            [candidate("Typo", "https://example.com/typo", triage="rewiew")]
         )
         self.path.write_text(original, encoding="utf-8")
         with self.assertRaises(TriageError):

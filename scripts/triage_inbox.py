@@ -254,25 +254,34 @@ def artifact_path(
     raise TriageError(f"cannot choose artifact filename for {title!r}")
 
 
-def mark_processed(raw: str, outcome: str, link_line: str | None = None) -> str:
-    updated, marker_replacements = ENTRY_MARKER_RE.subn("- [x]", raw, count=1)
-    if marker_replacements != 1:
-        raise TriageError("candidate misses exactly one checkbox marker")
-    updated, replacements = TRIAGE_RE.subn(f"  - Triage: {outcome}", updated, count=1)
-    if replacements != 1:
-        raise TriageError("candidate misses exactly one Triage field")
-    if link_line is None:
-        return updated
-
-    lines = updated.splitlines(keepends=True)
+def append_metadata_line(raw: str, line: str) -> str:
+    lines = raw.splitlines(keepends=True)
     insert_at = len(lines)
     while insert_at > 0 and not lines[insert_at - 1].strip():
         insert_at -= 1
     newline = "\n"
     if lines and lines[0].endswith("\r\n"):
         newline = "\r\n"
-    lines.insert(insert_at, link_line + newline)
+    lines.insert(insert_at, line + newline)
     return "".join(lines)
+
+
+def mark_processed(raw: str, outcome: str, link_line: str | None = None) -> str:
+    updated, marker_replacements = ENTRY_MARKER_RE.subn("- [x]", raw, count=1)
+    if marker_replacements != 1:
+        raise TriageError("candidate misses exactly one checkbox marker")
+
+    triage_fields = list(TRIAGE_RE.finditer(updated))
+    if len(triage_fields) > 1:
+        raise TriageError("candidate has more than one Triage field")
+    if triage_fields:
+        updated = TRIAGE_RE.sub(f"  - Triage: {outcome}", updated, count=1)
+    else:
+        updated = append_metadata_line(updated, f"  - Triage: {outcome}")
+
+    if link_line is not None:
+        updated = append_metadata_line(updated, link_line)
+    return updated
 
 
 def plan_inbox_file(
