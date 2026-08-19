@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import argparse
+import json
+import os
 import re
 import sys
 import unicodedata
@@ -15,6 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 INBOX = ROOT / "inbox"
 DATED_INBOX_RE = re.compile(r"^\d{4}-\d{2}-\d{2}\.md$")
+WEEKLY_INBOX_RE = re.compile(r"^\d{4}-W(?:0[1-9]|[1-4]\d|5[0-3])$")
 ENTRY_RE = re.compile(
     r"^- \[(?P<marker>[^\]\r\n]*)\] \*\*\[(?P<title>.*)\]\((?P<url>.*)\)\*\*\s*$"
 )
@@ -318,7 +321,12 @@ def plan_inbox_file(
         outcome = TRIAGE_MARKERS[entry.marker]
         plan.counts[outcome] += 1
         if outcome == "drop":
-            replacements.append((entry.start, entry.end, ""))
+            if inbox_path.name == "index.md" and WEEKLY_INBOX_RE.match(inbox_path.parent.name):
+                replacements.append(
+                    (entry.start, entry.end, mark_processed(entry.raw, outcome))
+                )
+            else:
+                replacements.append((entry.start, entry.end, ""))
             continue
         if outcome == "watch":
             replacements.append(
@@ -338,7 +346,7 @@ def plan_inbox_file(
         plan.artifacts.append(
             Artifact(path=target, content=content, kind=outcome, create=create)
         )
-        relative_target = Path("..") / target.relative_to(root)
+        relative_target = Path(os.path.relpath(target, inbox_path.parent))
         label = "Note" if outcome == "note" else "Review"
         link_line = f"  - {label}: [{target.name}]({relative_target.as_posix()})"
         replacements.append(
@@ -366,6 +374,36 @@ def apply_plan(plan: TriagePlan) -> None:
         artifact.path.write_text(artifact.content, encoding="utf-8")
     if plan.original != plan.updated:
         plan.inbox_path.write_text(plan.updated, encoding="utf-8")
+    sync_week_manifest(plan)
+
+
+def sync_week_manifest(plan: TriagePlan) -> None:
+    """Mirror generated decisions into a weekly machine-readable manifest."""
+
+    if plan.inbox_path.name != "index.md" or not WEEKLY_INBOX_RE.match(plan.inbox_path.parent.name):
+        return
+    manifest_path = plan.inbox_path.parent / "manifest.json"
+    if not manifest_path.exists():
+        return
+    payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+    decisions: dict[str, str] = {}
+    from aidb.weekly import source_id
+
+    for entry in parse_entries(plan.updated):
+        outcome = entry.fields.get("Triage")
+        if entry.marker == "x" and outcome in VALID_TRIAGE:
+            decisions[source_id(entry.url)] = outcome
+    for item in payload.get("entries", []):
+        if not isinstance(item, dict):
+            continue
+        outcome = decisions.get(str(item.get("id", "")))
+        if outcome:
+            item["decision"] = outcome
+            item["status"] = "processed"
+    manifest_path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
 
 
 def resolve_inbox_file(raw: str, root: Path = ROOT) -> Path:
@@ -374,8 +412,16 @@ def resolve_inbox_file(raw: str, root: Path = ROOT) -> Path:
         path = root / path if path.parts and path.parts[0] == "inbox" else root / "inbox" / path
     path = path.resolve()
     inbox_dir = (root / "inbox").resolve()
-    if path.parent != inbox_dir or not DATED_INBOX_RE.match(path.name):
-        raise TriageError("--file must point to inbox/YYYY-MM-DD.md")
+    is_legacy = path.parent == inbox_dir and DATED_INBOX_RE.match(path.name)
+    is_weekly = (
+        path.name == "index.md"
+        and path.parent.parent == inbox_dir
+        and WEEKLY_INBOX_RE.match(path.parent.name)
+    )
+    if not is_legacy and not is_weekly:
+        raise TriageError(
+            "--file must point to inbox/YYYY-MM-DD.md or inbox/YYYY-Www/index.md"
+        )
     if not path.exists():
         raise TriageError(f"inbox file not found: {path}")
     return path
@@ -387,16 +433,24 @@ def selected_files(args: argparse.Namespace, root: Path = ROOT) -> list[Path]:
     dated = sorted(
         path for path in (root / "inbox").glob("*.md") if DATED_INBOX_RE.match(path.name)
     )
-    if not dated:
-        raise TriageError("no dated inbox files found")
-    return dated if args.all else [dated[-1]]
+    weekly = sorted(
+        path
+        for path in (root / "inbox").glob("*/index.md")
+        if WEEKLY_INBOX_RE.match(path.parent.name)
+    )
+    all_files = [*dated, *weekly]
+    if not all_files:
+        raise TriageError("no dated or weekly inbox files found")
+    if args.all:
+        return all_files
+    return [weekly[-1] if weekly else dated[-1]]
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     group = parser.add_mutually_exclusive_group()
-    group.add_argument("--file", help="dated inbox file; defaults to the newest")
-    group.add_argument("--all", action="store_true", help="process all dated inbox files")
+    group.add_argument("--file", help="dated or weekly inbox index; defaults to newest weekly")
+    group.add_argument("--all", action="store_true", help="process all inbox files")
     parser.add_argument("--dry-run", action="store_true", help="show the plan without writing")
     return parser.parse_args()
 

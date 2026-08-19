@@ -18,19 +18,19 @@ jobs:
         with:
           python-version: "3.12"
       - name: Refresh inbox
-        run: python scripts/refresh_inbox.py --days 8
+        run: python -m aidb week-start --days 8
       - name: Validate knowledge base
         run: make check
       - name: Create review pull request
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # `git diff` ignores a newly created dated inbox file.
+          # `git diff` ignores a newly created weekly inbox folder.
           if [ -z "$(git status --porcelain -- inbox)" ]; then
             echo "No inbox changes"
             exit 0
           fi
-          discovery_date="$(date -u +%F)"
+          discovery_date="$(date -u +%G-W%V)"
           discovery_branch="automation/discovery-${GITHUB_RUN_ID}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import tempfile
 import unittest
+import json
 from datetime import date
 from pathlib import Path
 
@@ -143,6 +144,43 @@ class TriageInboxTest(unittest.TestCase):
                         self.path, root=self.root, checked_on=date(2026, 8, 4)
                     )
                 self.assertEqual(self.path.read_text(encoding="utf-8"), original)
+
+    def test_weekly_inbox_retains_drop_and_syncs_manifest(self) -> None:
+        weekly = self.root / "inbox" / "2026-W34"
+        weekly.mkdir()
+        path = weekly / "index.md"
+        path.write_text(
+            inbox_content(
+                [
+                    candidate("Drop me", "https://example.com/drop", "d"),
+                    candidate("Note me", "https://example.com/note", "n"),
+                ]
+            ),
+            encoding="utf-8",
+        )
+        manifest = {
+            "schema_version": 1,
+            "entries": [
+                {"id": "url:240dc91e09f2f6de9701", "url": "https://example.com/drop"},
+                {"id": "url:a75383e51e9f9dad3d39", "url": "https://example.com/note"},
+            ],
+        }
+        from aidb.weekly import source_id
+
+        manifest["entries"][0]["id"] = source_id("https://example.com/drop")
+        manifest["entries"][1]["id"] = source_id("https://example.com/note")
+        (weekly / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+
+        plan = plan_inbox_file(path, root=self.root, checked_on=date(2026, 8, 19))
+        apply_plan(plan)
+
+        updated = path.read_text(encoding="utf-8")
+        self.assertIn("- [x] **[Drop me]", updated)
+        self.assertIn("- Triage: drop", updated)
+        self.assertIn("../../notes/2026-08-19-note-me.md", updated)
+        synced = json.loads((weekly / "manifest.json").read_text(encoding="utf-8"))
+        self.assertEqual(synced["entries"][0]["decision"], "drop")
+        self.assertEqual(synced["entries"][1]["decision"], "note")
 
 
 if __name__ == "__main__":

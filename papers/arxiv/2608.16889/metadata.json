@@ -1,0 +1,14 @@
+{
+  "arxiv_id": "2608.16889v1",
+  "authors": [
+    "Bingxin Xu",
+    "Yuzhang Shang",
+    "Emilio Ferrara"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2608.16889v1",
+  "latest_seen_version": 1,
+  "paper_id": "2608.16889",
+  "schema_version": 1,
+  "source": "arxiv",
+  "title": "Don’t Drop the Baton: Long-Horizon Robot Manipulation via Agentic Subtask Exploration and Transition-Aware Memory"
+}

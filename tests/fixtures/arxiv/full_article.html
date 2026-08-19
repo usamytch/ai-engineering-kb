@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Reliable Widget Learning</title>
+    <style>.secret { display: none }</style>
+    <script>alert("not paper text")</script>
+  </head>
+  <body>
+    <nav>Download navigation should not enter the document.</nav>
+    <article>
+      <h1 id="paper-title">Reliable Widget Learning</h1>
+      <section>
+        <h2 id="abstract">Abstract</h2>
+        <p>We study reliable widget learning under distribution shift. Our method combines a calibrated objective with a finite-sample correction and consistently improves the difficult evaluation cases.</p>
+      </section>
+      <section>
+        <h2 id="introduction">1 Introduction</h2>
+        <p>Widget learning systems are commonly evaluated on averages, even though their worst cases determine whether a deployment is useful. Existing objectives hide those failures and make comparisons between models needlessly fragile. We formulate the problem at the level of individual tasks and retain uncertainty throughout the analysis.</p>
+        <p>The central contribution is a training rule whose confidence penalty is estimated from held-out groups. It needs no privileged information at inference time. This makes the rule suitable for ordinary production pipelines as well as controlled laboratory studies.</p>
+        <ul><li>We define a reproducible grouped benchmark with explicit train and test separation.</li><li>We report uncertainty and ablations for every major design choice.</li></ul>
+      </section>
+      <section>
+        <h2 id="method">2 Method</h2>
+        <p>The algorithm first embeds each widget, then estimates a group-conditioned residual model. During optimization, the residual variance scales the loss. The estimator is fit only on training observations and its hyperparameters are selected using a validation split.</p>
+        <pre>loss = mean(weight(group) * residual(widget) ** 2)</pre>
+        <table id="results"><caption>Main held-out results</caption><tr><th>System</th><th>Score</th></tr><tr><td>Baseline</td><td>71.2</td></tr><tr><td>Ours</td><td>78.9</td></tr></table>
+      </section>
+      <section>
+        <h2 id="discussion">3 Discussion</h2>
+        <p>The improvement persists across seeds and disappears when the uncertainty correction is removed. Performance is lower when groups are extremely small, which is the main limitation. Future work should explore hierarchical estimators and direct robustness guarantees.</p>
+        <p>These findings support the narrower claim that calibrated group information improves this benchmark. They do not establish universal robustness, and the results should not be extrapolated to unrelated modalities without additional experiments.</p>
+      </section>
+    </article>
+    <form>feedback form must be ignored</form>
+  </body>
+</html>

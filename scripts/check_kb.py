@@ -24,7 +24,9 @@ def markdown_files() -> list[Path]:
     return sorted(
         path
         for path in ROOT.rglob("*.md")
-        if ".git" not in path.parts and ".venv" not in path.parts
+        if ".git" not in path.parts
+        and ".venv" not in path.parts
+        and ".aidb" not in path.parts
     )
 
 
@@ -92,4 +94,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-

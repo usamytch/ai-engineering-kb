@@ -14,6 +14,8 @@ from datetime import datetime, timedelta, timezone
 from html.parser import HTMLParser
 from pathlib import Path
 
+from aidb.weekly import current_iso_week, write_week_batch
+
 
 ROOT = Path(__file__).resolve().parents[1]
 USER_AGENT = "ai-engineering-kb-discovery/1.0 (+https://github.com/usamytch)"
@@ -26,6 +28,14 @@ class Entry:
     published: datetime | None
     feed_name: str
     topics: tuple[str, ...]
+    updated: datetime | None = None
+    summary: str = ""
+    authors: tuple[str, ...] = ()
+    categories: tuple[str, ...] = ()
+    doi: str = ""
+    journal_ref: str = ""
+    comment: str = ""
+    license_url: str = ""
 
 
 class FeedParser(HTMLParser):
@@ -41,6 +51,13 @@ class FeedParser(HTMLParser):
         "guid",
         "id",
         "link",
+        "summary",
+        "description",
+        "name",
+        "arxiv:doi",
+        "arxiv:journal_ref",
+        "arxiv:comment",
+        "arxiv:license",
     }
 
     def __init__(self) -> None:
@@ -58,6 +75,12 @@ class FeedParser(HTMLParser):
             self.current = {"fields": {}, "links": []}
             return
         if self.current is None or tag != "link":
+            if self.current is not None and tag in {"category", "arxiv:primary_category"}:
+                term = (dict(attrs).get("term") or "").strip()
+                if term:
+                    categories = self.current.setdefault("categories", [])
+                    assert isinstance(categories, list)
+                    categories.append(term)
             return
         attributes = dict(attrs)
         href = (attributes.get("href") or "").strip()
@@ -140,6 +163,17 @@ def parse_feed(payload: bytes, feed: dict[str, object]) -> list[Entry]:
         date_text = field_text(
             item, ("published", "updated", "pubdate", "date", "created")
         )
+        updated_text = field_text(item, ("updated",))
+        fields = item["fields"]
+        assert isinstance(fields, dict)
+        author_parts = fields.get("name", [])
+        authors = tuple(
+            html.unescape(" ".join(str(part).split()))
+            for part in author_parts
+            if str(part).strip()
+        ) if isinstance(author_parts, list) else ()
+        category_parts = item.get("categories", [])
+        categories = tuple(str(part) for part in category_parts) if isinstance(category_parts, list) else ()
         if not url:
             continue
         result.append(
@@ -149,6 +183,14 @@ def parse_feed(payload: bytes, feed: dict[str, object]) -> list[Entry]:
                 published=parse_date(date_text),
                 feed_name=str(feed["name"]),
                 topics=tuple(str(topic) for topic in feed.get("topics", [])),
+                updated=parse_date(updated_text),
+                summary=field_text(item, ("summary", "description")),
+                authors=authors,
+                categories=categories,
+                doi=field_text(item, ("arxiv:doi",)),
+                journal_ref=field_text(item, ("arxiv:journal_ref",)),
+                comment=field_text(item, ("arxiv:comment",)),
+                license_url=field_text(item, ("arxiv:license",)),
             )
         )
     return result
@@ -213,19 +255,29 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--limit-per-feed", type=int, default=10)
     parser.add_argument("--timeout", type=float, default=20.0)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--week", help="ISO week YYYY-Www; defaults to current week")
+    parser.add_argument(
+        "--legacy-flat",
+        action="store_true",
+        help="write the old inbox/YYYY-MM-DD.md format",
+    )
     parser.add_argument("--dry-run", action="store_true")
     return parser.parse_args()
 
 
-def main() -> int:
-    args = parse_args()
-    if args.days < 1 or args.limit_per_feed < 1 or args.timeout <= 0:
-        print("days, limit-per-feed and timeout must be positive", file=sys.stderr)
-        return 2
-
-    watchlist = json.loads((ROOT / "watchlist.json").read_text(encoding="utf-8"))
-    now = datetime.now(timezone.utc)
-    cutoff = now - timedelta(days=args.days)
+def collect_entries(
+    root: Path,
+    *,
+    days: int = 14,
+    limit_per_feed: int = 10,
+    timeout: float = 20.0,
+    now: datetime | None = None,
+) -> tuple[datetime, list[Entry], list[tuple[str, str]], int]:
+    if days < 1 or limit_per_feed < 1 or timeout <= 0:
+        raise ValueError("days, limit-per-feed and timeout must be positive")
+    watchlist = json.loads((root / "watchlist.json").read_text(encoding="utf-8"))
+    generated_at = now or datetime.now(timezone.utc)
+    cutoff = generated_at - timedelta(days=days)
     entries: list[Entry] = []
     errors: list[tuple[str, str]] = []
 
@@ -233,9 +285,10 @@ def main() -> int:
         try:
             recent = [
                 entry
-                for entry in fetch(feed, args.timeout)
-                if entry.published is None or entry.published >= cutoff
-            ][: args.limit_per_feed]
+                for entry in fetch(feed, timeout)
+                if (entry.updated or entry.published) is None
+                or (entry.updated or entry.published) >= cutoff
+            ][:limit_per_feed]
             entries.extend(recent)
         except (OSError, KeyError, ValueError, UnicodeError) as exc:
             errors.append((str(feed.get("name", "unknown feed")), str(exc)))
@@ -245,22 +298,50 @@ def main() -> int:
         unique.setdefault(entry.url, entry)
     entries = sorted(
         unique.values(),
-        key=lambda item: item.published or datetime.min.replace(tzinfo=timezone.utc),
+        key=lambda item: item.updated
+        or item.published
+        or datetime.min.replace(tzinfo=timezone.utc),
         reverse=True,
     )
+    return generated_at, entries, errors, len(watchlist["feeds"])
+
+
+def main() -> int:
+    args = parse_args()
+    try:
+        now, entries, errors, feed_count = collect_entries(
+            ROOT,
+            days=args.days,
+            limit_per_feed=args.limit_per_feed,
+            timeout=args.timeout,
+        )
+    except (OSError, KeyError, ValueError, json.JSONDecodeError) as exc:
+        print(f"discovery failed: {exc}", file=sys.stderr)
+        return 2
 
     content = render(entries, errors, now)
     if args.dry_run:
-        print(content)
-        return 0 if entries or len(errors) < len(watchlist["feeds"]) else 1
+        if args.legacy_flat:
+            print(content)
+        else:
+            from aidb.weekly import Candidate, merge_candidates, render_week_index
 
-    output = args.output or ROOT / "inbox" / f"{now.date().isoformat()}.md"
-    if not output.is_absolute():
-        output = ROOT / output
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(content, encoding="utf-8")
-    print(f"Wrote {len(entries)} entries to {output.relative_to(ROOT)}; {len(errors)} feed errors")
-    return 0 if entries or len(errors) < len(watchlist["feeds"]) else 1
+            candidates = merge_candidates(Candidate.from_entry(entry) for entry in entries)
+            print(render_week_index(args.week or current_iso_week(now), candidates, errors, now))
+        return 0 if entries or len(errors) < feed_count else 1
+
+    if args.output or args.legacy_flat:
+        output = args.output or ROOT / "inbox" / f"{now.date().isoformat()}.md"
+        if not output.is_absolute():
+            output = ROOT / output
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(content, encoding="utf-8")
+        destination = output.relative_to(ROOT)
+    else:
+        batch_dir, _ = write_week_batch(ROOT, entries, errors, now, args.week)
+        destination = batch_dir.relative_to(ROOT)
+    print(f"Wrote {len(entries)} entries to {destination}; {len(errors)} feed errors")
+    return 0 if entries or len(errors) < feed_count else 1
 
 
 if __name__ == "__main__":

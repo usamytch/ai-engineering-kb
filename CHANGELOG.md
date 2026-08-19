@@ -2,6 +2,16 @@
 
 Все заметные изменения содержания фиксируются здесь. Автоматически сгенерированный inbox сам по себе не считается изменением позиции базы.
 
+## 2026-08-19
+
+- Inbox переведён на папки ISO-недель: `index.md`, `manifest.json`, `closeout.json`; повторный discovery сохраняет ручные marker-решения.
+- Добавлены canonical modern/legacy arXiv IDs и жёсткое version pinning: разные `/abs`, `/pdf`, `/html`, `/src` формы сходятся к одной версии, а `v2` не перезаписывает `v1`.
+- Реализована загрузка именно статей: HTML + PDF, TeX для review или fallback; raw artifacts кэшируются локально в `.aidb/` с URL/MIME/size/SHA-256 provenance.
+- Добавлены semantic HTML extraction, безопасный static TeX parser без компиляции и optional `pdftotext` fallback; abstract/error pages не проходят full-text quality gate.
+- Добавлен evidence-first deep summary через изолированный `codex exec` или OpenAI Responses API: строгая JSON Schema, exact-quote/block-ID validation, numeric grounding и deterministic Markdown render.
+- Добавлены команды полного ритуала: `week-start`, `week-status`, `week-process`, `review`, `paper-approve`, `week-close`, а также низкоуровневые `paper fetch/extract/summarize/process/status`.
+- AI summaries имеют статус `ai-draft` до явного human approval; partial failure не ставит `[x]` и остаётся resumable.
+
 ## 2026-08-04
 
 - Добавлен `make triage`: безопасная обработка `drop/watch/note/review`, dry-run и scaffolds для source notes и adoption reviews.

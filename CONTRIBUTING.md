@@ -1,8 +1,8 @@
 # Как вносить изменения
 
-1. Для свежей ссылки сначала создать запись в `inbox/` или заметку по `templates/source-note.md`.
+1. Для свежей ссылки сначала создать запись в недельном `inbox/` или заметку по `templates/source-note.md`.
 2. Проверить первоисточник, claim, дату, ограничения и связь с конкретным решением.
-3. Для inbox-разметки выбрать `drop`, `watch`, `note` или `review` и запустить `make triage`.
+3. Для inbox-разметки выбрать `drop`, `watch`, `note` или `review` и запустить `make week-process`; legacy snapshots всё ещё поддерживает `make triage`.
 4. Заполнить созданный source note или adoption review; scaffold сам по себе не является проверенным выводом.
 5. При изменении инженерной позиции обновить `ADOPTION.md` и добавить запись в `CHANGELOG.md`.
 6. Запустить `make check`.

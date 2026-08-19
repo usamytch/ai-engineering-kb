@@ -1,0 +1,74 @@
+{
+  "artifacts": {
+    "article.html": {
+      "available": true,
+      "bytes": 207309,
+      "cached": true,
+      "error": null,
+      "fetched_at": "2026-08-19T17:32:15.336704+00:00",
+      "mime_type": "text/html",
+      "name": "article.html",
+      "path": ".aidb/artifacts/arxiv/2608.16889/v1/article.html",
+      "sha256": "b51b650dab912a3fab52b5822d7ddcb636833592fd407e925df3ef1cda0b29e1",
+      "status": "cached",
+      "url": "https://arxiv.org/html/2608.16889v1"
+    },
+    "paper.pdf": {
+      "available": true,
+      "bytes": 1099984,
+      "cached": true,
+      "error": null,
+      "fetched_at": "2026-08-19T17:32:15.590361+00:00",
+      "mime_type": "application/pdf",
+      "name": "paper.pdf",
+      "path": ".aidb/artifacts/arxiv/2608.16889/v1/paper.pdf",
+      "sha256": "65d87647fea52727ef52943526b69c3171d07f826ef5b5e72caceaefae583eb7",
+      "status": "cached",
+      "url": "https://arxiv.org/pdf/2608.16889v1"
+    },
+    "source.tar.gz": {
+      "available": true,
+      "bytes": 885958,
+      "cached": true,
+      "error": null,
+      "fetched_at": "2026-08-19T17:32:16.547991+00:00",
+      "mime_type": "application/x-tar",
+      "name": "source.tar.gz",
+      "path": ".aidb/artifacts/arxiv/2608.16889/v1/source.tar.gz",
+      "sha256": "8802a5a8a5cf8de92d9b5d2a165798d30bda40fcb72846e5fe33a504a6411df5",
+      "status": "cached",
+      "url": "https://export.arxiv.org/e-print/2608.16889v1"
+    }
+  },
+  "base_id": "2608.16889",
+  "extraction": {
+    "block_count": 119,
+    "document_jsonl_sha256": "5e735cb6b089a33f773fef2050dfed55235d194251c7f8100d3b338a0bfc019b",
+    "document_markdown_sha256": "ef3e55a90d674ddd79331bb090c8617b39c6c5b10c09060bf7889d1bd38ee9ab",
+    "extracted_at": "2026-08-19T17:41:51.033543+00:00",
+    "extractor_version": 1,
+    "source_format": "html"
+  },
+  "html_usable": true,
+  "path_key": "2608.16889",
+  "pipeline_version": 1,
+  "policy": "review",
+  "schema_version": 1,
+  "source": "arxiv",
+  "summary": {
+    "analysis_sha256": "8d2a17b6fefd4ec66270e175ebbb066dec5473dd31392142ef45ee67bad3cc36",
+    "document_jsonl_sha256": "5e735cb6b089a33f773fef2050dfed55235d194251c7f8100d3b338a0bfc019b",
+    "generated_at": "2026-08-19T18:00:47.298444+00:00",
+    "metadata_sha256": "7ba5be7ecaa555b443608bd027564a3db0f00a9ff64608f3370f5df57ec8fa7f",
+    "pipeline_version": 1,
+    "profile": "deep",
+    "prompt_sha256": "fef86d66ff9220943fcf6e1361d050edde4712e05460e6b46903ef70689a1beb",
+    "provider": "codex-exec:configured-default",
+    "schema_sha256": "8c703ea226fda477d6522236d796e523af9dc6dc2110cbf27fa7b645a7487ecd",
+    "status": "ai-draft",
+    "summary_sha256": "2c646b33c5e31cefb203122a5f399d881f36321486914de0d24c1b9ae67bbee0"
+  },
+  "updated_at": "2026-08-19T18:00:47.304356+00:00",
+  "version_id": "2608.16889v1",
+  "version_tag": "v1"
+}

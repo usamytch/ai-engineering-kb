@@ -1,24 +1,37 @@
 # Процесс обновления базы
 
-**Обновлено:** 2026-08-04
+**Обновлено:** 2026-08-19
 
 Цель процесса — отделить discovery от принятия решений. Свежесть важна, но одна новая статья не должна автоматически менять production-подход.
 
 ## Два цикла
 
-### Еженедельный discovery — 20–30 минут
+### Еженедельный discovery — 30–60 минут
 
-1. Запустить `make inbox` или дождаться scheduled GitHub Action.
-2. Удалить явно нерелевантное и дубликаты.
-3. Для потенциально важных записей открыть первоисточник, а не пересказ.
-4. Заменить `[ ]` в checkbox на один исход:
-   - `[d]` / drop — не относится к прикладной AI engineering или не добавляет нового;
-   - `[w]` / watch — сигнал интересный, но данных мало;
-   - `[n]` / note — оформить заметку и связать с тематическим разделом;
-   - `[r]` / review — создать adoption review, если подход может изменить архитектуру.
-5. Запустить `make triage`: он удалит `drop`, отметит `watch`, создаст scaffold source note для `note` и adoption review для `review`.
-6. Заполнить созданные scaffolds после чтения первоисточника.
-7. Зафиксировать содержательные изменения в `CHANGELOG.md`.
+1. Запустить `make week-start` или дождаться scheduled GitHub Action. Результат
+   — `inbox/YYYY-Www/index.md` и точный `manifest.json`.
+2. Просмотреть title + abstract и поставить один исход:
+   - `[d]` / drop — нерелевантно, дубль или не добавляет нового;
+   - `[w]` / watch — сигнал интересный, но deep read сейчас не окупится;
+   - `[n]` / note — скачать именно статью и получить deep source summary;
+   - `[r]` / review — deep summary плюс adoption-review scaffold.
+3. Проверить план: `make week-process AIDB_ARGS=--dry-run`.
+4. Запустить `make week-process PROVIDER=codex`. Для каждого `[n]`/`[r]`
+   pipeline последовательно:
+   - скачивает arXiv HTML и PDF, а для review/HTML fallback — TeX source;
+   - отвергает abstract/error page как «полную статью»;
+   - строит canonical `document.jsonl` со стабильными block IDs и locators;
+   - получает structured deep summary на доминирующем языке самой статьи
+     от отдельной LLM-сесии; evidence quotes не переводятся;
+   - проверяет JSON Schema, block IDs, exact quotes и grounding чисел;
+   - пишет tracked analysis/summary и только затем ставит `[x]`.
+5. Запустить `make review`, открыть summary и вручную проверить основной claim,
+   ключевое число, ablation/negative result и главное ограничение.
+6. Подтвердить проверенное: `make paper-approve PAPER=<id> REVIEWER=<name>`.
+7. Перенести в `SOURCES.md`/`knowledge/` только собственный синтез. Одна статья
+   сама по себе не переводит технологию в Trial/Adopt.
+8. Запустить `make week-close`: команда проверит незавершённые решения, создаст
+   digest/closeout; затем `make check`.
 
 ### Ежемесячный synthesis — 60–90 минут
 
@@ -35,16 +48,46 @@
 ## Поток одной находки
 
 ```text
-feed / paper / release
-        ↓
-      inbox
-        ↓  ручная разметка + make triage
-   source note
-        ↓  воспроизводимость / сравнение с baseline
- adoption review
-        ↓
+feed / arXiv metadata / release
+             ↓
+   inbox/YYYY-Www/{index,manifest}
+             ↓  d/w/n/r + make week-process
+   full article → canonical blocks
+             ↓  structured LLM + evidence validation
+ papers/<id>/versions/vN/{analysis,summary,manifest}
+             ↓  human approval / local experiment
  knowledge + SOURCES + ADOPTION + CHANGELOG
 ```
+
+## Где лежат сами статьи
+
+```text
+inbox/2026-W34/                  weekly queue + machine state
+papers/arxiv/2608.16889/        долговечная tracked сущность статьи
+  metadata.json
+  index.md
+  versions/v1/
+    manifest.json               URLs, hashes, extractor/provider provenance
+    analysis.json               source of truth для summary
+    summary.md                  deterministic render, статус ai-draft/verified
+.aidb/artifacts/arxiv/2608.16889/v1/
+  article.html
+  paper.pdf
+  source.tar.gz
+  document.jsonl
+  document.md
+```
+
+`.aidb/` не попадает в Git: лицензии arXiv различаются, а бинарные и полные
+тексты слишком тяжёлы для обычного repository history. Tracked manifest хранит
+URL, MIME, размер и SHA-256, поэтому локальный artifact можно проверить и
+воспроизвести. Конкретная версия arXiv является единицей анализа: новая `v2`
+получает отдельную папку.
+
+TeX считается недоверенным вводом. AIDB никогда не компилирует его, не включает
+shell escape, не распаковывает symlinks/path traversal и ограничивает число и
+размер файлов. Summarizer работает без web/MCP/tools; текст статьи передаётся
+как данные, а не как инструкция.
 
 ## Минимальная карточка источника
 

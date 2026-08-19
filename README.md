@@ -32,6 +32,8 @@
 - [ADOPTION.md](ADOPTION.md) — текущие инженерные позиции по подходам;
 - [PROCESS.md](PROCESS.md) — недельный и месячный цикл обновления;
 - [inbox/](inbox/README.md) — автоматические находки, ещё не принятые в базу;
+- [papers/](papers/README.md) — versioned metadata, analyses и deep summaries статей;
+- [digests/](digests/README.md) — итоги закрытых недель;
 - [notes/](notes/README.md) — карточки источников после исхода `note`;
 - [reviews/](reviews/README.md) — adoption reviews после исхода `review`;
 - [CHANGELOG.md](CHANGELOG.md) — история содержательных изменений.
@@ -59,14 +61,58 @@ prompt + structured output
 
 Это не универсальный порядок внедрения, а безопасный default: каждый следующий уровень добавляет стоимость, nondeterminism и новые способы отказа.
 
-## Локальная работа
+## Еженедельный ритуал
 
-Требуется только Python 3.10+.
+Требуется Python 3.10+. Внешние Python-зависимости для основного pipeline не
+нужны. PDF text fallback использует `pdftotext`, если он установлен; обычно
+основным источником служит arXiv HTML, затем безопасно разобранный TeX.
 
 ```bash
-make check       # проверить локальные Markdown-ссылки и структуру
-make inbox       # собрать свежие записи из watchlist.json
-make triage      # применить ручную разметку последнего inbox
+make week-start                 # inbox/2026-W34/{index.md,manifest.json}
+# поставить d/w/n/r в index.md
+make week-process PROVIDER=codex
+make review                     # AI drafts, ожидающие человека
+make paper-approve PAPER=2608.16889v1 REVIEWER=mesherin
+make week-close
+make check
 ```
 
-Перед `make triage` заменить `[ ]` у выбранных записей на `[d]` (drop), `[w]` (watch), `[n]` (note) или `[r]` (review). Поле `Triage` руками добавлять нельзя: после обработки скрипт создаёт его сам как историю решения. Он автоматизирует только механику — удаление `drop`, фиксацию `watch` и создание scaffolds для `note`/`review`. Решение о переносе в `knowledge/`, `SOURCES.md` или `ADOPTION.md` остаётся за человеком.
+Маркеры:
+
+- `[d]` — сохранить drop в истории и больше не разбирать;
+- `[w]` — оставить metadata/abstract в watchlist;
+- `[n]` — скачать полную статью и сделать evidence-first deep summary;
+- `[r]` — то же плюс TeX и scaffold adoption review;
+- `[x]` — pipeline успешно применил решение.
+
+`[n]`/`[r]` получают `[x]` только после full-text quality gate, structured LLM
+output и проверки всех evidence-ссылок. При ошибке marker остаётся прежним, а
+карточка получает поле `Error`, поэтому запуск можно безопасно повторить.
+Summary целиком пишется на доминирующем языке самой статьи; AIDB не
+переводит анализ под язык интерфейса, а evidence quotes всегда остаются дословными.
+
+По умолчанию provider `codex` запускает отдельный `codex exec` в пустой
+временной директории с read-only sandbox и строгой JSON Schema. Для unattended
+запуска можно выбрать Responses API:
+
+```bash
+OPENAI_API_KEY=... make week-process PROVIDER=openai MODEL=gpt-5.6
+```
+
+Ключ читается только из `OPENAI_API_KEY`, не сохраняется и не выводится.
+Выбор model можно переопределить одинаково для weekly и одиночной статьи.
+
+Одну статью удобно прогнать отдельно:
+
+```bash
+make paper PAPER=2608.16889v1 PROVIDER=codex
+make paper-status PAPER=2608.16889v1
+```
+
+Версия `vN` обязательна: `v2` никогда не перезаписывает `v1`. Полные
+`article.html`, `paper.pdf`, `source.tar.gz`, `document.jsonl` и `document.md`
+лежат в gitignored `.aidb/artifacts/`; Git хранит только metadata, provenance,
+structured analysis и summary в `papers/arxiv/<id>/versions/vN/`.
+
+Старые `inbox/YYYY-MM-DD.md` и `make triage` остаются совместимыми на время
+миграции. Новые запуски используют папки ISO-недель.
