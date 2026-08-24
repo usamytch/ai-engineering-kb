@@ -1,0 +1,590 @@
+{
+  "batch_id": "2026-W35",
+  "entries": [
+    {
+      "abstract": "For sixty years, machine verification has been a major cost overhead, affordable only for exceptional artifacts. Here we report that generative AI inverts this relationship: at AI speed, machine verification is not only economical but essential to productivity --- it is the incorruptible referee that lets one person safely direct autonomous machine work at scale. In five weeks, one researcher on consumer AI subscriptions directed a small fleet of AI agents from application code, through a verified compiler and executive, to a RISC-V processor taped out on a community silicon shuttle; no proof passed through human review, and no RTL was written by a human. The working discipline --- the Salt method --- rests on a proof kernel no hallucinated proof can pass: mathematical claims travel between agents as kernel-checked artifacts, and human attention is reserved for statements, designs, and rulings. Verification is stated link by link, from the Lean 4 kernel to SAT-checked equivalence at the silicon boundary. We publish the complete accounting: theorem provenance, a pre-registered token meter, floor-bounded human time, and an error ledger whose catch numbering runs to #256 --- a monotone counter over the mathematics campaign's append-only flags ledger, maintained 2026-07-07 to 2026-07-20 (one number, #79, was never assigned; later catches are recorded un-numbered) --- against zero incorrect proofs reaching the record.",
+      "authors": [
+        "Jason Hickey"
+      ],
+      "categories": [
+        "cs.SE",
+        "cs.AI",
+        "cs.AR",
+        "cs.LO"
+      ],
+      "comment": "17 pages, 6 figures",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.21356v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.21356",
+      "paper_version_id": "2608.21356v1",
+      "published": "2026-08-21T17:59:16+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "AI with Authority, from Application to Silicon",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-21T17:59:16+00:00",
+      "url": "https://arxiv.org/abs/2608.21356v1"
+    },
+    {
+      "abstract": "Self-refinement, typically structured as generation, critique, and revision, is a widely adopted paradigm for improving LLM generation and serves as a core mechanism in many LLM agents. While the three stages involve different cognitive demands, most existing approaches conveniently treat the model size as an implementation detail rather than a subject of study, which may lead to a waste of resources. Little work has systematically examined how model size affects each stage or whether effective self-refinement requires equally capable models for generation, critique, and revision. We present the first stage-wise model size study of the self-refinement pipeline on 5 benchmarks from different domains using 6 model sizes of Qwen3 and 4 model sizes of Gemma 3. We conclude that larger generators and refiners generally improve the pipeline, whereas an undersized refiner can even harm performance. Second, performance is highly insensitive to the size of the critic, although including even a small critic consistently outperforms omitting critique altogether. Our findings demonstrate that model capacity should not be allocated uniformly across self-refinement pipelines. Instead, different stages exhibit distinct size scaling characteristics, providing practical guidance for designing more computationally efficient multi-stage language model systems.",
+      "authors": [
+        "Zhuoyi Yang",
+        "Ian G. Harris",
+        "Salar Hashemitaheri",
+        "Cassie Huang",
+        "Yuangang Li",
+        "Hyunwoo Oh",
+        "Paul Dourish",
+        "Tony Givargis",
+        "Mohsen Imani",
+        "Li Zhang"
+      ],
+      "categories": [
+        "cs.LG"
+      ],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.21345v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.21345",
+      "paper_version_id": "2608.21345v1",
+      "published": "2026-08-21T17:52:17+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Asymmetric Capacity Allocation in Self-Refinement Pipelines",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-21T17:52:17+00:00",
+      "url": "https://arxiv.org/abs/2608.21345v1"
+    },
+    {
+      "abstract": "Natural-language workflows offer a software-like interface for agents: domain experts can write reusable procedures, and agents can execute them as instructions. This promise is not yet reliable. Workflow descriptions often leave data dependencies implicit, so the executor must infer which prior results a step should use; agents can also fail to follow long or branching instructions under context pressure. We propose Artic, an artifact-driven workflow compiler that transforms a natural-language workflow into an artifact-driven workflow in which each step declares the artifacts it reads and writes, constraints gate produced artifacts, and explicit control transfers route execution. This representation exposes the enforcement burden placed on agent execution, allowing the compiler to identify steps that depend on too much state or contain difficult control logic and refine them through constrained optimization. To validate the LLM-assisted transformation, Artic decomposes faithfulness checking into local obligations and uses scenario-based dry runs to test whether compiled workflow regions conform to the source workflow. We evaluate Artic on 488 problem instances from 11 real-world domain workflows; it improves task resolve rate by 28 percentage points over the original text workflow. We also show that workflows compiled by Artic are 32 and 56 percentage points more consistent in cross-model and repeated-execution setups, respectively.",
+      "authors": [
+        "Xiangzhe Xu",
+        "Hanxi Guo",
+        "Guangyu Shen",
+        "Siyuan Cheng",
+        "Xiangyu Zhang"
+      ],
+      "categories": [
+        "cs.SE"
+      ],
+      "comment": "The first two authors contributed equally",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.21341v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.21341",
+      "paper_version_id": "2608.21341v1",
+      "published": "2026-08-21T17:47:47+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Natural-Language Workflows Are Not Software Yet: Artifact-Driven Compilation for Reliable Agent Execution",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-21T17:47:47+00:00",
+      "url": "https://arxiv.org/abs/2608.21341v1"
+    },
+    {
+      "abstract": "Autonomous AI diagnostic agents, systems that analyse patient-specific clinical data and produce diagnostic outputs or triage decisions without mandatory real-time human review, are increasingly deployed across eHealth platforms in sub-Saharan Africa at a pace that has outrun the governance infrastructure needed to oversee them. While significant bodies of work address AI accountability, transparency and explainability in healthcare, existing frameworks are largely clinician-centered and assume regulatory conditions that do not uniformly exist in low-resource settings. A patient-centered analysis of the disparity in patient awareness regarding autonomous agents, which results in a structural accountability gap, is mostly missing from the literature. This paper synthesizes existing research on informed consent, algorithmic accountability, and explainable AI to highlight three distinct challenges introduced by deploying AI agents in the sub-Saharan African context. Drawing on three documented deployment cases, including computer-aided tuberculosis detection in Tanzania, diabetic retinopathy and TB screening in Zambia, and mobile health chat-bot triage in Ghana, it demonstrates that these gaps are already present in active deployments across the region. In response, the paper proposes three foundational principles; agent-aware informed consent, human override as a structural requirement and contextually adapted explainability. This triad of principles lays a practical minimum standard for developers, health system administrators and policymakers in contexts where formal AI regulation remains nascent.",
+      "authors": [
+        "Percy Brown",
+        "Kweku Yamoah"
+      ],
+      "categories": [
+        "cs.CY"
+      ],
+      "comment": "10 pages, 4 figures",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.21326v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.21326",
+      "paper_version_id": "2608.21326v1",
+      "published": "2026-08-21T17:34:19+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Invisible Agents, Uninformed Patients: Towards Responsible Deployment Of Autonomous AI Diagnostic Agents In Sub-Saharan Africa",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-21T17:34:19+00:00",
+      "url": "https://arxiv.org/abs/2608.21326v1"
+    },
+    {
+      "abstract": "AI coding agents are increasingly integrated into software development workflows, operating on both sides of the pull-request (PR) process: AI authoring agents create or modify PRs, while AI reviewers evaluate them. This creates a closed loop in which one AI coding agent reviews a contribution attributed to another. We construct a large-scale dataset of AI-to-AI code review by linking AI-attributed PRs with AI-attributed review events from CodAGE, a public dataset of coding-agent-generated GitHub events. Our dataset contains 248,641 unique AI-attributed PRs that received at least one AI-attributed review. Of these, 45,269 received cross-product review and 208,145 received same-product review; 4,773 PRs received both. Cross-product AI-to-AI review occurred in approximately 1.6% of identified agent-authored PRs but was substantial in absolute terms, and its volume increased by more than two orders of magnitude from 2025-Q1 to 2025-Q3. Reviewer output varied across author-reviewer configurations. CodeRabbit labeled 35.0% of its comments on Claude Code-authored PRs as refactor comments, compared with 10.5% on Copilot-authored PRs, although this difference may reflect characteristics of the PRs rather than the reviewer. For three of four dual-role reviewers, mean comments per PR were 58-65% higher in the same-product group, although effect sizes were small or negligible and the difference was concentrated in the upper tail. Among pairs with complete, nonnegative timestamps, the observed median latency was 1.2 minutes for cross-product pairs and 4.7 minutes for same-product pairs; differential timestamp availability and reviewer composition limit this comparison. Overall, closed-loop AI-to-AI review is increasing but remains a minority of identified agent activity, with review output varying across authoring-agent groups and product configurations.",
+      "authors": [
+        "Niruthiha Selvanayagam",
+        "Taher A. Ghaleb"
+      ],
+      "categories": [
+        "cs.SE"
+      ],
+      "comment": "Accepted at the 20th International Symposium on Empirical Software Engineering and Measurement (ESEM 2026), Emerging Results, Vision, and Reflection Papers Track",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.21311v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.21311",
+      "paper_version_id": "2608.21311v1",
+      "published": "2026-08-21T17:17:35+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "AI-to-AI Code Reviews of GitHub Pull Requests",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-21T17:17:35+00:00",
+      "url": "https://arxiv.org/abs/2608.21311v1"
+    },
+    {
+      "abstract": "Existing evaluations of automated root cause analysis (RCA) for microservices assess diagnostic performance mainly by endpoint correctness: whether a method localizes the responsible service. This criterion enables comparison but does not reveal the evidentiary basis of a diagnosis or the fault-propagation route connecting the source to observed symptoms, both of which an on-call site reliability engineer needs to judge whether action is warranted. We therefore treat RCA as an observable diagnostic process. Our trajectory-level framework evaluates agent executions against manually curated service-level fault-propagation paths. Applied to a public microservice RCA benchmark, it analyzes 3,500 diagnostic trajectories, characterizing where agents investigate and how they use retrieved telemetry. We find a disconnect between answer correctness and diagnostic quality: an agent may localize the fault source yet fail to reconstruct its propagation. Successful investigations stay on the fault-impact surface, act on retrieved evidence, and broaden their query repertoire as the search deepens. Failures arise when decisive evidence is omitted, retrieved evidence is misinterpreted, or unsupported inference substitutes for missing evidence. We operationalize this taxonomy as DiagGuard, a two-stage defense-in-depth architecture in which grounding surveys available observations before localization and verification audits the diagnosis against them. In an independent setting with a different model, benchmark, and service topology, DiagGuard raises Acc@1 from 43.5% to 52.5%. These results show that trajectory-level evaluation exposes limitations hidden by final-answer metrics and provides actionable guidance for improving automated RCA.",
+      "authors": [
+        "Qisheng Lu",
+        "Aoyang Fang",
+        "Junjielong Xu",
+        "Jin'ao Shang",
+        "Songhan Zhang",
+        "Yifan Yang",
+        "Xiaochuan Yan",
+        "Pinjia He"
+      ],
+      "categories": [
+        "cs.SE"
+      ],
+      "comment": "13 pages, 7 figures, 5 tables",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.21310v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.21310",
+      "paper_version_id": "2608.21310v1",
+      "published": "2026-08-21T17:13:45+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Beyond Fault Localization: A Trajectory-Level Study of LLM Agents for Microservice Root Cause Analysis",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-21T17:13:45+00:00",
+      "url": "https://arxiv.org/abs/2608.21310v1"
+    },
+    {
+      "abstract": "Skills play different roles as an agent's policy evolves: they should first provide learnable knowledge, then support capability formation, and finally be invoked only when they improve individual decisions. Existing methods rarely model this lifecycle. They either keep skills outside the model, fully internalize them, or select among internalization and utilization objectives through noisy task-level success rates. Such designs fragment training and assign uniform importance to actions within the same trajectory, even though skill guidance may help some decisions while distracting others. To solve these problems, we introduce AUSO (Action-level Unified Skill Optimization), which unifies skill learning and skill use through a progressive, action-aware optimization process. At the beginning of training, AUSO jointly learns from teacher guidance and environmental outcomes, enabling the policy to acquire foundational skills without losing task-oriented feedback. It subsequently emphasizes outcome-based policy optimization to consolidate autonomous problem-solving ability. As the policy matures, AUSO evaluates each sampled action under both skill-conditioned and skill-free contexts. The resulting action-level information signal is coupled with the trajectory outcome advantage, allowing beneficial skill-sensitive actions to receive stronger updates and harmful ones to be suppressed. Therefore, skills gradually transition from an external source of supervision into decision knowledge whose utilization is adapted to its action-level benefit, while reinforcement learning remains the shared backbone across all stages. Experiments on ALFWorld, WebShop, and SearchQA show that AUSO consistently improves agent performance and out-of-distribution generalization over competitive baselines.",
+      "authors": [
+        "Huizu Lin",
+        "Chengkai Huang",
+        "Tianqi Gao",
+        "Tao Huang",
+        "Daijiao Liu",
+        "Tongxin Li",
+        "Xiaoyan Sun",
+        "Lina Yao"
+      ],
+      "categories": [
+        "cs.AI"
+      ],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.21292v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.21292",
+      "paper_version_id": "2608.21292v1",
+      "published": "2026-08-21T16:53:27+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "AUSO: Action-Level Unified Skill Optimization from Internalization to Utilization",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-21T16:53:27+00:00",
+      "url": "https://arxiv.org/abs/2608.21292v1"
+    },
+    {
+      "abstract": "Question answering (QA) over long, connected documents remains challenging because relevant evidence may span multiple entities and their relationships. Existing retrieval-augmented generation (RAG) methods typically index documents as raw chunks and retrieve them through embedding similarity. Their performance degrades when chunk boundaries separate entities from supporting evidence or when a question requires multi-hop reasoning across the corpus. We propose EnSI-RAG (Entity-Structure-Indexed Retrieval-Augmented Generation), a framework that constructs a query-independent, entity-centered index. Each record (e, t, k, v) represents an entity e, its type t, a semantic category k in {property, relation, aspect}, and a value v, while retaining links to the original source passages. At query time, these records serve as retrieval handles, and an LLM synthesizes the retrieved passages into the final answer. This design separates evidence localization from answer synthesis while preserving traceable source evidence. Across Loong and Oolong, EnSI-RAG achieves an average accuracy of 78.24. Relative to the published baseline scores used as references, this is 6.62 points higher, suggesting its effectiveness across these settings. The code is available at https://github.com/RamonMeng/EnSI-RAG.",
+      "authors": [
+        "Xuanyu Meng",
+        "Jiashuo Sun",
+        "Jash Rajesh Parekh",
+        "Jiawei Han"
+      ],
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.DB",
+        "cs.IR"
+      ],
+      "comment": "21 pages, preprint",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.21252v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.21252",
+      "paper_version_id": "2608.21252v1",
+      "published": "2026-08-21T16:05:00+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "EnSI-RAG: Entity-Structure-Indexed Retrieval-Augmented Generation for Long-Document Question Answering",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-21T16:05:00+00:00",
+      "url": "https://arxiv.org/abs/2608.21252v1"
+    },
+    {
+      "abstract": "While recent large language models (LLMs) have achieved promising results on individual patent drafting tasks, they fundamentally fail to investigate the core challenge of real-world patent drafting: generating a complete and legally coherent patent application directly from early-stage invention materials. Prior work predominantly assumes later-stage, highly structured, or already legalistic inputs. However, real patenting workflows begin with informal, de-legalized disclosures authored by inventors. To bridge the gap, we introduce Dis2Pat, a disclosure-to-patent dataset that reflects realistic patenting workflows by requiring the generation of complete patent applications directly from inventor-style, de-legalized disclosures. Given the inherent difficulty of long-form, legally constrained patent drafting and the strong privacy requirements, we further propose a strong baseline named Patent-MAF. It is a multi-agent framework for locally deployable patent drafting. Benchmark results reveal that current LLMs exhibit limitations in patent drafting, while Patent-MAF provides a strong baseline that consistently outperforms evaluated open-source models and remains competitive with large closed-source models.",
+      "authors": [
+        "Lekang Jiang",
+        "Wenjun Sun",
+        "Stephan Goetz"
+      ],
+      "categories": [
+        "cs.CL"
+      ],
+      "comment": "Accepted to EMNLP 2026",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.21249v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.21249",
+      "paper_version_id": "2608.21249v1",
+      "published": "2026-08-21T16:00:52+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Benchmarking Patent Drafting from Inventor-Style Disclosures",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-21T16:00:52+00:00",
+      "url": "https://arxiv.org/abs/2608.21249v1"
+    },
+    {
+      "abstract": "Token compression has become a key technique for reducing the inference cost of large foundation models, with approaches such as token pruning and KV-cache reuse widely adopted in vision-language models and recently explored for embodied agents. In embodied agents, tokens not only support perception and semantic understanding but also directly affect latency-sensitive closed-loop robot action prediction. Existing schemes typically guide compression using redundancy or importance cues, such as visual similarity, attention scores, and saliency. However, these cues only indirectly measure the key factor for safe compression: how much a token can change before causing an unacceptable deviation in downstream actions. This receiver-dependent tolerance is closely related to the principle of just noticeable difference (JND). Classical JND characterizes signal tolerance in the human visual system, while machine-oriented JND extends this concept to downstream machine responses. Building on this progression, we introduce Action-JND, which extends JND modeling to embodied perception by defining noticeability through the language-conditioned action response of a vision-language-action (VLA) policy in closed-loop control. A token change is considered admissible only when the induced action deviation remains within a tolerated margin. To realize this concept, we develop a lightweight token-wise JND estimator in deep visual-feature space to predict the maximum tolerable perturbation while preserving policy responses. The resulting action-tolerance score serves as a plug-and-play criterion for VLA compression paradigms, including stale-KV reuse and token pruning, prioritizing action-tolerant tokens for compression. Experiments on the LIBERO benchmark with OpenVLA and OpenVLA-OFT demonstrate that Action-JND consistently improves compression reliability, especially under aggressive compression ratios.",
+      "authors": [
+        "Zhuoyuan Li",
+        "Rui Zhao",
+        "Jin Wang",
+        "Hanwei Zhu",
+        "Cong Zhang",
+        "Giuseppe Valenzise",
+        "Weisi Lin",
+        "Kin-Man Lam"
+      ],
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "comment": "15 pages, 5 figures",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.21247v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.21247",
+      "paper_version_id": "2608.21247v1",
+      "published": "2026-08-21T15:59:37+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Just Noticeable Difference Modeling for Token Compression in Vision-Language-Action Models",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-21T15:59:37+00:00",
+      "url": "https://arxiv.org/abs/2608.21247v1"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "dworthen"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "Microsoft GraphRAG releases"
+      ],
+      "id": "url:2f29d7be4ad3466fc62d",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-08-21T15:24:30+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v3.1.2",
+      "topics": [
+        "rag",
+        "graph"
+      ],
+      "updated": "2026-08-21T15:24:30+00:00",
+      "url": "https://github.com/microsoft/graphrag/releases/tag/v3.1.2"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "SubSir"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:31c6f260de9b1ca31ac7",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-08-21T06:47:39+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.28.0rc2: [Spec Decode] DFlash2: local convolution + candidate selector (#52816)",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-08-21T06:47:39+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.28.0rc2"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "jperezdealgaba"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:3d23242522a95e0119db",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-08-20T09:30:39+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.28.0rc1",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-08-20T09:30:39+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.28.0rc1"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "github-actions[bot]"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "LangGraph releases"
+      ],
+      "id": "url:72c1c65856af7651e1ca",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-08-19T18:05:32+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "langgraph-sdk==0.4.3",
+      "topics": [
+        "agents",
+        "runtime"
+      ],
+      "updated": "2026-08-19T18:05:32+00:00",
+      "url": "https://github.com/langchain-ai/langgraph/releases/tag/sdk%3D%3D0.4.3"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "seratch"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "OpenAI Agents SDK releases"
+      ],
+      "id": "url:52d7fe5e2f70c9ee2258",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-08-19T13:44:38+00:00",
+      "source_type": "release",
+      "status": "already-seen",
+      "title": "v0.22.0",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-08-19T13:44:38+00:00",
+      "url": "https://github.com/openai/openai-agents-python/releases/tag/v0.22.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "wuliang229"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "Google ADK Python releases"
+      ],
+      "id": "url:dc009bcabb091ae6098c",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-08-17T19:25:50+00:00",
+      "source_type": "release",
+      "status": "already-seen",
+      "title": "v1.39.0",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-08-17T19:25:50+00:00",
+      "url": "https://github.com/google/adk-python/releases/tag/v1.39.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "GWeale"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "Google ADK Python releases"
+      ],
+      "id": "url:7ac2ce458271723bdedb",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-08-17T18:28:14+00:00",
+      "source_type": "release",
+      "status": "already-seen",
+      "title": "v2.7.1",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-08-17T18:28:14+00:00",
+      "url": "https://github.com/google/adk-python/releases/tag/v2.7.1"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "seratch"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "OpenAI Agents SDK releases"
+      ],
+      "id": "url:4d3f8d8c8b307f670217",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-08-16T22:28:55+00:00",
+      "source_type": "release",
+      "status": "already-seen",
+      "title": "v0.21.1",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-08-16T22:28:55+00:00",
+      "url": "https://github.com/openai/openai-agents-python/releases/tag/v0.21.1"
+    }
+  ],
+  "errors": [],
+  "generated_at": "2026-08-24T07:31:33+00:00",
+  "schema_version": 1
+}
