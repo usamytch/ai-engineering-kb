@@ -1,0 +1,237 @@
+{
+  "batch_id": "2026-W38",
+  "entries": [
+    {
+      "abstract": "",
+      "authors": [
+        "TQCB"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:739c7bab1386d6688f5e",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-12T18:42:01+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.29.1rc0",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-12T18:42:01+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.29.1rc0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "BugenZhao"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:47805f91d098078f11df",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-11T08:30:05+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "proto-v0.1.0",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-11T08:30:05+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/proto-v0.1.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "khluu"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:448701fe99745f6407d1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-10T23:53:36+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.29.0",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-10T23:53:36+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.29.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "GWeale"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "Google ADK Python releases"
+      ],
+      "id": "url:9601bd3ea0a1c6cc9c46",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-10T21:22:43+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v2.9.0",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-09-10T21:22:43+00:00",
+      "url": "https://github.com/google/adk-python/releases/tag/v2.9.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "seratch"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "OpenAI Agents SDK releases"
+      ],
+      "id": "url:800d4f28f9ee69480c3c",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-09T12:36:10+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.22.2",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-09-09T12:36:10+00:00",
+      "url": "https://github.com/openai/openai-agents-python/releases/tag/v0.22.2"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "seratch"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "OpenAI Agents SDK releases"
+      ],
+      "id": "url:52cef0c70f5575cec8d1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-08T09:18:00+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.22.1",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-09-08T09:18:00+00:00",
+      "url": "https://github.com/openai/openai-agents-python/releases/tag/v0.22.1"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "ZJY0516"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:42f282bec9bac1dc708e",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-08T08:34:20+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.29.0rc6",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-08T08:34:20+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.29.0rc6"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "ZJY0516"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:f386999f3e701a7d7ce7",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-08T08:20:33+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.29.0rc5",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-08T08:20:33+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.29.0rc5"
+    }
+  ],
+  "errors": [
+    {
+      "error": "HTTP Error 429: Unknown Error",
+      "feed": "arXiv: agents and RAG"
+    }
+  ],
+  "generated_at": "2026-09-14T12:58:15+00:00",
+  "schema_version": 1
+}
