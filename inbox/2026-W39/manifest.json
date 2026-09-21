@@ -1,0 +1,237 @@
+{
+  "batch_id": "2026-W39",
+  "entries": [
+    {
+      "abstract": "",
+      "authors": [
+        "khluu"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:3762ff1d2e3077743459",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-21T06:14:34+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.30.0: [Build] Fix DeepGEMM CUDA 12.9 release builds (#57554)",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-21T06:14:34+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.30.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "NickLucche"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:dcff1f944ec81f7da697",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-18T21:15:44+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.30.0rc2",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-18T21:15:44+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.30.0rc2"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "Jacksunwei"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "Google ADK Python releases"
+      ],
+      "id": "url:a40d961f07a22107ce8d",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-18T18:08:40+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v2.9.2",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-09-18T18:08:40+00:00",
+      "url": "https://github.com/google/adk-python/releases/tag/v2.9.2"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "seratch"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "OpenAI Agents SDK releases"
+      ],
+      "id": "url:efa0edc6b85a0c9efc22",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-17T22:19:05+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.22.3",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-09-17T22:19:05+00:00",
+      "url": "https://github.com/openai/openai-agents-python/releases/tag/v0.22.3"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "jiahanc"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:11693af04da0bf80a212",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-17T10:37:53+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.30.0rc1: [Bugfix] Isolate supplemental FlashInfer BF16 autotuning (#57285)",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-17T10:37:53+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.30.0rc1"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "BugenZhao"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:5a45c80ef4017678cb50",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-17T03:47:02+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "proto-v0.3.0",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-17T03:47:02+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/proto-v0.3.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "BugenZhao"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:23f640794eff66ad5ad5",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-16T08:32:41+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "proto-v0.2.0: vllm-proto 0.2.0",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-16T08:32:41+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/proto-v0.2.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "Jacksunwei"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "Google ADK Python releases"
+      ],
+      "id": "url:d79f0c94a46be338e0e0",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-15T18:03:42+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v2.9.1",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-09-15T18:03:42+00:00",
+      "url": "https://github.com/google/adk-python/releases/tag/v2.9.1"
+    }
+  ],
+  "errors": [
+    {
+      "error": "HTTP Error 406: Not Acceptable",
+      "feed": "arXiv: agents and RAG"
+    }
+  ],
+  "generated_at": "2026-09-21T12:57:40+00:00",
+  "schema_version": 1
+}
