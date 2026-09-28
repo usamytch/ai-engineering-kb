@@ -1,0 +1,237 @@
+{
+  "batch_id": "2026-W40",
+  "entries": [
+    {
+      "abstract": "",
+      "authors": [
+        "wyf7107"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "Google ADK Python releases"
+      ],
+      "id": "url:75ff5ae7503a78821fe9",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-25T19:00:05+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v2.10.0",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-09-25T19:00:05+00:00",
+      "url": "https://github.com/google/adk-python/releases/tag/v2.10.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "gaudyb"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "Microsoft GraphRAG releases"
+      ],
+      "id": "url:5f82059019ef6e68f095",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-24T02:25:49+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v3.2.0",
+      "topics": [
+        "rag",
+        "graph"
+      ],
+      "updated": "2026-09-24T02:25:49+00:00",
+      "url": "https://github.com/microsoft/graphrag/releases/tag/v3.2.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "github-actions[bot]"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "LangGraph releases"
+      ],
+      "id": "url:88b4b2cf04e66bb54f81",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-23T23:26:51+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "langgraph-cli==0.4.32.dev0",
+      "topics": [
+        "agents",
+        "runtime"
+      ],
+      "updated": "2026-09-23T23:26:51+00:00",
+      "url": "https://github.com/langchain-ai/langgraph/releases/tag/cli%3D%3D0.4.32.dev0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "github-actions[bot]"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "LangGraph releases"
+      ],
+      "id": "url:77cc69411710ecbef663",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-23T18:02:46+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "langgraph-cli==0.4.32",
+      "topics": [
+        "agents",
+        "runtime"
+      ],
+      "updated": "2026-09-23T18:02:46+00:00",
+      "url": "https://github.com/langchain-ai/langgraph/releases/tag/cli%3D%3D0.4.32"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "AndreasKaratzas"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:73f1bf4d53a57ee938fe",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-23T08:06:15+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.30.1rc0: [ROCm][CI] Add MI355 dense NVFP4 and MoRI kernel mirrors (#58281)",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-23T08:06:15+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.30.1rc0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "khluu"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:3762ff1d2e3077743459",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-22T05:20:54+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.30.0",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-22T05:20:54+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.30.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "github-actions[bot]"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "LangGraph releases"
+      ],
+      "id": "url:fd181f1ffd933cb1c53e",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-21T14:43:40+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "langgraph==1.2.12",
+      "topics": [
+        "agents",
+        "runtime"
+      ],
+      "updated": "2026-09-21T14:43:40+00:00",
+      "url": "https://github.com/langchain-ai/langgraph/releases/tag/1.2.12"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "github-actions[bot]"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "LangGraph releases"
+      ],
+      "id": "url:bc28574b5aa1823579ca",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-21T14:43:09+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "langgraph-sdk==0.4.5",
+      "topics": [
+        "agents",
+        "runtime"
+      ],
+      "updated": "2026-09-21T14:43:09+00:00",
+      "url": "https://github.com/langchain-ai/langgraph/releases/tag/sdk%3D%3D0.4.5"
+    }
+  ],
+  "errors": [
+    {
+      "error": "HTTP Error 406: Not Acceptable",
+      "feed": "arXiv: agents and RAG"
+    }
+  ],
+  "generated_at": "2026-09-28T14:07:05+00:00",
+  "schema_version": 1
+}
