@@ -1,0 +1,648 @@
+{
+  "batch_id": "2026-W41",
+  "entries": [
+    {
+      "abstract": "",
+      "authors": [
+        "khluu"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:9668af85ed2e1acf35b7",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-10-05T06:45:40+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.31.0",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-10-05T06:45:40+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.31.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "Isotr0py"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:8ebdd7fd9c2ee1d12d1c",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-10-02T22:18:12+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.31.0rc5: [Misc] Add Transformers version upper bound in requirements (#59614)",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-10-02T22:18:12+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.31.0rc5"
+    },
+    {
+      "abstract": "We introduce 4DCodeBench, a benchmark for 4D inverse graphics through code generation, in which agents reconstruct dynamic scenes from video as executable graphics programs. To accomplish this, agents must translate visual observations into compact representations of scene structure and dynamics, by implementing abstractions such as physical simulations to reproduce complex behavior. To evaluate this capability, we curate a set of real-world videos and construct synthetic scenes spanning diverse physical phenomena, including deformation, fluid flow, and fracture. We perform extensive benchmarking of frontier models, finding that strong static reconstruction capabilities do not yet translate into reliable reconstruction of complex dynamics. 4DCodeBench provides a testbed for tracking progress toward agents that can interpret the dynamics of the world through code. Our benchmark is available at https://github.com/4DCodeBench/4DCodeBench",
+      "authors": [
+        "Ruihong Shen",
+        "Žiga Kovačič",
+        "Peter Kulits",
+        "Xingrui Wang",
+        "Zizhang Li",
+        "Joshua B. Tenenbaum",
+        "Alan Yuille",
+        "Jieneng Chen",
+        "Jiajun Wu"
+      ],
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.GR"
+      ],
+      "comment": "https://4dcodebench.com/",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.03715v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2610.03715",
+      "paper_version_id": "2610.03715v1",
+      "published": "2026-10-02T17:58:49+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "4DCodeBench: Benchmarking Agents on Inverse Graphics of Dynamic Scenes",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-02T17:58:49+00:00",
+      "url": "https://arxiv.org/abs/2610.03715v1"
+    },
+    {
+      "abstract": "We study the minimization of sums of smooth strongly convex functions over undirected graphs, with each function held by one agent and communication restricted to neighbors in the graph. Existing decentralized methods, whether based on gossip or on routing over spanning trees, typically use the network to mix or aggregate information to enable {\\it prescribed} local optimization updates. What this communication-centered viewpoint lacks is a general framework that uses graph structure to {\\it jointly} design the optimization subproblems and the cooperative computation and communication through which agents solve them cooperatively. We develop such a framework from first principles, jointly designing the linear representation of agreement constraints, the blocks of the resulting dual variables (jointly optimized), and connected cluster of agents that cooperatively solve each block subproblem over the assigned subgraph. GATE (Graph-Tearing message passing) is a first instance of this framework: one variable per edge and tree blocks. At each iteration, agents update their assigned edge variables by minimizing the sum of the two endpoint cost-to-go messages and relaxing the result. The messages are updated through local minimizations following the tree recursion. To reduce per-iteration computational and communication costs, we develop GATE-S, a surrogate variant using tractable local models and lightweight message parametrizations. We establish linear convergence with a rate explicit in the interplay among function regularity, network topology, and the chosen partition, revealing the effects of graph decomposition. Numerical experiments are conducted to validate the theoretical results and evaluate the efficiency of our algorithms.",
+      "authors": [
+        "Kuangyu Ding",
+        "Gesualdo Scutari"
+      ],
+      "categories": [
+        "math.OC",
+        "cs.LG"
+      ],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.03709v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2610.03709",
+      "paper_version_id": "2610.03709v1",
+      "published": "2026-10-02T17:57:50+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "From Mixing to Tearing: Graph Decomposition in Decentralized Optimization via Message Passing",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-02T17:57:50+00:00",
+      "url": "https://arxiv.org/abs/2610.03709v1"
+    },
+    {
+      "abstract": "LLM-guided evolutionary methods, such as AlphaEvolve, have emerged as powerful approaches for challenging computational optimization problems, such as circle packing. However, prior work typically optimizes performance gain over a fixed number of iterations. We argue that practical optimization should maximize gain per unit cost. To this end, we propose FrugalEvo, a cost-aware evolutionary framework where a stronger, higher-cost LLM explores solution strategies, and a cheaper LLM implements them and iteratively refines the resulting code. We also design a cache-efficient evolution process, where our harness and prompts maximize the sharing of prefixes across different evolution steps, to improve cache reuse. To measure solution quality throughout a fixed cost budget, we introduce Budget-Aware Area Under the Curve (BA-AUC), defined as the area under the best-so-far evaluation score curve over cumulative LLM cost, up to the budget. Across 10 mathematical and systems optimization tasks, FrugalEvo matches or surpasses state-of-the-art baselines, including OpenEvolve, ShinkaEvolve, AdaEvolve, and EvoX, in final solution quality and achieves higher BA-AUC on 9 tasks. It also achieves higher average performance than these baselines on 10 algorithmic optimization tasks from ALE-Bench-Lite. Notably, on circle packing, FrugalEvo achieves new state-of-the-art performance with GPT-5.6 Terra and Luna for only 1.68 USD and with GLM-5.3 and its Flash variant for only 0.55 USD, matching or surpassing all baselines, including multi-agent methods such as CORAL and SwarmResearch, which cost approximately 50 USD on average.",
+      "authors": [
+        "Hui Chen",
+        "Xuan Qi",
+        "James Xu Zhao",
+        "Zhaopeng Feng",
+        "Shilong Liu",
+        "Kuang Xu",
+        "Pang Wei Koh",
+        "Bryan Hooi"
+      ],
+      "categories": [
+        "cs.NE",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "comment": "17 pages, 4 figures",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.03675v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2610.03675",
+      "paper_version_id": "2610.03675v1",
+      "published": "2026-10-02T17:44:05+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "FrugalEvo: Towards Cost-Aware LLM-Guided Program Evolution",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-02T17:44:05+00:00",
+      "url": "https://arxiv.org/abs/2610.03675v1"
+    },
+    {
+      "abstract": "Contactless radar sensing offers a promising approach to continuous vital-sign monitoring. However, indoor multipath can distort direction estimates and generate ghost responses. This paper presents a reconfigurable intelligent surface (RIS)-assisted monopulse radar whose RIS phase configuration is controlled by a soft actor-critic agent to improve angular localization. The proposed framework combines simultaneous sum and difference beams with a programmable reflected path, enabling a single radar node to adapt the propagation environment without relying on multiple synchronized sensors. A compact multipath model formulates RIS control as a continuous-action reinforcement-learning problem whose reward penalizes bearing errors and misleading multipath reinforcement. Numerical results compare the proposed method with conventional monopulse processing without an RIS, a frequency-modulated continuous-wave range-angle fast Fourier transform baseline, random RIS phase configurations, and deterministic RIS controllers. The evaluation considers different target separations, signal-to-noise ratio levels, and multipath conditions.",
+      "authors": [
+        "Jafar Norolahi",
+        "Alireza Vahid"
+      ],
+      "categories": [
+        "eess.SP"
+      ],
+      "comment": "To appear in IEEE CCNC 2027",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.03643v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2610.03643",
+      "paper_version_id": "2610.03643v1",
+      "published": "2026-10-02T17:29:49+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "SAC-Controlled RIS-Assisted Monopulse Radar for Multipath-Robust Vital-Sign Localization",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-02T17:29:49+00:00",
+      "url": "https://arxiv.org/abs/2610.03643v1"
+    },
+    {
+      "abstract": "Terminal-using agents benefit from reinforcement learning (RL) in coding, debugging, and other multi-step terminal tasks. In these tasks, later commands often depend on information or intermediate results produced by earlier commands. However, existing trajectory-level and step-level credit assignment methods do not explicitly trace the read-write dependencies through which commands affect the final outcome. Consequently, training signals could still be assigned to irrelevant operations, weakening learning from relevant steps. In this paper, we propose Dependency-Aware Group Policy Optimization (DepGPO), which uses execution dependencies between commands to guide credit assignment for terminal agents. Specifically, we construct a command dependency graph from execution traces and trace backward from the resources inspected by the task verifier. We then assign credit to relevant writes and their supporting reads along these paths, and use it to redistribute trajectory advantages across steps. Extensive comparative experiments and ablation studies demonstrate that DepGPO improves task performance and training stability on complex terminal tasks.",
+      "authors": [
+        "Yu Li",
+        "Guangfeng Cai",
+        "Long-Fei Li",
+        "Shuo Han",
+        "Shengtian Yang",
+        "Han Luo",
+        "Kaibing Yang",
+        "Lei Feng"
+      ],
+      "categories": [
+        "cs.AI"
+      ],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.03634v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2610.03634",
+      "paper_version_id": "2610.03634v1",
+      "published": "2026-10-02T17:24:48+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Credit Where It Matters: Dependency-Aware Policy Optimization for Terminal Agents",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-02T17:24:48+00:00",
+      "url": "https://arxiv.org/abs/2610.03634v1"
+    },
+    {
+      "abstract": "Physical fidelity has received increasing attention in world models and video generation, yet how video representations encode physical information remains less understood. We introduce the World Embedding Benchmark, comprising 8,000 controlled simulation cases from 80 families spanning fluid mechanics, solid mechanics, dynamics, and optics & electromagnetism. Each case pairs a rendered video with simulation-derived physical annotations, supporting three complementary tasks: text-video retrieval, physical-property regression, and multiple-choice video-description pair classification. We use these tasks to distinguish cross-modal physical alignment from the recoverability of quantitative physical information. Evaluated pre-trained omnimodal embedding models show weak retrieval and near-chance within-family pair classification, while lightweight probes recover useful physical information from frozen video embeddings. Continual contrastive training with physics-specific video-text pairs improves retrieval and pair classification but degrades physical-property regression, revealing a trade-off between alignment and quantitative information recoverability. Finally, we use the embeddings to retrieve reference videos for retrieval-augmented generation with MiniMax-H3. Retrieved references improve the physical fidelity of generated videos, with stronger retrieval models yielding larger gains in our experiments. Together, these findings highlight the need to evaluate physical alignment and property recoverability jointly, and demonstrate the utility of physical representations for improving video generation.",
+      "authors": [
+        "Yiqi Liu",
+        "Ruifeng Yuan",
+        "Yang Wang",
+        "Long Li",
+        "Fengyu Cai",
+        "Hou Pong Chan",
+        "Jialin Yu",
+        "Hao Zhang",
+        "Chenghua Lin",
+        "Chenghao Xiao"
+      ],
+      "categories": [
+        "cs.CV",
+        "cs.CL"
+      ],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.03632v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2610.03632",
+      "paper_version_id": "2610.03632v1",
+      "published": "2026-10-02T17:24:25+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "World Embedding Benchmark",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-02T17:24:25+00:00",
+      "url": "https://arxiv.org/abs/2610.03632v1"
+    },
+    {
+      "abstract": "Designing a scientific instrument tests whether language-model agents can do physics rather than recall it, provided the grading cannot be argued with. We introduce NeutronGym, to our knowledge the first executable environment for neutron instrument design: agents build instruments through validating tools, McStas ray-traces what they build, and a level-resolved ladder grades syntax, runtime, structure and science with no LLM judge. Procedural families supply unlimited instances of a fixed layout whose design parameters the agent must set, with held-out parameter regimes; a curated slice, McStasBench, adds 16 tasks from published instruments behind memorization probes and a sandbox. Seven models reproduce at most 7 of the 16, none retrieves a reference, and none meets an improvement target. The environment also trains. Reinforcement learning on its reward takes Qwen3-8B from 11% to 77% of held-out instances of a family whose targets come from a hidden design (69% at a second seed), past an untrained Qwen3-32B, and the recipe holds, at one seed each, on three further gated families. The analysis says what that gain is. Without the ladder's partial credit it collapses by 60 points. From reward alone the trained model reaches what a classical optimizer reaches, at the agent's simulation budget, only when handed the closed-form physics (77% against 81%, a gap that does not separate at this size), while frontier models still solve 98-99%. Getting a trustworthy result meant failing four task designs that no-model baselines could solve, and we release the probes that found them.",
+      "authors": [
+        "Lijie Ding",
+        "Changwoo Do"
+      ],
+      "categories": [
+        "cs.AI",
+        "physics.ins-det"
+      ],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.03631v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2610.03631",
+      "paper_version_id": "2610.03631v1",
+      "published": "2026-10-02T17:23:52+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "NeutronGym: Physics-Graded Neutron Instrument Design for LLM Agents",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-02T17:23:52+00:00",
+      "url": "https://arxiv.org/abs/2610.03631v1"
+    },
+    {
+      "abstract": "Online reinforcement learning (RL) enables robot policies to improve through physical interaction, but the assistance they require changes as their competence evolves. Existing intervention strategies based on offline estimates or fixed decision rules can therefore become mismatched to the current policy. To address this, we propose UniIntervene++, an adaptive intervention agent that learns to allocate control between autonomous execution and heterogeneous assisted behaviors during online RL. Specifically, UniIntervene++ first formulates the evolving RL policy, trajectory correction, and a task-structured CodePolicy as Options in a unified semi-Markov decision process and learns their relative values online. Building on this, competence-adaptive intervention periodically probes the RL policy through unassisted execution, keeping control allocation responsive to its evolving capability. Finally, coupled experience learning allows assisted behaviors to improve the RL policy, whose evolving outcomes in turn reshape future intervention decisions. In this way, UniIntervene++ jointly determines when to intervene, how to intervene, and when to return control as the RL policy improves. Across five real-world manipulation tasks, UniIntervene++ achieves an average success rate of 89.67%, outperforming all baselines by at least 6 percentage points, while reducing human intervention to 0.77%, a relative reduction of at least 94.6% from the best baseline. Code is available in our \\href{https://github.com/dannyyudong/An-Adaptive-Intervention-Agent-for-Efficient-Real-World-Reinforcement-Learning}{GitHub repository}.",
+      "authors": [
+        "Yudong Lin",
+        "Haoyuan Deng",
+        "Zhuoxuan Yuan",
+        "Zaijia Yang",
+        "Yuanjiang Xue",
+        "Ziwei Wang"
+      ],
+      "categories": [
+        "cs.LG",
+        "cs.RO"
+      ],
+      "comment": "Yudong Lin and Haoyuan Deng contributed equally. Ziwei Wang is the corresponding author. Code is available in our \\href{https://github.com/dannyyudong/An-Adaptive-Intervention-Agent-for-Efficient-Real-World-Reinforcement-Learning}{GitHub repository}",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.03620v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2610.03620",
+      "paper_version_id": "2610.03620v1",
+      "published": "2026-10-02T17:18:12+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "UniIntervene++: An Adaptive Intervention Agent for Efficient Real-World Reinforcement Learning",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-02T17:18:12+00:00",
+      "url": "https://arxiv.org/abs/2610.03620v1"
+    },
+    {
+      "abstract": "Temporal abstractions, often instantiated as options, have long been regarded as a mechanism for accelerating credit assignment, facilitating exploration, and enabling generalisation in reinforcement learning (RL). However, developing general option discovery methods that are effective in large-scale, high-dimensional domains remains a fundamental challenge. Existing option discovery methods are either confined to relatively simple domains, depend on handcrafted or quasi-symbolic representations, or offer little improvement over learning without options. We present Wayfarer, a general, domain-agnostic, online deep RL agent that discovers options through Laplacian representation learning from high-dimensional observations and leverages them for control. We show that the resulting options simultaneously improve exploration, accelerate credit assignment, and generalise effectively to unseen settings, enabling substantially faster learning of complex policies. Wayfarer achieves state-of-the-art performance among single-stream agents on the most challenging Atari 2600 games, with the largest gains in games that require long-horizon exploration and strategic behaviour, such as Montezuma's Revenge and Private Eye.",
+      "authors": [
+        "Erik M. Lintunen",
+        "Marlos C. Machado"
+      ],
+      "categories": [
+        "cs.LG"
+      ],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.03604v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2610.03604",
+      "paper_version_id": "2610.03604v1",
+      "published": "2026-10-02T17:05:46+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Mastering Atari 2600 Games with Discovered Options",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-02T17:05:46+00:00",
+      "url": "https://arxiv.org/abs/2610.03604v1"
+    },
+    {
+      "abstract": "Reinforcement learning (RL) is increasingly used for financial optimal-control problems when complex dynamics make analytical strategies difficult to obtain. There are financial mathematics literactures which provides many solved models whose equations and controls could evaluate and guide learning; we ask whether RL can exploit these results. We place a proximal policy optimisation (PPO) agent in an analytically solved continuous-time broker--trader game. PPO replaces the broker and chooses its trading speed while interacting with an informed trader and stochastic uninformed order flow. We derive a finite-step reward from the broker's continuous-time payoff and verify its discrete implementation through grid refinement and an exact one-step identity. With zero uninformed flow, a validation-selected PPO--FFNN approaches the reference action. With stochastic uninformed flow, the tested PPO--FFNN and PPO--LSTM remain inaccurate, although supervised learning confirms that their actors can represent the action. Monte Carlo diagnostics show that their critics do not reliably rank nearby actions; potential-based reward shaping also gives no reliable improvement. Under partial information, a causal certainty-equivalent controller based on the broker's observable history remains close to the reference, while PPO has larger errors and lower payoffs. Finally, we freeze the analytical policy and train PPO to adjust it after the execution cost changes. Halving the cost yields a repeatable improvement that closes \\(2.22\\%\\) of the gap to the changed-cost reference. The analytical solution therefore provides both a benchmark for diagnosing RL and a useful starting policy for adaptation.",
+      "authors": [
+        "Siu Tung Wong",
+        "Carlo Campajola"
+      ],
+      "categories": [
+        "q-fin.TR",
+        "cs.AI"
+      ],
+      "comment": "8 pages; accepted for publication at ICAIF 2026",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.03598v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2610.03598",
+      "paper_version_id": "2610.03598v1",
+      "published": "2026-10-02T17:03:29+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "When a Correct Reward Is Not Enough: Diagnosing and Guiding PPO in an Analytically Solved Broker-Trader Game",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-02T17:03:29+00:00",
+      "url": "https://arxiv.org/abs/2610.03598v1"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "openai-sdks[bot]"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "OpenAI Agents SDK releases"
+      ],
+      "id": "url:a63afb565a63f6c3664f",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-10-02T15:36:24+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.23.1",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-10-02T15:36:24+00:00",
+      "url": "https://github.com/openai/openai-agents-python/releases/tag/v0.23.1"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "LucasWilkinson"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:aa2d93de1ae70902a23c",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-10-02T06:06:56+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.31.0rc4",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-10-02T06:06:56+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.31.0rc4"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "openai-sdks[bot]"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "OpenAI Agents SDK releases"
+      ],
+      "id": "url:6890afe569149122a9db",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-10-02T01:08:23+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.23.0",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-10-02T01:08:23+00:00",
+      "url": "https://github.com/openai/openai-agents-python/releases/tag/v0.23.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "xuanyang15"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "Google ADK Python releases"
+      ],
+      "id": "url:39bd24bc2f037c803c48",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-10-02T00:44:26+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v2.11.0",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-10-02T00:44:26+00:00",
+      "url": "https://github.com/google/adk-python/releases/tag/v2.11.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "robertgshaw2-redhat"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:404444f15a7043fbf673",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-10-01T07:54:39+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.31.0rc3: [Model Runner V2] Support randomized dummy inputs (#58411)",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-10-01T07:54:39+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.31.0rc3"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "BugenZhao"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:e9ede36adeaed46d0fea",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-30T12:52:24+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "proto-v0.4.0",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-30T12:52:24+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/proto-v0.4.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "JaredforReal"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:f0eaec654f7f1f43621c",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-30T00:33:58+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.31.0rc2",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-30T00:33:58+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.31.0rc2"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "khluu"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:485a72695274dcc8a5aa",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-29T03:18:39+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.31.0rc1: [CI/Build] Skip the snapshot runtime on CUDA 12.x images (#59118)",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-29T03:18:39+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.31.0rc1"
+    }
+  ],
+  "errors": [],
+  "generated_at": "2026-10-05T14:52:34+00:00",
+  "schema_version": 1
+}
