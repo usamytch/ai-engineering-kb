@@ -1,0 +1,643 @@
+{
+  "batch_id": "2026-W42",
+  "entries": [
+    {
+      "abstract": "In this paper, we study physically grounded articulated 3D asset generation---moving the goal from reproducing how objects look to capturing how they move and function. Inspired by the literature on procedural and agentic generation, we present Artisan, a system that extends the latest method Articraft by introducing a multi-agent pipeline with physical simulation feedback, enabling comprehensive attributes beyond geometry, appearance, and physically plausible articulation, such as collision-free motion, stability under gravity, and accurate mass and material properties. Furthermore, we construct a unified benchmark spanning four key aspects: spatial fidelity, physical plausibility, downstream task performance, and overall quality. The benchmark encompasses 100 reference assets from ArtVIP and LightWheel, 50 stability prompts, and 50 ABO objects with reference masses, with protocols evaluating various metrics. Through extensive evaluation of more than 10 representative models, Artisan achieves competitive spatial fidelity while attaining the lowest collision rates and highest stability rates among the evaluated methods. Together, our system and benchmark establish insights for advancing 3D generation towards physically plausible, functionally usable assets.",
+      "authors": [
+        "Xudong Cai",
+        "Ruijie Zhu",
+        "Haoliang Shang",
+        "Ruining Li",
+        "Marc Pollefeys",
+        "Shangzhe Wu",
+        "Andrea Vedaldi",
+        "Chuanxia Zheng"
+      ],
+      "categories": [
+        "cs.CV"
+      ],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.13947v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2610.13947",
+      "paper_version_id": "2610.13947v1",
+      "published": "2026-10-09T17:59:41+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Towards Physically Grounded Articulated 3D Assets: A Multi-Agent Pipeline and Benchmark",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-09T17:59:41+00:00",
+      "url": "https://arxiv.org/abs/2610.13947v1"
+    },
+    {
+      "abstract": "Target tracking over wide areas using a network of sensor agents is a challenging problem when agents have limited sensing coverage and communication topologies vary over time. Existing distributed filtering approaches commonly assume that each agent, or at least one of its neighbors, can directly observe the target, and further rely on fixed network topologies, global network parameters, or multiple consensus rounds per time step. These requirements limit their applicability in wide-area network deployments. In this paper, we propose an Information-Weighted Distributed Kalman Filter (IWDKF) that relaxes these assumptions through a weighted-consensus mechanism applicable to arbitrary switching topologies satisfying joint connectivity. The proposed approach requires no prior knowledge of global network properties and limits communication overhead to a single consensus exchange per time step, while enabling information fusion even when some agents lack direct target measurements. The weighted-consensus covariance matrix is shown to remain positive definite, and the resulting consensus update is proven to maintain estimate consistency. It is also established that the proposed weighting strategy preserves the asymptotic agreement property of the underlying consensus protocol under joint connectivity. Numerical simulations of a multi-target tracking scenario involving a network of sensor agents demonstrate the improved estimation accuracy of the proposed IWDKF under both fixed and switching network topologies. The performance of the proposed filter is close to that of the centralized Kalman filter, and is compared with three existing distributed filters.",
+      "authors": [
+        "Tirthankar Chakraborty",
+        "Arnab Maity"
+      ],
+      "categories": [
+        "eess.SY"
+      ],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.13893v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2610.13893",
+      "paper_version_id": "2610.13893v1",
+      "published": "2026-10-09T17:39:22+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Information-Weighted Distributed Kalman Filter for Multi-Target Tracking over Switching Sensor Networks",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-09T17:39:22+00:00",
+      "url": "https://arxiv.org/abs/2610.13893v1"
+    },
+    {
+      "abstract": "As AI agents increasingly rely on external tools, accurate retrieval is essential for reliable behavior. Existing methods optimize semantic relevance but largely ignore tool availability during execution. To address this gap, we propose RATED (Reliability-Aware Tool Retrieval via Execution Dynamics), a retrieval framework that combines robust semantic matching with dynamic reliability adaptation. RATED employs a frozen dual-encoder with contrastive fine-tuning for semantic matching, and a lightweight contextual bandit module that re-ranks candidates based on real-time execution feedback. This design enables rapid adaptation to runtime tool failures without expensive model retraining. We introduce EcoAgent, a benchmark of 5,172 real-world tools and over 210,000 query-tool pairs for offline retrieval and dynamic reliability evaluation. Experimental results demonstrate that RATED achieves a 52.2% relative MRR improvement over the ToolLLM API retriever on real-world queries, and reduces fault selection rate from 86.2% to 2.9% under severe API outage scenarios with a 30% failure rate, while incurring negligible latency overhead of less than 1 ms over encode-only inference. The code and dataset are available at https://github.com/Elliotes/EcoAgent.",
+      "authors": [
+        "Weiliang Chen",
+        "Song Liao"
+      ],
+      "categories": [
+        "cs.AI",
+        "cs.IR"
+      ],
+      "comment": "Accepted at CIKM 2026",
+      "decision": "untriaged",
+      "doi": "10.1145/3799682.3839887",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.13889v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2610.13889",
+      "paper_version_id": "2610.13889v1",
+      "published": "2026-10-09T17:38:11+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "RATED: Reliability-Aware AI Agent Tool Retrieval via Execution Dynamics",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-09T17:38:11+00:00",
+      "url": "https://arxiv.org/abs/2610.13889v1"
+    },
+    {
+      "abstract": "Personal agents increasingly connect to services across the web and applications by using tools. As the effects of their actions accumulate and interact across services, unintended or harmful outcomes can arise when agents fulfill benign user requests. Proactively identifying these compositional failures requires systematically exploring diverse cross-service paths. Existing red-teaming methods often simply prompt LLMs to identify potentially harmful paths from task and environment descriptions or decompose harmful objectives specified by humans or LLMs into seemingly benign action combinations. However, generation is biased toward patterns learned during training, potentially favoring familiar tool combinations and leaving novel cross-service interactions underexplored. To address this, we propose X-AgentRed, a self-evolving red-teaming framework that discovers harmful tool call paths through a graph of tool dependencies and expands and refines them using execution feedback. By analyzing each tool's effects, potential harms, and preconditions for execution, the red-teaming agent constructs a directed graph that captures how one tool's effects can satisfy another's execution preconditions. Recipes sampled from this graph are instantiated as realistic scenarios in which agents can produce harmful outcomes. Execution feedback enables self-improvement by diversifying paths that produce harm through tool substitution and refining preconditions at blocked steps in unsuccessful paths to enable further execution. Across four frontier agentic models, X-AgentRed achieves $1.77\\times$ the harmful path rate of STAC and explores a more diverse set of tools, yielding $2.99\\times$ the tool coverage on average.",
+      "authors": [
+        "Yeonsung Jung",
+        "Zhiyuan Wang",
+        "Zifan Wang",
+        "Vítor Albiero",
+        "Benjamin Newman",
+        "Edoardo Debenedetti",
+        "Ivan Evtimov",
+        "Ninareh Mehrabi"
+      ],
+      "categories": [
+        "cs.AI"
+      ],
+      "comment": "18 pages. Project page: https://yeonsungjung.github.io/projects/x-agentred/",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.13886v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2610.13886",
+      "paper_version_id": "2610.13886v1",
+      "published": "2026-10-09T17:34:44+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "X-AgentRed: Red-Teaming Personal Agents in Evolving Multi-Service Ecosystems",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-09T17:34:44+00:00",
+      "url": "https://arxiv.org/abs/2610.13886v1"
+    },
+    {
+      "abstract": "We introduce a general class of interacting reinforced stochastic systems evolving on a network. The dynamics are governed by two distinct interaction structures: a sampling network, which determines how information is acquired, and a reinforcement network, which determines how the sampled information influences future evolution. Processes generate Bernoulli observations through preferential, de-preferential, or mixed sampling, while observations are transmitted through an edge-dependent affine reinforcement mechanism. We formulate the dynamics as a stochastic approximation scheme and study their asymptotic behaviour. We establish sufficient conditions for almost sure convergence to a deterministic limit and, when the sampling and reinforcement graphs coincide, derive graph-theoretic criteria involving odd cycles, mixed-sampling vertices, and subcritical reinforcement. Under additional structural assumptions, we establish almost sure convergence and partial synchronization in a random-limit regime. In the deterministic regime, we also prove a law of the iterated logarithm and a central limit theorem under suitable spectral and regularity conditions. Finally, we show how the framework encompasses interacting urn models with edge-dependent reinforcement, urns with memory, and random walks with memory.",
+      "authors": [
+        "Yogesh Dahiya",
+        "Gursharn Kaur",
+        "Neeraja Sahasrabudhe"
+      ],
+      "categories": [
+        "math.PR"
+      ],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.13884v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2610.13884",
+      "paper_version_id": "2610.13884v1",
+      "published": "2026-10-09T17:29:34+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Interacting Stochastic Systems with Agent-Based Sampling and Connection-Based Reinforcement",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-09T17:29:34+00:00",
+      "url": "https://arxiv.org/abs/2610.13884v1"
+    },
+    {
+      "abstract": "To balance task performance and computational cost, agentic workflows can use a lower-cost model for execution and selectively consult a stronger model. In such executor-advisor systems, the executor decides when to seek advice, making escalation depend on self-assessment, although current language models struggle to detect where their own reasoning fails. The need for stronger reasoning emerges during execution and varies across workflow phases. We introduce ARIA, a meta-controller that learns when to consult by balancing task success against consultation cost. Our approach formulates consultation as a sequential resource-allocation problem. At workflow contact points, ARIA maps execution evidence to a compact state abstraction and selects SILENT or CONSULT, with action values learned by Monte Carlo control from cost-penalized outcomes. Across evaluated tasks of SWE-bench Verified, Terminal-Bench 2.1, and $τ^2$-bench, ARIA recovers 44-81% of the executor-advisor success gap at less than half the advisor model's cost. ARIA achieves the best observed success-cost trade-off among ten other evaluated conditions, including routing and cascading methods, fixed and prompted consultation, and random placement at matched advice volume. The policies are compact and inspectable, with a single consultation-price parameter governing the success-cost trade-off without retraining either underlying model.",
+      "authors": [
+        "Pascal Sowietzki",
+        "Steffen Holter",
+        "Yannick Metz",
+        "Emil Kasper",
+        "Raphael Baur",
+        "Mennatallah El-Assady"
+      ],
+      "categories": [
+        "cs.MA"
+      ],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.13870v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2610.13870",
+      "paper_version_id": "2610.13870v1",
+      "published": "2026-10-09T17:19:54+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Ask Your Advisor: Learning When to Consult Stronger Models in Agentic Systems",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-09T17:19:54+00:00",
+      "url": "https://arxiv.org/abs/2610.13870v1"
+    },
+    {
+      "abstract": "Deploying language-model agents onboard mobile robots requires task reasoning and responsive execution within limited compute and memory. We propose BT-Agent, an onboard architecture combining LLM-driven task decisions with predefined behavior-tree (BT) skills. These skills enforce execution conditions and return structured failure feedback. We demonstrate fully onboard operation with a 9B model on a quadruped across five task categories. Intervention tests show that local checks stop ongoing navigation without waiting for another model decision, while the agent remains active to retry or report constraints. To compare agent designs efficiently, we introduce a 161-task multi-fidelity benchmark, evaluated in text on all tasks and in Habitat on 39. Text supports 10.9$\\times$ higher evaluation throughput, while simulation reveals how perception and motion failures change task outcomes. BT-Agent's largest success gains over the strongest Act/ReAct baseline occur at 4B and 9B: approximately 10 and 5 percentage points. Ablations identify structured tool calls and informative failure feedback as the most useful components.",
+      "authors": [
+        "Fabio Hübel",
+        "Adam Lilja",
+        "Yue Yin",
+        "Siming He",
+        "Claire Tomlin",
+        "Shankar Sastry",
+        "Jonas Frey",
+        "Marco Pavone"
+      ],
+      "categories": [
+        "cs.RO"
+      ],
+      "comment": "9 pages, 7 figures",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.13862v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2610.13862",
+      "paper_version_id": "2610.13862v1",
+      "published": "2026-10-09T17:08:45+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "BT-Agent: Deploying Onboard Robot Agents with Behavior Trees and Multi-Fidelity Evaluation",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-09T17:08:45+00:00",
+      "url": "https://arxiv.org/abs/2610.13862v1"
+    },
+    {
+      "abstract": "Coding agents often make useful progress before they fail, but retry-from-scratch discards the machine state created along the way. This makes failure recovery an interesting search problem: if intermediate environment states preserve meaningful progress, restoring and branching from them could outperform repeatedly restarting from the initial state. We implement Go-Explore-style search over full Daytona snapshots and find that higher and more efficient solve rates depend mainly on progress that sits outside the repository, such as databases, services, and other runtime state. Our results suggest that full-snapshot search is most effective when long-horizon coding work spans multiple services whose state cannot be reconstructed from a single diff.",
+      "authors": [
+        "Daniel Thi Graviet",
+        "Tanmay Shah"
+      ],
+      "categories": [
+        "cs.LG",
+        "cs.SE"
+      ],
+      "comment": "7 pages, 6 figures. Preprint. Not peer reviewed",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.13841v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2610.13841",
+      "paper_version_id": "2610.13841v1",
+      "published": "2026-10-09T16:50:19+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Returning to Development States: When Full Sandbox Snapshots Help Coding Agents",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-09T16:50:19+00:00",
+      "url": "https://arxiv.org/abs/2610.13841v1"
+    },
+    {
+      "abstract": "A central challenge in embodied recursive self-improvement is enabling agents to convert interaction history into capabilities that persist beyond one world and transfer to later tasks. A saved memory or successful final action does not by itself establish that a reusable capability was acquired; evaluation must separate capability change from carried-over resources, unequal source exposure, and early execution failures. We construct MC-EvoBench as a controlled Minecraft benchmark with a fixed catalog of 19 registered evolution chains, including 12 primary evaluation chains and seven calibration or probe chains, together with three graph-aligned paired probe families for transfer. The benchmark represents each task as a task-state graph, defines stage-level environment verifiers, assigns matched source and target roles, resets the target world, and permits only a declared agent artifact to cross the source-target boundary. For each probe, no-prior, related, unrelated, and shuffled source conditions are evaluated under matched environment-step budgets and five seeds; we report TSR, WGP, and VMP and retain provenance records. The benchmark reveals a consistent direct-capability gap between controller and planner-backed variants, while related experience yields no stable transfer: it does not improve either tool probe, its small wood-species gain hinges on one seed, and all intervals include zero. Stage audits further show that early wood-collection and crafting bottlenecks often leave later capabilities unobserved. MC-EvoBench thus offers a controlled testbed for durable, transferable embodied capabilities. Code and data are available at https://github.com/xzw-ustc/mc-bench-open-source",
+      "authors": [
+        "Jingwei Song",
+        "Zhisheng Chen",
+        "Bingfan Zeng",
+        "Jing Tang",
+        "Yubo Hou",
+        "Jinhao Jing",
+        "Zhengwei Xie",
+        "Linfeng Zhang"
+      ],
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "comment": "39 pages, 6 figures",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.13829v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2610.13829",
+      "paper_version_id": "2610.13829v1",
+      "published": "2026-10-09T16:37:39+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "MC-EvoBench: Auditing Experience-Driven Self-Improvement in Minecraft Agents",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-09T16:37:39+00:00",
+      "url": "https://arxiv.org/abs/2610.13829v1"
+    },
+    {
+      "abstract": "Multi-agent reinforcement learning (MARL) has become a prominent research direction, particularly within collective robotics, where the ARGoS simulator is widely used to study emergent swarm behavior. Yet despite this growth, systematic support for reuse and reproducibility in MARL-based swarm robotics remains limited and insufficiently standardized: a single experiment is assembled from manually aligned simulator files, training scripts, configuration values, paths, seeds, and environment details, so reuse and reproduction stay fragile even within one research group. To address this gap, we introduce MARGoS, a lightweight, configuration-driven platform developed in this project that elevates these experiment-defining inputs to first-class, platform-managed artifacts. MARGoS enables reproducible experimentation through configuration hashing, end-to-end seed propagation, frozen (immutable) configurations, structured logging, environment fingerprinting, and exportable experiment bundles that facilitate sharing, replay, and verification of results across machines and over time. A five-dimension evaluation (architecture, efficiency, reproducibility, usability, and collaboration) supports our claim that managing experiment variation as a platform responsibility makes ARGoS+MARL experiments easier to reuse, reproduce, and hand off. Our code is available at https://github.com/tombackert/margos.",
+      "authors": [
+        "Tom Philipp Backert",
+        "Mohammad D. Soorati",
+        "Javad Ghofrani"
+      ],
+      "categories": [
+        "cs.SE",
+        "cs.MA",
+        "cs.RO"
+      ],
+      "comment": "Submitted version (prior to peer review) of a paper published in the VARIABILITY 2026 Satellite Events proceedings (Project Showcase Track), LNCS 17104, Springer. 11 pages, 3 figures, 3 tables",
+      "decision": "untriaged",
+      "doi": "10.1007/978-3-032-40421-3_24",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2610.13772v1",
+      "journal_ref": "Software and Systems Reuse, Product Lines, and Configuration - VARIABILITY 2026 Satellite Events, LNCS 17104, pp. 251-261, Springer (2027)",
+      "license_url": "",
+      "paper_id": "2610.13772",
+      "paper_version_id": "2610.13772v1",
+      "published": "2026-10-09T15:55:16+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "MARGoS: A Configuration-Driven Platform for Reproducible MARL Experiments in ARGoS",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-10-09T15:55:16+00:00",
+      "url": "https://arxiv.org/abs/2610.13772v1"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "BugenZhao"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:0eb44be10929e638f52e",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-10-09T03:11:40+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "proto-v0.5.0",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-10-09T03:11:40+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/proto-v0.5.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "GWeale"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "Google ADK Python releases"
+      ],
+      "id": "url:9601bd3ea0a1c6cc9c46",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-10-08T21:50:47+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v2.9.0",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-10-08T21:50:47+00:00",
+      "url": "https://github.com/google/adk-python/releases/tag/v2.9.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "xuanyang15"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "Google ADK Python releases"
+      ],
+      "id": "url:39bd24bc2f037c803c48",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-10-08T21:50:37+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v2.11.0",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-10-08T21:50:37+00:00",
+      "url": "https://github.com/google/adk-python/releases/tag/v2.11.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "gaudyb"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "Microsoft GraphRAG releases"
+      ],
+      "id": "url:b09f783962b8c065b94d",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-10-08T18:28:43+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v3.3.0",
+      "topics": [
+        "rag",
+        "graph"
+      ],
+      "updated": "2026-10-08T18:28:43+00:00",
+      "url": "https://github.com/microsoft/graphrag/releases/tag/v3.3.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "github-actions[bot]"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "LangGraph releases"
+      ],
+      "id": "url:52a534c70d6da8fc6bb0",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-10-07T13:38:46+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "langgraph-cli==0.4.33",
+      "topics": [
+        "agents",
+        "runtime"
+      ],
+      "updated": "2026-10-07T13:38:46+00:00",
+      "url": "https://github.com/langchain-ai/langgraph/releases/tag/cli%3D%3D0.4.33"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "cquil11"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:d0c284cb68a2d3c18884",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-10-06T18:52:05+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.31.1rc0: [Metrics] Expose cached prompt tokens by cache tier (#56318)",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-10-06T18:52:05+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.31.1rc0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "github-actions[bot]"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "LangGraph releases"
+      ],
+      "id": "url:c15d84135350847e6548",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-10-06T14:41:37+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "langgraph==1.2.14",
+      "topics": [
+        "agents",
+        "runtime"
+      ],
+      "updated": "2026-10-06T14:41:37+00:00",
+      "url": "https://github.com/langchain-ai/langgraph/releases/tag/1.2.14"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "github-actions[bot]"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "LangGraph releases"
+      ],
+      "id": "url:f151d61848372d4bcb57",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-10-06T14:18:08+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "langgraph-sdk==0.4.6",
+      "topics": [
+        "agents",
+        "runtime"
+      ],
+      "updated": "2026-10-06T14:18:08+00:00",
+      "url": "https://github.com/langchain-ai/langgraph/releases/tag/sdk%3D%3D0.4.6"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "khluu"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:9668af85ed2e1acf35b7",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-10-06T06:49:35+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.31.0",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-10-06T06:49:35+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.31.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "github-actions[bot]"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "LangGraph releases"
+      ],
+      "id": "url:7963eace5d088283dc2c",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-10-05T17:51:32+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "langgraph==1.2.13",
+      "topics": [
+        "agents",
+        "runtime"
+      ],
+      "updated": "2026-10-05T17:51:32+00:00",
+      "url": "https://github.com/langchain-ai/langgraph/releases/tag/1.2.13"
+    }
+  ],
+  "errors": [],
+  "generated_at": "2026-10-12T15:39:25+00:00",
+  "schema_version": 1
+}
