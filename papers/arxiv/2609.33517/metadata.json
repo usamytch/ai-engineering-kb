@@ -1,0 +1,38 @@
+{
+  "abstract": "Persistent memory lets language-model agents carry information across long-running collaborations, but leaves a lifecycle question open: what may a returning agent still act on once the shared state has changed? A memory can be correctly retrieved, relevant to the current task, and faithful to its source, and nonetheless be inadmissible for action: an itinerary saved before a pause still names the hotel the team has since replaced. We formalize this as temporal memory admission and present TRACE, a training-free layer that treats re-entry as an eligibility decision rather than a storage or retrieval operation, reconciling a departure checkpoint against absence-period updates, resolving explicit and implicit invalidation, and releasing a bounded Return View only when it covers the returning role's open obligations. We evaluate TRACE under three actor models on Memora, STALE Type II, and a derived ManBench-Return setting, each recast as return episodes: one agent departs, four teammates change the shared state, and the agent rejoins. What separates methods is not overall accuracy but whether one can retain valid memory and reject stale memory at once, and no single-policy baseline can: Restore (reinstate the departure checkpoint in full) admits stale state, Reset (start the return from an empty memory) discards valid state, each bottoming out at 0% on one of the two. TRACE is the only method high on both, reaching 92.6-98.3% valid-information availability with 98.4-99.5% invalid-information rejection on ManBench-Return, within 3.8 points of the best baseline's overall accuracy. On STALE Type II it improves Overall over the strongest comparison policy by 22.3 (Qwen), 18.5 (Gemini), and 27.5 (DeepSeek) points at roughly 2.3 times their tokens, while a write-time consolidation pipeline is more accurate still at 3.99 times TRACE's.",
+  "arxiv_id": "2609.33517v1",
+  "authors": [
+    "Wenjun Xiong",
+    "Shengtao Zhang",
+    "Shangding Gu",
+    "Bo Tang",
+    "Zhiyu Li",
+    "Feiyu Xiong",
+    "Ying Wen",
+    "Muning Wen"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2609.33517v1",
+  "categories": [
+    "cs.MA"
+  ],
+  "comment": "41 pages, including appendices. Code: https://github.com/xiong-wenjun/TRACE",
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2609.33517v1",
+  "latest_seen_version": 1,
+  "paper_id": "2609.33517",
+  "paper_version_id": "2609.33517v1",
+  "published": "2026-09-27T12:39:42+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "TRACE: Governing Memory Validity in Evolving Multi-Agent Systems",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-09-27T12:39:42+00:00",
+  "url": "https://arxiv.org/abs/2609.33517v1"
+}

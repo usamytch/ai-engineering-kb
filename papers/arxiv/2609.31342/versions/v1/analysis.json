@@ -1,0 +1,586 @@
+{
+  "aidb_assessment": {
+    "confidence": "high",
+    "novelty": "High conceptual and experimental novelty. The key contribution is not merely showing context-memory conflict, but isolating temporal applicability with byte-identical evidence across evaluation dates and connecting behavior to controlled causal interventions and metadata-dependent retrieval defenses.",
+    "rationale": "Adopt the failure mode and bidirectional evaluation design as an AIDB testing pattern. The behavioral evidence is broad, the matched temporal control is persuasive, negative results are reported, and reproducibility support is strong. Treat the mechanistic localization and defense effect sizes as provisional because their scope is narrower and metadata assumptions are consequential.",
+    "recommended_action": "adopt",
+    "usefulness": "High for RAG evaluation and system design. The benchmark suggests that safety and quality tests should measure both beneficial correction by current evidence and harmful override by superseded evidence. Explicit validity intervals and supersession relations appear more actionable than publication-date recency alone."
+  },
+  "claims": [
+    {
+      "claim": "Stale-document poisoning is a selective-trust failure: models readily use valid retrieval but often allow authentic superseded evidence to override correct parametric knowledge.",
+      "evidence": [
+        {
+          "block_id": "b00013-c497940636",
+          "quote": "Outdated evidence can overturn otherwise-correct answers even under neutral retrieval"
+        },
+        {
+          "block_id": "b00165-a1f6130177",
+          "quote": "No previously correct answer becomes incorrect."
+        }
+      ]
+    },
+    {
+      "claim": "Temporal applicability cannot be reduced to knowing document and evaluation dates; explicit validity boundaries are far more effective for capable models.",
+      "evidence": [
+        {
+          "block_id": "b00012-6d27100076",
+          "quote": "Knowing when a document was written is not enough."
+        },
+        {
+          "block_id": "b00055-d4dfd8c4a1",
+          "quote": "Dates alone produce only small changes in evidence use"
+        }
+      ]
+    },
+    {
+      "claim": "Evaluation-date information can causally influence the final decision, with attention providing the earliest clear component contribution in the tested models.",
+      "evidence": [
+        {
+          "block_id": "b00059-43726f948f",
+          "quote": "Moving the valid-date state into the stale prompt transfers most of the answer preference"
+        },
+        {
+          "block_id": "b00061-fb37235fee",
+          "quote": "Attention is the main early contributor."
+        }
+      ]
+    },
+    {
+      "claim": "The localized components are not uniquely temporal; the evidence favors a shared comparison-and-decision route.",
+      "evidence": [
+        {
+          "block_id": "b00190-6585d228e9",
+          "quote": "The specificity results reject a strong dedicated-temporal-gate account."
+        },
+        {
+          "block_id": "b00062-e2ddf0266b",
+          "quote": "These heads also contribute to ordinary date comparisons and non-temporal threshold decisions."
+        }
+      ]
+    },
+    {
+      "claim": "Retrieval-side recency signals mitigate poisoning only when temporal metadata are reliable and cannot substitute for applicability reasoning.",
+      "evidence": [
+        {
+          "block_id": "b00069-6231bf73db",
+          "quote": "The gains become small when dates are unavailable, while incorrect dates can favor outdated evidence."
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "ablations": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00208-ee4491cba7",
+            "quote": "crosses two binary features: a neutral dated header versus the “most current” header"
+          }
+        ],
+        "text": "Instruction factorial independently varies neutral versus “most current” headers and absence versus presence of a follow directive."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00038-31634391fa",
+            "quote": "either in prose or in a small table"
+          }
+        ],
+        "text": "Temporal presentation compares date-only prompts with prose and table validity boundaries."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00181-202ea5cd5d",
+            "quote": "we separately patch the donor attention output and MLP output"
+          },
+          {
+            "block_id": "b00185-a5317e5891",
+            "quote": "evaluated on 10 untouched confirmation items"
+          }
+        ],
+        "text": "Mechanistic decomposition separately patches attention and MLP outputs and confirms selected heads on untouched items."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00226-4fae5793c6",
+            "quote": "It evaluates correct, absent, noisy, and incorrect date metadata."
+          }
+        ],
+        "text": "Retrieval defense varies correct, absent, noisy, and incorrect date metadata."
+      }
+    ],
+    "baselines": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00035-7133d5c635",
+            "quote": "Pm measures how often outdated retrieval overturns an otherwise-correct answer."
+          }
+        ],
+        "text": "Unaided model answer, defining the eligible set for poisoning."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00165-a1f6130177",
+            "quote": "we replace the outdated document with its matched up-to-date counterpart"
+          }
+        ],
+        "text": "Matched up-to-date evidence under the same retrieval setup."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00226-4fae5793c6",
+            "quote": "Plain dense retrieval returns the top semantic match."
+          }
+        ],
+        "text": "Dense semantic retrieval compared with the fixed hybrid recency-aware re-ranker."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00039-0120d24a51",
+            "quote": "Self-patches serve as a sham control"
+          },
+          {
+            "block_id": "b00187-56fd851b24",
+            "quote": "ordinary date comparison without retrieved evidence and on a non-temporal numeric threshold decision"
+          }
+        ],
+        "text": "Causal sham and specificity controls: self-patches, unchanged source-date patches, ordinary date comparison, and numeric-threshold decisions."
+      }
+    ],
+    "datasets": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00036-74d5d0c50a",
+            "quote": "The benchmark contains 317 reversals: 87 in medicine, 100 in law, 60 in software/API, and 70 in platform policy."
+          }
+        ],
+        "text": "Frozen 317-item knowledge-reversal benchmark: 87 medicine, 100 law, 60 software/API, and 70 platform-policy items, each pairing timely and superseded answers with official-source provenance."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00169-863c7d01ff",
+            "quote": "within each valid/stale pair, the evidence, question, options, and instructions are byte-identical"
+          }
+        ],
+        "text": "Temporal-applicability subset of 50 independently verified transitions with byte-identical paired prompts except for evaluation date."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00044-b4d8d3c792",
+            "quote": "Two external PhD students independently label a stratified sample of 200 responses"
+          }
+        ],
+        "text": "Human-validation set of 200 stratified responses spanning four domains, with blinded dual annotation and adjudication."
+      }
+    ],
+    "metrics": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00142-cf4a49caa3",
+            "quote": "poisoning is conditional on unaided correctness"
+          }
+        ],
+        "text": "Conditional poisoning rate among items correct without retrieval."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00038-31634391fa",
+            "quote": "the old-answer rate while the evidence is valid minus its rate after the evidence becomes outdated"
+          }
+        ],
+        "text": "Applicability gap: old-answer rate while evidence is valid minus its rate after supersession."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00149-603806f752",
+            "quote": "92.5% accuracy; cluster-bootstrap 95% CI, 88.9–95.9%"
+          },
+          {
+            "block_id": "b00149-603806f752",
+            "quote": "macro-F1 of 0.894 (95% CI, 0.836–0.941)"
+          }
+        ],
+        "text": "Accuracy, macro-F1, Cohen’s κ, Wilson and bootstrap confidence intervals, exact paired and group tests, and corrected significance tests."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00177-c98fe988c5",
+            "quote": "the valid-date state transfers 23.08 logits in Qwen-72B"
+          }
+        ],
+        "text": "Answer-logit margin shifts for causal intervention and component localization."
+      }
+    ],
+    "negative_results": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00218-0e0835acba",
+            "quote": "Neither exceeds the random-direction 95th percentile at any magnitude."
+          }
+        ],
+        "text": "A learned timely-answer steering direction did not outperform random-direction controls on held-out Qwen items."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00219-84b3d550b9",
+            "quote": "All-band clean-state patching makes the timely continuation preferred in 1/39 Qwen and 2/37 Llama cases"
+          }
+        ],
+        "text": "Clean-state patching rarely restored timely preference and was close to random-item late-patching controls."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00222-899f99f699",
+            "quote": "does not support a simple rotation account"
+          }
+        ],
+        "text": "The geometry analysis did not support a simple rotation account."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00206-b4d345017f",
+            "quote": "We draw no main-text conclusion about whether post-training creates the vulnerability."
+          }
+        ],
+        "text": "The exploratory base-versus-instruct comparison was item-set sensitive and supports no conclusion that post-training creates the vulnerability."
+      }
+    ]
+  },
+  "executive_summary": "The paper identifies stale-document poisoning: authentic but superseded retrieval can replace an answer a model already gets right. A source-verified benchmark spans medicine, law, software/API, and platform policy. Strong matched controls show that models almost universally follow current evidence but often fail to reject obsolete evidence; explicit follow instructions worsen this substantially. Holding evidence fixed and changing only the evaluation date yields weak discrimination, whereas explicit validity boundaries enable near-perfect transitions in large Qwen and Llama models. Causal patching supports a direct role for evaluation-date information, though only in a small, behaviorally selected, constrained-choice sample. A fixed recency-aware re-ranker provides modest gains only with reliable dates. The work is decision-relevant and unusually reproducible, but external validity for deployed, multi-document RAG and unconstrained generation remains unresolved.",
+  "labels": {
+    "ablations": "Ablations",
+    "action_adopt": "adopt",
+    "action_read": "read",
+    "action_reject": "reject",
+    "action_watch": "watch",
+    "aidb_assessment": "AIDB assessment",
+    "assumptions": "Assumptions",
+    "available_artifacts": "Available artifacts",
+    "baseline": "Baseline",
+    "baselines": "Baselines",
+    "blocks": "Blocks",
+    "claims": "Main claims",
+    "confidence": "Confidence",
+    "confidence_high": "high",
+    "confidence_low": "low",
+    "confidence_medium": "medium",
+    "context": "Context",
+    "datasets": "Datasets",
+    "document_sha256": "Document SHA-256",
+    "evaluation": "Experimental evaluation",
+    "evidence": "Evidence",
+    "executive_summary": "Executive summary",
+    "generated": "Generated",
+    "hypothesis": "Hypothesis",
+    "importance": "Why it matters",
+    "key_components": "Key components",
+    "limitations": "Limitations",
+    "metadata_sha256": "Metadata SHA-256",
+    "method": "Method",
+    "metrics": "Metrics",
+    "missing_pieces": "Missing pieces",
+    "negative_results": "Negative results",
+    "novelty": "Novelty",
+    "open_questions": "Open questions",
+    "primary_metric": "Primary metric",
+    "problem": "Problem",
+    "profile": "Profile",
+    "proposed_experiments": "Proposed AIDB experiments",
+    "provenance": "Provenance",
+    "provider": "Provider",
+    "rationale": "Rationale",
+    "recommended_action": "Recommended action",
+    "repair_count": "Deterministic repair attempts",
+    "reproducibility": "Reproducibility",
+    "results": "Results",
+    "schema": "Schema",
+    "scope": "Scope",
+    "statement": "Statement",
+    "status": "Status",
+    "status_partial": "partial",
+    "status_strong": "strong",
+    "status_unknown": "unknown",
+    "status_weak": "weak",
+    "stop_condition": "Stop condition",
+    "uncertainties": "Uncertainties",
+    "usefulness": "Usefulness"
+  },
+  "language": {
+    "code": "en",
+    "name": "English"
+  },
+  "limitations": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00084-2d55cf0593",
+          "quote": "recency cannot be completely separated from item difficulty"
+        }
+      ],
+      "limitation": "The settled-versus-recent comparison is confined to medicine and uses different questions, leaving recency confounded with residual item difficulty."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00084-2d55cf0593",
+          "quote": "The causal analyses use 20 behaviorally eligible items per large model"
+        },
+        {
+          "block_id": "b00084-2d55cf0593",
+          "quote": "not that the same components govern unconstrained generation or deployed RAG systems"
+        }
+      ],
+      "limitation": "Causal findings are conditional on small, behaviorally eligible samples and constrained answer-logit tasks, not unconstrained generation or deployed RAG."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00084-2d55cf0593",
+          "quote": "interpreted as localization evidence rather than a complete circuit description"
+        }
+      ],
+      "limitation": "Head localization has only a 10-item held-out confirmation set per model and should not be read as a complete circuit account."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00135-17343a7fc3",
+          "quote": "Automated capture of the 87 medical source pages returned 39 successful responses"
+        }
+      ],
+      "limitation": "Medical-source archiving is incomplete, weakening long-term independent verification for part of the benchmark."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00152-0948a3af0b",
+          "quote": "Policy 50 0.840 [0.745, 0.935] 0.768 [0.589, 0.898]"
+        }
+      ],
+      "limitation": "The automatic judge is imperfect, particularly for policy and unclear responses, despite strong aggregate validation."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00236-b34e3d633f",
+          "quote": "each model–item–condition combination was evaluated once"
+        }
+      ],
+      "limitation": "Most combinations were evaluated once with deterministic decoding, so variation across sampling runs is not characterized."
+    }
+  ],
+  "method": {
+    "assumptions": [
+      "Official sources and annotated effective boundaries correctly establish when recommendations ceased to apply.",
+      "The automatic judge’s timely, superseded, and unclear labels adequately operationalize answer correctness for free-text outputs.",
+      "Conditioning poisoning on unaided correctness isolates retrieval-induced degradation, although it changes denominators across models and domains.",
+      "Constrained answer choices and answer-logit margins are informative about temporal applicability despite differing from deployed free-form RAG.",
+      "Document dates and supersession cues are trustworthy enough to support retrieval-side mitigation in the favorable metadata condition."
+    ],
+    "key_components": [
+      "A frozen benchmark of knowledge reversals with official-source URLs, date annotations, current and superseded answers, and archived snapshots where capture succeeded.",
+      "Conditional poisoning rate: the fraction of previously correct answers made non-timely after outdated retrieval.",
+      "A matched current-evidence condition testing whether the issue is selective trust rather than general inability to use retrieval.",
+      "A temporal-applicability panel with identical prompt content except for evaluation date, plus prose and tabular validity-boundary conditions.",
+      "Bidirectional activation patching at evaluation-date spans, source-date and self-patch controls, attention/MLP decomposition, and held-out head confirmation.",
+      "A fixed re-ranking rule combining semantic similarity, normalized document recency, and explicit supersession cues."
+    ],
+    "overview": "Each benchmark item pairs a timely answer with a formerly correct, superseded answer and dated official-source evidence. Poisoning is measured only among items answered correctly without retrieval. The authors compare outdated versus matched current evidence, manipulate instruction strength, and isolate temporal applicability by keeping evidence, question, options, and instructions fixed while varying only the evaluation date. They then patch date-associated internal states, localize component contributions with discovery/confirmation splits, and evaluate a fixed hybrid semantic-recency-supersession re-ranker under varying metadata quality."
+  },
+  "open_questions": [
+    "Can a model learn calibrated validity arbitration from provenance and supersession graphs without receiving an explicit per-item boundary?",
+    "Do multiple corroborating stale documents overpower one current authoritative document, and how should authority interact with validity?",
+    "Will the same failure rates persist with generated queries, chunked retrieval, citation requirements, and multi-turn agents?",
+    "Can status recognition and answer selection be jointly calibrated so that detected uncertainty reliably prevents harmful deference?",
+    "How robust are the results across repeated stochastic generations and newer model snapshots?"
+  ],
+  "problem": {
+    "importance": "The failure reverses the usual rationale for retrieval: adding apparently authoritative information can degrade a correct answer. Publication date alone is not equivalent to a validity interval, so relevance-focused retrieval and generic document-following instructions may be unsafe in changing domains.",
+    "scope": "The study covers verified knowledge reversals in medicine, law, software/API, and platform policy; behavioral tests across hosted and open-weight models; matched temporal-applicability controls; white-box causal analysis of two large open models; and a fixed retrieval-side mitigation.",
+    "statement": "RAG may retrieve genuine evidence that was correct when published but has since been superseded. The study asks whether a model that already knows the timely answer can condition its reliance on retrieved evidence upon that evidence’s temporal applicability."
+  },
+  "proposed_experiments": [
+    {
+      "baseline": "Dense retrieval and the paper’s fixed recency-aware hybrid re-ranker, each evaluated with publication dates only.",
+      "hypothesis": "Explicit validity intervals and supersession links reduce stale-document poisoning more than publication-date metadata alone in realistic multi-document retrieval.",
+      "primary_metric": "Conditional poisoning rate on previously correct answers, reported jointly with timely-evidence recovery and retrieval recall.",
+      "stop_condition": "Conclude support only if validity-aware retrieval lowers poisoning on a held-out, source-verified set without reducing timely-evidence recovery, with an item-clustered confidence interval excluding no improvement."
+    },
+    {
+      "baseline": "The same model prompted to label evidence status and answer without a trained gate, plus an answer-only model.",
+      "hypothesis": "Training an answer-level abstention gate that consumes a separate applicability judgment makes recognized staleness govern final answers more reliably.",
+      "primary_metric": "Failure rate after the model has labeled evidence superseded or uncertain, with calibration error for the applicability judgment as a secondary metric.",
+      "stop_condition": "Stop if held-out failure after a warning is not lower than both baselines, or if gains come from excessive abstention that materially reduces correct coverage."
+    },
+    {
+      "baseline": "One current and one stale document with neutral instructions and no explicit validity relation.",
+      "hypothesis": "Stale-document poisoning grows with stale-source multiplicity and apparent authority, but explicit supersession metadata remains protective.",
+      "primary_metric": "Conditional poisoning rate across a preregistered factorial varying the number, authority, and order of stale documents and the presence of supersession metadata.",
+      "stop_condition": "Stop after confidence intervals are sufficiently narrow to distinguish the preregistered minimum effect, or reject the hypothesis if no monotonic multiplicity effect appears and supersession metadata provides no consistent protection."
+    }
+  ],
+  "provenance": {
+    "block_count": 239,
+    "document_sha256": "c3777e95a1e8660284735f1b0273f29adc30940c829b03e5d683108dd1891e22",
+    "generated_at": "2026-10-16T14:30:12.572706+00:00",
+    "metadata_sha256": "05bd4ec9035863596a51bd2bc7171fb07af85a6a6641deccee13e512d18d5d3e",
+    "profile": "deep",
+    "provider": "codex-exec:configured-default",
+    "repair_count": 0,
+    "schema_version": "paper-summary-v1"
+  },
+  "reproducibility": {
+    "artifacts": [
+      "Benchmark items with official-source provenance and archived snapshots.",
+      "Poisoning corpora and audit, behavioral, probe, intervention, geometry, factorial, temporal-applicability, and retrieval-defense code.",
+      "Per-run JSON outputs, item-level labels and generated answers, figure scripts, model-revision manifest, requirements.txt, and pyproject.toml.",
+      "Fixed seeds for intervention and retrieval scripts and a table of final settings and development sweeps."
+    ],
+    "assessment": "The paper reports unusually comprehensive artifacts, frozen data, item-level outputs, fixed protocols, seeds, model revisions, and declared development sweeps. Reproduction is nevertheless not fully hermetic because some hardware and environment history is absent, some hosted endpoints float, MedGemma runtime revisions are uncertain, and medical archival coverage is incomplete.",
+    "missing": [
+      "The supplied blocks do not provide a repository or release URL, so artifact accessibility cannot be independently confirmed here.",
+      "Exact CPU models, operating-system images, wall-clock totals, and historical package states are missing for some runs.",
+      "MedGemma runtime SHAs were not logged; recorded rows instead use later repository heads.",
+      "Some hosted model aliases are floating rather than provider-revision-pinned.",
+      "Archived snapshots are unavailable for many medical source pages."
+    ],
+    "status": "strong"
+  },
+  "results": [
+    {
+      "context": "The outcome is conditional on each model’s items answered correctly without retrieval, so rates describe vulnerability among correct baseline answers rather than overall error prevalence.",
+      "evidence": [
+        {
+          "block_id": "b00050-cc83e36edf",
+          "quote": "poisoning is highest in medicine (0.91 for Llama-70B and 0.85 for Qwen-72B)"
+        },
+        {
+          "block_id": "b00050-cc83e36edf",
+          "quote": "Software is more resistant, with poisoning rates of 0.17–0.35."
+        }
+      ],
+      "result": "Under instructed outdated retrieval, poisoning appeared in every tested open-model/domain cell, ranging from 0.17 to 0.91; medicine reached 0.91 for Llama-70B, whereas software ranged from 0.17–0.35."
+    },
+    {
+      "context": "This controlled comparison used all 87 medical items under the instructed retrieval prompt.",
+      "evidence": [
+        {
+          "block_id": "b00165-a1f6130177",
+          "quote": "No previously correct answer becomes incorrect."
+        },
+        {
+          "block_id": "b00165-a1f6130177",
+          "quote": "the up-to-date document recovers 97–100%"
+        }
+      ],
+      "result": "Matched current evidence was followed on 97–100% of previously missed medical items, and no previously correct answer became incorrect, supporting selective-trust failure rather than inability to exploit retrieval."
+    },
+    {
+      "context": "This is the strongest content-controlled test: 50 verified transitions, neutral instructions, randomized answer options, and item-clustered intervals.",
+      "evidence": [
+        {
+          "block_id": "b00172-c6e26d0b99",
+          "quote": "Qwen-72B .12​[.04,.22] 1.00​[1.00,1.00] 1.00​[1.00,1.00]"
+        },
+        {
+          "block_id": "b00172-c6e26d0b99",
+          "quote": "Llama-70B .14​[.06,.24] .94​[.86,1.00] 1.00​[1.00,1.00]"
+        }
+      ],
+      "result": "With identical historical evidence and only the evaluation date varied, date-only applicability gaps were .12 for Qwen-72B and .14 for Llama-70B; explicit prose boundaries raised them to 1.00 and .94, and table boundaries to 1.00 for both."
+    },
+    {
+      "context": "The 2×2 factorial separates an explicit deference instruction from the “most current” header, showing that instruction pressure itself is consequential.",
+      "evidence": [
+        {
+          "block_id": "b00209-82393599ec",
+          "quote": "Neutral header, no directive .373 .302"
+        },
+        {
+          "block_id": "b00209-82393599ec",
+          "quote": "Neutral header, follow directive .745 .660"
+        },
+        {
+          "block_id": "b00211-6d080023a3",
+          "quote": "19 discordant items deteriorate and none improves"
+        }
+      ],
+      "result": "A neutral-header follow directive increased poisoning from .373 to .745 for Qwen-7B and from .302 to .660 for Llama-8B; in both families, 19 items deteriorated and none improved."
+    },
+    {
+      "context": "The defense used one current and two outdated documents per item and was evaluated with Qwen-7B and GPT-4o. Incorrect dates could make selection worse than dense retrieval.",
+      "evidence": [
+        {
+          "block_id": "b00229-a5e56f8d8d",
+          "quote": "lowers poisoning in all four cells by 4.6 to 10.0 percentage points; three exact paired tests reach p<0.05."
+        },
+        {
+          "block_id": "b00229-a5e56f8d8d",
+          "quote": "one worsens by 1.1 points"
+        }
+      ],
+      "result": "With correct dates, the fixed re-ranker reduced downstream poisoning by 4.6 to 10.0 percentage points across four law/medicine cells, but only three comparisons were significant; absent dates produced small, nonsignificant gains and one worsening."
+    }
+  ],
+  "title": "Stale-Document Poisoning: When Outdated Retrieval Overrides Correct Model Answers",
+  "uncertainties": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00068-b307af07c3",
+          "quote": "Each retrieval set contains one up-to-date and two outdated documents"
+        }
+      ],
+      "uncertainty": "Whether the results generalize to natural retrieval pipelines containing many heterogeneous, partially relevant, or mutually conflicting documents.",
+      "why_it_matters": "The benchmark often inserts one outdated item or uses a small controlled index, whereas production systems have ranking, chunking, aggregation, and citation interactions."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00056-aca3b764fb",
+          "quote": "dates alone rarely lead them to the same decision"
+        }
+      ],
+      "uncertainty": "Whether models can infer validity boundaries from ordinary provenance at deployment scale without being explicitly given a verified boundary.",
+      "why_it_matters": "Near-perfect large-model performance depends on explicit applicability information; date-only discrimination remains weak."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00066-65890de76b",
+          "quote": "models sometimes identify evidence as superseded or uncertain but still follow it when answering"
+        }
+      ],
+      "uncertainty": "Whether recognizing staleness reliably controls downstream answering.",
+      "why_it_matters": "A separate status judgment can flag evidence yet fail to govern the final response, implying that detection and arbitration may require distinct training or architecture."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00152-0948a3af0b",
+          "quote": "Policy 50 0.840 [0.745, 0.935] 0.768 [0.589, 0.898]"
+        }
+      ],
+      "uncertainty": "How much judge error changes poisoning estimates in the policy domain and unclear class.",
+      "why_it_matters": "Aggregate judge quality is strong, but uneven class/domain performance could bias comparisons where outputs are ambiguous."
+    }
+  ]
+}

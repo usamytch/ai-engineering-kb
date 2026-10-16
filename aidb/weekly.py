@@ -232,6 +232,7 @@ def render_week_index(
     errors: Sequence[tuple[str, str]],
     generated_at: datetime,
     states: Mapping[str, CardState] | None = None,
+    discovery: Mapping[str, object] | None = None,
 ) -> str:
     validate_week(week)
     states = states or {}
@@ -249,6 +250,14 @@ def render_week_index(
     ]
     surfaced = [candidate for candidate in candidates if candidate.status != "already-seen"]
     suppressed = [candidate for candidate in candidates if candidate.status == "already-seen"]
+    if discovery:
+        complete = "полное для настроенных источников" if discovery.get("complete") else "неполное — см. ошибки и manifest"
+        position = lines.index("## Кандидаты")
+        lines[position:position] = [
+            f"Период по дате обновления (UTC): {discovery.get('since')} → {discovery.get('until')}.",
+            f"Покрытие: {complete}. Кандидатов после дедупликации: {len(surfaced)}; повторов: {len(suppressed)}.",
+            "",
+        ]
     if not surfaced:
         lines.extend(["Свежих записей в заданном окне не найдено.", ""])
     for candidate in surfaced:
@@ -310,6 +319,8 @@ def write_week_batch(
     errors: Sequence[tuple[str, str]],
     generated_at: datetime,
     week: str | None = None,
+    *,
+    discovery: Mapping[str, object] | None = None,
 ) -> tuple[Path, int]:
     batch_id = validate_week(week or current_iso_week(generated_at))
     batch_dir = root / "inbox" / batch_id
@@ -317,6 +328,7 @@ def write_week_batch(
     manifest_path = batch_dir / "manifest.json"
     states: dict[str, CardState] = {}
     existing: list[Candidate] = []
+    payload: dict = {}
     if index_path.exists():
         states = parse_card_states(index_path.read_text(encoding="utf-8"))
     if manifest_path.exists():
@@ -324,8 +336,11 @@ def write_week_batch(
         existing = [Candidate.from_dict(value) for value in payload.get("entries", [])]
 
     history_ids, history_papers = _discovery_history(root, batch_id)
+    existing_ids = {candidate.id for candidate in existing}
     discovered = [Candidate.from_entry(entry) for entry in entries]
     for candidate in discovered:
+        if candidate.id in existing_ids:
+            continue
         if candidate.id in history_ids:
             candidate.status = "already-seen"
         elif candidate.paper_id and candidate.paper_id in history_papers:
@@ -335,18 +350,22 @@ def write_week_batch(
         state = states.get(candidate.id)
         if state and state.fields.get("Triage"):
             candidate.decision = state.fields["Triage"]
-            candidate.status = "processed" if state.marker == "x" else candidate.status
+            if state.marker == "x" and candidate.status not in {"summarized", "human-approved"}:
+                candidate.status = "processed"
 
     manifest = {
+        **payload,
         "schema_version": 1,
         "batch_id": batch_id,
         "generated_at": generated_at.astimezone(timezone.utc).isoformat(timespec="seconds"),
         "entries": [candidate.to_dict() for candidate in candidates],
         "errors": [{"feed": name, "error": error} for name, error in errors],
     }
+    if discovery is not None:
+        manifest["discovery"] = dict(discovery)
     batch_dir.mkdir(parents=True, exist_ok=True)
     index_path.write_text(
-        render_week_index(batch_id, candidates, errors, generated_at, states),
+        render_week_index(batch_id, candidates, errors, generated_at, states, discovery or payload.get("discovery")),
         encoding="utf-8",
     )
     manifest_path.write_text(
@@ -360,6 +379,16 @@ def _discovery_history(root: Path, current_batch: str) -> tuple[set[str], dict[s
     ids: set[str] = set()
     papers: dict[str, set[str]] = {}
     inbox = root / "inbox"
+    for legacy in sorted(inbox.glob("*.md")):
+        for stable_id in parse_card_states(legacy.read_text(encoding="utf-8")):
+            ids.add(stable_id)
+            if stable_id.startswith("arxiv:"):
+                ref = ArxivRef.parse(stable_id.removeprefix("arxiv:"))
+                papers.setdefault(ref.base_id, set()).add(ref.version_id)
+    for version in sorted((root / "papers" / "arxiv").glob("*/versions/v*/manifest.json")):
+        ref = ArxivRef.parse(version.parent.parent.parent.name.replace("--", "/") + version.parent.name)
+        ids.add(f"arxiv:{ref.version_id}")
+        papers.setdefault(ref.base_id, set()).add(ref.version_id)
     for manifest_path in sorted(inbox.glob("*/manifest.json")):
         if manifest_path.parent.name == current_batch:
             continue

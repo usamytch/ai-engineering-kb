@@ -1,0 +1,32 @@
+{
+  "abstract": "Long-horizon LLM agents rely on context compaction: when the interaction history outgrows the context window, a compressor replaces it with a natural-language summary. We show that these summaries contain more than a record of what happened. Compaction prompts ask for decisions and next steps, so each summary mixes facts established by the environment with reasoning written by the compressor, and the agent cannot tell the two apart afterwards. In an analysis of a widely used structured compressor, 83% of failed runs trace back to an action that carries out a specific summary entry, most of which no environment output supports. We propose Source-Judged Compaction (SJC), a training-free post-processing step that scores each summary entry for whether it has a source in the environment outputs or the previous summary, and removes the entries that do not. It changes neither the agent nor the compressor and adds one inexpensive judge request per compaction. The judge is Jev, a non-generative decision model that answers the source question with a calibrated probability instead of text. On AppWorld and OfficeBench with two agent models, SJC improves cross-run reliability over the underlying compressor by 2.1%-8.9% without increasing the agent's token usage.",
+  "arxiv_id": "2610.20927v1",
+  "authors": [
+    "Guanghui Min",
+    "Chen Chen"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2610.20927v1",
+  "categories": [
+    "cs.CL"
+  ],
+  "comment": "Uses Jev, a non-generative decision model, as the source judge. Code: https://github.com/GuanghuiMin/sjc",
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2610.20927v1",
+  "latest_seen_version": 1,
+  "paper_id": "2610.20927",
+  "paper_version_id": "2610.20927v1",
+  "published": "2026-10-14T20:57:32+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "Prune the Summary, Not the History: Source-Judged Compaction for Long-Horizon Agents",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-10-14T20:57:32+00:00",
+  "url": "https://arxiv.org/abs/2610.20927v1"
+}

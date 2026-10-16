@@ -1,0 +1,33 @@
+{
+  "abstract": "Memory-augmented LLM-based agents are vulnerable to memory injection attacks: Agents may retrieve poisoned memory from attackers, which diverts their behavior from initial user intent and finally causes task failure. However, existing defense mechanisms either incur high computational cost or suffer from information redundancy in multi-turn contexts. To address these challenges, we propose Memory Intent-Aware Neural Denoising(MIND), a lightweight defense framework for memory injection attack. Our preliminary analysis reveals that benign and poisoned trajectories exhibit distinguishable relationships between the initial user intent and subsequent behavior. Building on this observation, MIND employs an intent-aware Information Bottleneck(IB) to extract compact intent--behavior representations from the initial intent and turn-level behavior. The IB preserves intent-relevant cross-turn attack signals while filtering task-irrelevant and repetitive information, and a lightweight detector identifies malicious memories from the resulting representations. As such, MIND mitigates information redundancy in multi-turn contexts while avoiding the overhead of repeated LLM auditing. Extensive experiments show that MIND reduces attack success rates while preserving task accuracy and inference efficiency. Notably, on ReAct-StrategyQA, MIND reduces mean ASR-r and ASR-a by 58.1% and 53.5%, respectively, while matching the undefended agent in average accuracy and latency.",
+  "arxiv_id": "2607.28103v2",
+  "authors": [
+    "Dongyi Liu",
+    "Haixing He",
+    "Xiaobao Wu",
+    "Jia Li"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2607.28103v2",
+  "categories": [
+    "cs.AI"
+  ],
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2607.28103v2",
+  "latest_seen_version": 2,
+  "paper_id": "2607.28103",
+  "paper_version_id": "2607.28103v2",
+  "published": "2026-07-30T12:11:49+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "MIND: Lightweight and Effective Memory Injection Defense for LLM Agents via Intent-Aware Information Bottleneck",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-10-12T16:09:44+00:00",
+  "url": "https://arxiv.org/abs/2607.28103v2"
+}

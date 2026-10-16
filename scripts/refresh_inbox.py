@@ -153,6 +153,13 @@ def parse_date(value: str) -> datetime | None:
     return parsed.astimezone(timezone.utc)
 
 
+def parse_since(value: str) -> datetime:
+    parsed = parse_date(value)
+    if parsed is None:
+        raise argparse.ArgumentTypeError("expected an ISO date or timestamp")
+    return parsed
+
+
 def parse_feed(payload: bytes, feed: dict[str, object]) -> list[Entry]:
     parser = FeedParser()
     parser.feed(payload.decode("utf-8", errors="replace"))
@@ -208,6 +215,8 @@ def fetch(feed: dict[str, object], timeout: float) -> list[Entry]:
 def render(
     entries: list[Entry], errors: list[tuple[str, str]], generated_at: datetime
 ) -> str:
+    from aidb.weekly import source_id
+
     lines = [
         f"# Discovery inbox — {generated_at.date().isoformat()}",
         "",
@@ -222,7 +231,12 @@ def render(
     ]
     if not entries:
         lines.extend(["Свежих записей в заданном окне не найдено.", ""])
+    seen = set()
     for entry in entries:
+        key = source_id(entry.url)
+        if key in seen:
+            continue
+        seen.add(key)
         published = entry.published.date().isoformat() if entry.published else "date unknown"
         topics = ", ".join(entry.topics)
         lines.extend(
@@ -252,7 +266,10 @@ def render(
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--days", type=int, default=14, help="lookback window")
-    parser.add_argument("--limit-per-feed", type=int, default=10)
+    parser.add_argument("--limit-per-feed", type=int, default=0, help="0 means unlimited")
+    parser.add_argument("--since", type=parse_since, help="inclusive UTC start date or timestamp")
+    parser.add_argument("--page-size", type=int, default=200)
+    parser.add_argument("--cache-dir", type=Path, help="response cache for this discovery run")
     parser.add_argument("--timeout", type=float, default=20.0)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--week", help="ISO week YYYY-Www; defaults to current week")
@@ -269,35 +286,30 @@ def collect_entries(
     root: Path,
     *,
     days: int = 14,
-    limit_per_feed: int = 10,
+    limit_per_feed: int = 0,
     timeout: float = 20.0,
     now: datetime | None = None,
+    since: datetime | None = None,
+    page_size: int = 200,
+    cache_dir: Path | None = None,
+    report: dict | None = None,
 ) -> tuple[datetime, list[Entry], list[tuple[str, str]], int]:
-    if days < 1 or limit_per_feed < 1 or timeout <= 0:
-        raise ValueError("days, limit-per-feed and timeout must be positive")
+    if days < 1 or limit_per_feed < 0 or timeout <= 0:
+        raise ValueError("days and timeout must be positive; limit-per-feed must be nonnegative")
     watchlist = json.loads((root / "watchlist.json").read_text(encoding="utf-8"))
     generated_at = now or datetime.now(timezone.utc)
-    cutoff = generated_at - timedelta(days=days)
-    entries: list[Entry] = []
-    errors: list[tuple[str, str]] = []
+    cutoff = since or generated_at - timedelta(days=days)
+    if cutoff > generated_at:
+        raise ValueError("since must not be later than the discovery time")
+    from aidb.discovery import collect_paginated
 
-    for feed in watchlist["feeds"]:
-        try:
-            recent = [
-                entry
-                for entry in fetch(feed, timeout)
-                if (entry.updated or entry.published) is None
-                or (entry.updated or entry.published) >= cutoff
-            ][:limit_per_feed]
-            entries.extend(recent)
-        except (OSError, KeyError, ValueError, UnicodeError) as exc:
-            errors.append((str(feed.get("name", "unknown feed")), str(exc)))
-
-    unique: dict[str, Entry] = {}
-    for entry in entries:
-        unique.setdefault(entry.url, entry)
+    entries, errors = collect_paginated(
+        root, watchlist["feeds"], cutoff=cutoff, until=generated_at,
+        limit=limit_per_feed, page_size=page_size, timeout=timeout,
+        cache_dir=cache_dir, report=report if report is not None else {},
+    )
     entries = sorted(
-        unique.values(),
+        entries,
         key=lambda item: item.updated
         or item.published
         or datetime.min.replace(tzinfo=timezone.utc),
@@ -308,12 +320,17 @@ def collect_entries(
 
 def main() -> int:
     args = parse_args()
+    report: dict = {}
     try:
         now, entries, errors, feed_count = collect_entries(
             ROOT,
             days=args.days,
             limit_per_feed=args.limit_per_feed,
             timeout=args.timeout,
+            since=args.since,
+            page_size=args.page_size,
+            cache_dir=args.cache_dir,
+            report=report,
         )
     except (OSError, KeyError, ValueError, json.JSONDecodeError) as exc:
         print(f"discovery failed: {exc}", file=sys.stderr)
@@ -327,8 +344,8 @@ def main() -> int:
             from aidb.weekly import Candidate, merge_candidates, render_week_index
 
             candidates = merge_candidates(Candidate.from_entry(entry) for entry in entries)
-            print(render_week_index(args.week or current_iso_week(now), candidates, errors, now))
-        return 0 if entries or len(errors) < feed_count else 1
+            print(render_week_index(args.week or current_iso_week(now), candidates, errors, now, discovery=report))
+        return 1 if errors else 0
 
     if args.output or args.legacy_flat:
         output = args.output or ROOT / "inbox" / f"{now.date().isoformat()}.md"
@@ -338,10 +355,10 @@ def main() -> int:
         output.write_text(content, encoding="utf-8")
         destination = output.relative_to(ROOT)
     else:
-        batch_dir, _ = write_week_batch(ROOT, entries, errors, now, args.week)
+        batch_dir, _ = write_week_batch(ROOT, entries, errors, now, args.week, discovery=report)
         destination = batch_dir.relative_to(ROOT)
     print(f"Wrote {len(entries)} entries to {destination}; {len(errors)} feed errors")
-    return 0 if entries or len(errors) < feed_count else 1
+    return 1 if errors else 0
 
 
 if __name__ == "__main__":

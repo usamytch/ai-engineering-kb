@@ -1,0 +1,229 @@
+# MemScope: Evolving Agent Memory Architectures through Localized Code Repair
+
+## Executive summary
+
+MemScope treats memory-architecture evolution as evidence-grounded repair of an existing provider. A Patch Agent inspects traces, stored memory, retrieval behavior, and code, then makes bounded replacements while retaining compatible memory. A controlled GAIA diagnostic favors trace-and-memory inspection over summary-only or trace-only feedback; matched-start tests also favor the evolved provider on xBench and unseen ALFWorld tasks. The method explicitly allows no-patch decisions and tracks regressions. Evidence remains limited by narrow executors and backbones, one starting architecture, single reported trajectories, and online comparisons where code and memory both change. Small edit counts do not guarantee small behavioral effects. The supplied document describes prompts and checks but does not identify executable artifacts sufficient for independent reproduction.
+
+## Problem
+
+**Statement.** Memory architectures usually remain fixed after deployment, while existing self-evolution methods often use aggregate scores or compressed summaries that do not identify which storage, retrieval, presentation, or downstream execution component caused a failure. This leaves architecture updates weakly constrained and can induce broad rewrites when a local correction—or no provider change—would be more appropriate.
+
+**Why it matters.** Long-horizon agents combine memory contents, retrieval decisions, tool use, and downstream actions. Without localized evidence, an observed failure cannot be reliably mapped to code, so architecture evolution may modify a capable component unnecessarily, propagate regressions, or fail to correct the actual cause.
+
+**Scope.** The paper studies in-place evolution of executable memory-provider code, starting primarily from DynamicCheatsheet and evaluating information-seeking tasks on GAIA and xBench plus sequential household interaction on ALFWorld. It does not establish generality across arbitrary memory architectures, executors, model families, production workloads, or long-term deployment conditions.
+
+## Method
+
+An episode begins with probe tasks and selection of an existing memory skill; global provider generation is available only when no skill is suitable. A frozen Agent Executor processes sequential task segments using provider-controlled retrieval and storage against a separate runtime memory bank. A trigger compares current segment accuracy with the best previous episode on the same task window and invokes a tool-using Patch Agent after a sufficient decline and at least one failure. The Patch Agent performs read-only inspection of successful and failed traces, raw memory records, retrieval matches and decisions, the current provider, the skill specification, and patch history. It emits exact old-to-new replacements plus a manifest describing root cause, expected effect, and risk. Local checks enforce syntax, identity, memory compatibility, required methods, and in later experiments import and isolated-retrieval behavior. Valid patches are installed in place while the runtime bank is retained; insufficient evidence may produce a no-patch decision.
+
+### Key components
+
+- A memory skill separates natural-language guidance in SKILL.md, executable memory_retrieval and memory_storage methods, and a skill-specific runtime memory bank.
+- The Memory Skill Router selects among human-designed skills using probe executions; a Skill Designer and full provider generation form a global-exploration fallback.
+- The Agent Executor is frozen during provider evolution and records answers, raw trajectories, distilled memory items, accuracy, time, and cost.
+- The repair trigger uses degradation relative to historical best performance plus a minimum failure count to decide whether diagnosis should run.
+- Trace tools expose cases, headers, native steps, and cross-trace events; memory tools expose record statistics, raw records, queries, matches, selection decisions, and retrieval output.
+- The Patch Agent grounds a proposed repair in traces, runtime memory, provider code, skill intent, and optional history, then produces localized replacements and a risk manifest.
+- Patch History records proposals, installation decisions, recovered failures, and regressed successes so later repairs can revise an unsuccessful direction.
+- Local validation protects provider identity, schema compatibility, required interfaces, imports, and isolated retrieval; the system can retain the current provider through no_patch.
+
+### Assumptions
+
+- Segment accuracy on a task window is an adequate signal for deciding when provider repair should be attempted.
+- Probe evidence and the available skill descriptions are sufficient for routing to a suitable memory skill or deciding that global exploration is needed.
+- Raw traces, stored memory, retrieval decisions, and provider code contain enough information to localize a consequential failure.
+- The frozen executor isolates provider evolution sufficiently, although online memory contents continue changing.
+- Local syntactic and interface checks are useful proxies for safe installation; behavioral regressions are detected later through continued execution.
+- Retaining runtime memory across a patch is valid when compatibility constraints pass.
+- GPT-4o-mini judgments adequately represent correctness for GAIA and xBench, while ALFWorld environment success is an adequate outcome measure.
+
+## Main claims
+
+- **MemScope makes failure localization an explicit stage by jointly exposing execution traces, runtime memory state, and provider code.**
+  - Evidence: [b00013-e67a9c9ead] “jointly exposes raw execution traces, runtime memory state, and provider code”; [b00043-71b40c2c99] “The Patch Agent inspects execution traces, runtime memory, and provider code through the read-only tools”
+- **The framework performs bounded in-place edits while preserving provider identity, compatibility with existing memory, and the runtime memory bank.**
+  - Evidence: [b00010-ca3cf19d58] “requires compatibility with existing memory records”; [b00010-ca3cf19d58] “retaining the runtime memory bank”; [b00044-910acb2818] “Prompts require schema compatibility and prohibit broad rewrites and task/answer hardcoding.”
+- **Fine-grained traces and memory inspection provide more useful diagnostic evidence than compressed summaries alone.**
+  - Evidence: [b00073-597931b30e] “The Trace + Memory Inspection variant achieves the highest GAIA diagnostic accuracy at 86.67%”; [b00159-cd5ecec3d6] “raw execution evidence identifies a code path that the summary-based proposal leaves unchanged.”
+- **Execution evidence can justify either a local edit or an explicit decision not to modify the provider.**
+  - Evidence: [b00079-12db8c9fa4] “execution evidence can inform both the location of a proposed edit and the decision not to modify the provider.”; [b00163-1edc9d8912] “patch_type "no_patch" needs_new_provider false edited_files []”
+- **Patch history is intended to expose recovered failures and regressions to later repair decisions, but the reported diagnostic ablation does not show a gain from adding history.**
+  - Evidence: [b00045-24878eb710] “including recovered failures and regressed successes.”; [b00073-597931b30e] “The Patch History variant reaches 83.33%, versus 86.67% for Trace + Memory Inspection”
+
+## Results
+
+- **In the controlled GAIA diagnostic comparison, Trace + Memory Inspection achieved 86.67% accuracy, versus 70.00% for Trace-only and 63.33% for Summary-only.**
+  - Context: This is the clearest component-level evidence because the experiment varies the diagnostic information supplied to the Patch Agent under the same stated evolution procedure. It supports raw trace access and an inspectable memory store, but not the incremental value of patch history.
+  - Evidence: [b00073-597931b30e] “The Trace + Memory Inspection variant achieves the highest GAIA diagnostic accuracy at 86.67%, versus 70.00% for Trace-only and 63.33% for Summary-only.”
+- **In matched-start xBench comparisons over 70 questions, the evolved provider answered 55/70 versus 49/70 correctly with DeepSeek V3.2 and 53/70 versus 50/70 with Kimi K2.7 Code.**
+  - Context: Original and evolved DynamicCheatsheet providers used the same executor within each backbone and independent empty memory stores that updated online. The paired outcomes reveal remaining regressions as well as recovered failures, making this stronger than an unpaired leaderboard comparison, though it still lacks repeated-run uncertainty.
+  - Evidence: [b00060-d5499c6536] “The evolved versus original providers answer 55/70 versus 49/70 correctly with DeepSeek V3.2 and 53/70 versus 50/70 with Kimi K2.7 Code.”; [b00062-dc3ab6087d] “DeepSeek V3.2 47 8 2 13 Kimi K2.7 Code 46 7 4 13”
+- **On the disjoint ALFWorld valid_unseen set, MemScope succeeded on 48/67 tasks (71.64%), compared with 34/67 (50.75%) for original DynamicCheatsheet and 45/67 (67.16%) for ALMA.**
+  - Context: All systems followed the same memory-collection sequence and began with empty memory, making the original-versus-evolved comparison consequential evidence of transfer to unseen sequential-action tasks. The margin over ALMA is smaller than the margin over the starting provider and is not accompanied by statistical uncertainty.
+  - Evidence: [b00068-084ee793d7] “MemScope succeeds on 48/67 ALFWorld unseen tasks (71.64%), versus 34/67 (50.75%) for the original DynamicCheatsheet”; [b00068-084ee793d7] “and 45/67 (67.16%) for ALMA”
+- **Against MemEvolve + Flash-Searcher under DeepSeek V3.2, MemScope + Flash-Searcher scored 83.64% versus 67.88% on GAIA and 78% versus 70% on xBench.**
+  - Context: The ordering is consistent across both benchmarks and uses the same stated executor and backbone. Nevertheless, the supplied text does not establish that all evolutionary budgets, prompts, costs, and implementation details are matched, so this is weaker causal evidence than the diagnostic and matched-start comparisons.
+  - Evidence: [b00058-c8bdf5b587] “MemEvolve + Flash-Searcher reaches 67.88% on GAIA and 70% on xBench”; [b00058-c8bdf5b587] “MemScope + Flash-Searcher reaches 83.64% and 78%, respectively.”
+- **Across 14 archived provider transitions, the median change was 16.5 lines, one function, and a normalized fraction of 4.4%.**
+  - Context: This supports the claim that recorded edits were syntactically local. It does not show that locality caused the accuracy gains, that semantic impact was small, or that the archive is representative of all proposed and rejected patches.
+  - Evidence: [b00169-b16dac09d6] “Table 8 measures edit scope across 14 archived provider-snapshot transitions”; [b00169-b16dac09d6] “Median changes involve 16.5 lines and one function”; [b00169-b16dac09d6] “The median recorded per-transition normalized fraction is 4.3862%, reported as 4.4%.”
+
+## Experimental evaluation
+
+### Datasets
+
+- GAIA validation: real-world multi-step reasoning, browsing, multimodal understanding, and tool-use tasks; the full validation set is used for the main evaluation.
+  - Evidence: [b00049-93ac5ae141] “its validation set contains 165 tasks across three difficulty levels.”; [b00052-a7ec821c3a] “we evaluate GAIA on the full validation set.”
+- xBench DeepSearch-2505: web research and information synthesis; the main evaluation uses the full set, while the matched-start analysis pairs outcomes on a specified subset.
+  - Evidence: [b00049-93ac5ae141] “xBench DeepSearch-2505 (xbench, 2025) evaluates web research and information synthesis.”; [b00060-d5499c6536] “Table 3 pairs original and final evolved DynamicCheatsheet outcomes on the same 70 questions (31–100).”
+- ALFWorld valid_unseen: sequential household interaction in a text environment, evaluated on tasks disjoint from evolution tasks.
+  - Evidence: [b00049-93ac5ae141] “ALFWorld (Shridhar et al., 2021) evaluates sequential household interaction in a text-based environment.”; [b00067-95d98288da] “the full valid_unseen set, disjoint from the evolution tasks.”
+
+### Baselines
+
+- Original DynamicCheatsheet, the starting provider for the principal original-versus-evolved comparisons.
+  - Evidence: [b00029-10cde04f67] “Our provider-evolution runs start from the existing DynamicCheatsheet memory architecture”; [b00068-084ee793d7] “the original DynamicCheatsheet”
+- MemEvolve + Flash-Searcher, the principal self-evolving architecture baseline in the main GAIA and xBench comparison.
+  - Evidence: [b00058-c8bdf5b587] “MemEvolve + Flash-Searcher reaches 67.88% on GAIA and 70% on xBench”
+- ALMA, an existing complete architecture design evaluated under the shared ALFWorld sequence.
+  - Evidence: [b00067-95d98288da] “the ALMA row evaluates an existing design under this task sequence.”
+- Flash-Searcher without MemScope, plus published closed-source and open-source agent frameworks in the broad leaderboard table.
+  - Evidence: [b00057-05474819f9] “MemScope + Flash-Searcher improves on Flash-Searcher”; [b00173-04db6bc92f] “The GAIA and xBench baselines in Table 2 include Alita”; [b00173-04db6bc92f] “The remaining agent frameworks are OWL”
+- Diagnostic controls and variants: No Memory, Original Provider, Summary-only, Trace-only, Trace + Memory Inspection, and full MemScope with Patch History.
+  - Evidence: [b00072-ce8d53c667] “Summary-only receives candidate reports; Trace-only adds raw trace tools; Trace + Memory Inspection additionally exposes the store; MemScope adds Patch History.”; [b00072-ce8d53c667] “No Memory and Original Provider are reference controls.”
+
+### Metrics
+
+- Task accuracy and pass@1 for GAIA and xBench; answers are judged by GPT-4o-mini.
+  - Evidence: [b00051-46343228b8] “GAIA and xBench answers are evaluated by GPT-4o-mini”; [b00054-289df64c37] “GAIA validation and xBench DeepSearch-2505 accuracy (%).”
+- Environment-reported task success for ALFWorld.
+  - Evidence: [b00051-46343228b8] “ALFWorld uses environment-reported task success.”
+- Paired transition counts for retained successes, recovered failures, regressions, and retained failures.
+  - Evidence: [b00061-5d23dabbeb] “C/I denote correct/incorrect; transitions are from the original to the evolved provider.”
+- Mean execution time and task steps in the GAIA diagnostic ablation.
+  - Evidence: [b00070-530c8762e4] “accuracy (%), mean time, and steps.”
+- Guidance coverage and accuracy conditional on guidance being supplied.
+  - Evidence: [b00082-7592b33561] “Figure 3 separates guidance frequency from outcomes when guidance is supplied.”
+- Edit locality measured through changed lines, touched functions, provider-size proxies, and normalized code-change fraction.
+  - Evidence: [b00169-b16dac09d6] “Median changes involve 16.5 lines and one function”; [b00169-b16dac09d6] “The median recorded per-transition normalized fraction is 4.3862%”
+
+### Ablations
+
+- GAIA diagnostic-evidence ablation comparing no memory, unchanged provider, summary feedback, raw traces, trace plus memory inspection, and patch history.
+  - Evidence: [b00071-8092288887] “Summary-only ✓ Summary × × 63.33”; [b00071-8092288887] “Trace + Memory Inspection ✓ Raw Trace ✓ × 86.67”; [b00071-8092288887] “MemScope ✓ Raw Trace ✓ ✓ 83.33”
+- Recorded case comparison between a generic summary-driven storage instruction and a trace-driven removal of an early-return guard.
+  - Evidence: [b00078-99bc0f5eb5] “Edit Add a verification rule to the storage prompt Remove the early-return guard”; [b00159-cd5ecec3d6] “identifies an early return under MemoryStatus.IN as the proposed cause of missing guidance”
+
+### Negative results
+
+- Adding Patch History did not improve the reported GAIA diagnostic score over trace plus memory inspection alone.
+  - Evidence: [b00073-597931b30e] “The Patch History variant reaches 83.33%, versus 86.67% for Trace + Memory Inspection”
+- The evolved provider caused regressions on some previously correct xBench cases under both backbones.
+  - Evidence: [b00062-dc3ab6087d] “Backbone C → C I → C C → I I → I DeepSeek V3.2 47 8 2 13 Kimi K2.7 Code 46 7 4 13”
+- A previous threshold-based gating patch had weak follow-up outcomes, leading the Patch Agent to avoid repeating that repair direction.
+  - Evidence: [b00164-78cba2a8b1] “The previous threshold-based gating patch already had weak follow-up outcomes (success regressed)”; [b00163-1edc9d8912] “patch_history_decision "not_repeating_failed_direction"”
+- Some failures occurred after correct guidance was delivered, indicating that retrieval changes could not address them.
+  - Evidence: [b00164-78cba2a8b1] “Tasks 24 and 29 fail after correct guidance is delivered, so retrieval changes cannot address them.”
+
+
+## Limitations
+
+- The main provider-evolution evidence starts from one existing memory architecture, so the generality of localized repair across substantially different provider designs is untested.
+  - Evidence: [b00029-10cde04f67] “Our provider-evolution runs start from the existing DynamicCheatsheet memory architecture”
+- The evaluation covers only three benchmarks and a small set of executor/backbone configurations; it does not demonstrate robustness across broader models, task families, or production conditions.
+  - Evidence: [b00049-93ac5ae141] “we evaluate MemScope on three benchmarks.”; [b00051-46343228b8] “with DeepSeek V3.2 (DeepSeek-AI, 2025) and Kimi K2.7 Code (Kimi Team, 2025) as backbone models.”
+- The paper reports point estimates without repeated-run variance, confidence intervals, or significance tests, leaving sensitivity to stochastic execution and judging unresolved.
+  - Evidence: [b00054-289df64c37] “GAIA validation and xBench DeepSearch-2505 accuracy (%).”; [b00065-537fa014b3] “ALFWorld valid_unseen success under DeepSeek V3.2 (correct/67, %).”
+- Some online comparisons vary provider code and memory state simultaneously, preventing clean attribution of outcome changes to code repair alone.
+  - Evidence: [b00082-7592b33561] “both provider code and memory state vary across the compared online trajectories.”
+- The edit-locality archive mixes diagnostic variants and includes few transitions, so it may not represent all proposals, failures, or future architectures.
+  - Evidence: [b00169-b16dac09d6] “across 14 archived provider-snapshot transitions: one from Trace + Memory Inspection, six from Summary-only, and seven from Trace-only.”
+- The locality metric measures changed code, not semantic scope, model-token expenditure, end-to-end evolution cost, or operational risk.
+  - Evidence: [b00179-54cea82551] “they measure changed code rather than model-token expenditure.”
+- Web-task correctness depends on an LLM judge, but no judge validation, inter-rater agreement, or sensitivity analysis is supplied.
+  - Evidence: [b00051-46343228b8] “GAIA and xBench answers are evaluated by GPT-4o-mini”
+- Local checks cover syntax and compatibility but cannot establish behavioral safety before installation; behavioral evidence is obtained later during continued execution.
+  - Evidence: [b00044-910acb2818] “After local validation, the updated provider is used in subsequent task execution”; [b00181-0f551e4bf3] “Patch History records the subsequent recovered failures and regressed successes”
+
+## Reproducibility
+
+**Status:** weak
+
+The procedural description is detailed enough to understand the architecture and major comparisons, but not enough to independently reproduce the reported results from the supplied material. Reproduction requires code, complete configurations, run-specific prompts, retained records, model-access details, and repeated-run controls.
+
+**Available artifacts**
+
+- The document supplies a recorded Patch-Agent prompt template in an appendix.
+- It describes diagnostic tool interfaces for trace, memory, and provider inspection.
+- It states benchmark protocols, executor and backbone choices, retrieval model, judge, episode schedule, and key task budgets.
+- It provides recorded repair examples, a no-patch manifest excerpt, paired transition counts, and archived edit-locality summaries.
+
+**Missing pieces**
+
+- No source-code repository or downloadable implementation is identified in the supplied metadata or body blocks.
+- No executable environment specification, dependency lockfile, hardware description, or provider/API configuration is given.
+- Random seeds, repeat counts, sampling variance, and confidence intervals are not reported.
+- Complete task-level outputs, raw traces, runtime memory banks, patch histories, provider snapshots, and judge records are not supplied here.
+- The exact run-specific Patch-Agent prompts and all placeholder substitutions are not included in the supplied blocks.
+- The document does not provide a full accounting of API calls, tokens, monetary cost, or diagnosis overhead.
+- There is insufficient information to reconstruct all task splits, probe selections, segment assignments, and evolution trajectories exactly.
+
+## AIDB assessment
+
+- Novelty: The central novelty is not memory accumulation itself but an observability-driven repair interface that connects failures to local regions of executable memory-provider code, preserves compatible runtime memory, records repair outcomes, and permits an explicit no-patch decision. This is a meaningful distinction from methods that revise only memory content or generate complete replacement architectures.
+- Usefulness: High potential usefulness for agent systems with editable memory providers: the framework offers a concrete diagnosis workflow, guards against broad rewrites, surfaces regressions, and provides interpretable patch manifests. The strongest practical signal is the controlled diagnostic ablation plus matched-start evaluations. Adoption should wait for independent replication, multi-run stability, stronger safety checks, and tests across additional starting architectures.
+- Confidence: medium
+- Recommended action: read
+- Rationale: The evidence supports careful reading and replication rather than immediate adoption. Results are consistent across information-seeking and embodied tasks, and the paper reports consequential negative evidence instead of only aggregate gains. Confidence remains moderate because the comparisons are mostly point estimates, some trajectories confound code and memory changes, the patch-history component underperforms the simpler evidence condition in the diagnostic ablation, and the supplied material lacks executable artifacts.
+
+## Uncertainties
+
+- **Whether improvements are stable across repeated stochastic runs, alternative task orderings, and different probe or segment assignments.** — A self-evolving system can be path-dependent: early memories and repairs may change later evidence. Single reported trajectories cannot distinguish a reliable method effect from favorable evolution history.
+  - Evidence: [b00052-a7ec821c3a] “we use sequential online evaluation to measure the resulting memory systems during continued use.”; [b00052-a7ec821c3a] “memory resets between episodes and accumulates within each”
+- **Whether patch history provides a net benefit rather than extra context that sometimes distracts the Patch Agent.** — History is presented as a core mechanism, yet the diagnostic ablation favors the version without it. Its value may depend on the number, quality, and relevance of prior patches.
+  - Evidence: [b00073-597931b30e] “The Patch History variant reaches 83.33%, versus 86.67% for Trace + Memory Inspection”; [b00075-0307e13c8f] “The evolution records show how history guides later edits.”
+- **How much of the online GAIA improvement comes from code changes versus differences in accumulated memory.** — If memory-state variation drives much of the gain, the evidence would be weaker for the paper's central code-repair mechanism.
+  - Evidence: [b00082-7592b33561] “both provider code and memory state vary across the compared online trajectories.”
+- **Whether the broad leaderboard comparisons are budget- and implementation-matched.** — Differences in executor, pass setting, model access, search budget, evaluation protocol, and evolution cost can undermine causal comparison between systems.
+  - Evidence: [b00055-3610f4a3a2] “Alita (pass@1) Claude Sonnet 4, GPT-4o”; [b00055-3610f4a3a2] “OWL Workforce (pass@3) GPT-4o+o3-mini”; [b00055-3610f4a3a2] “MemScope + (pass@1) DeepSeek V3.2”
+- **Whether small syntactic edits reliably imply bounded semantic or operational impact.** — A one-line threshold or fallback change can alter retrieval for many future tasks; line-count locality is not a safety guarantee.
+  - Evidence: [b00169-b16dac09d6] “Median changes involve 16.5 lines and one function”; [b00075-0307e13c8f] “changed the no-match fallback to return empty guidance rather than an unrelated old cheatsheet.”
+- **How sensitive web-task results are to GPT-4o-mini judging errors.** — Unvalidated judge errors could affect triggers, stored correctness feedback, patch selection, and final reported accuracy.
+  - Evidence: [b00051-46343228b8] “GAIA and xBench answers are evaluated by GPT-4o-mini”; [b00060-d5499c6536] “memory stores that update online from trajectories and post-task correctness feedback”
+
+## Open questions
+
+- Does MemScope retain its advantage when original and evolved providers are evaluated with frozen, identical memory banks?
+- How often does the trigger fire, and what fractions of invocations yield installed patches, rejected patches, failed checks, or no-patch decisions?
+- What are the distributions of gains and regressions across repeated runs, task orders, backbones, and starting providers?
+- Does Patch History improve long-run cumulative performance despite its lower diagnostic-ablation score?
+- How does localized repair compare with complete provider generation under equal task, token, wall-clock, and monetary budgets?
+- What safety mechanism prevents locally valid patches from producing delayed cross-task regressions or corrupting future memory?
+- How accurate and stable is GPT-4o-mini as both a correctness evaluator and an indirect source of online feedback?
+- Are all archived transitions reported, including unsuccessful and reverted edits, or is the locality analysis a selected subset?
+
+## Proposed AIDB experiments
+
+- **Hypothesis:** Localized provider repair improves outcomes independently of changes in accumulated runtime memory.
+  - Baseline: Original and evolved providers evaluated on exactly the same frozen memory-bank snapshots, task order, executor, model outputs where replay is possible, and retrieval requests; also include a code-shuffled placebo patch with comparable edit size.
+  - Primary metric: Paired difference in task correctness, accompanied by recovered-failure and regressed-success counts and a paired confidence interval across tasks and repeated runs.
+  - Stop condition: Stop and reject code-level attribution if the confidence interval includes no improvement, if gains disappear with frozen memory, or if regressions equal or exceed recoveries in most runs.
+- **Hypothesis:** Patch History improves cumulative evolution performance when enough prior repairs exist, even if it does not improve a short diagnostic ablation.
+  - Baseline: Trace + Memory Inspection without history, compared with full history, outcome-only history, and a relevance-filtered history, using identical initial providers, memories, task streams, trigger events, and model budgets.
+  - Primary metric: Area under the online accuracy curve across episodes, with secondary measurements of installed-patch precision, cumulative regressions, no-patch calibration, and diagnosis cost.
+  - Stop condition: Stop adding history if it fails to improve the primary metric across multiple independent task orders or increases cumulative regressions or diagnosis cost beyond a preregistered tolerance.
+- **Hypothesis:** Localized repair offers a better accuracy–cost–risk trade-off than complete architecture regeneration across diverse starting memory providers.
+  - Baseline: MemScope versus full-provider generation and no-evolution controls, budget-matched for executor calls, diagnostic tokens, patch-generation tokens, validation tasks, wall time, and monetary cost across several structurally distinct memory architectures.
+  - Primary metric: Mean held-out task gain per unit total evolution cost, jointly reported with worst-case regression rate and semantic edit-impact measures.
+  - Stop condition: Stop claiming a general trade-off advantage if MemScope loses on the primary metric for most starting architectures, if its worst-case regression rate exceeds the full-generation baseline, or if gains depend only on DynamicCheatsheet.
+
+## Provenance
+
+- Schema: `paper-summary-v1`
+- Profile: `deep`
+- Provider: `reviewed-candidate`
+- Generated: `2026-10-16T14:31:49.690786+00:00`
+- Document SHA-256: `9418808a1c8d1e667a08ad38d879a0155dda2b2e11c4b4334b8cedf9c89a9d47`
+- Metadata SHA-256: `470c6505405eb9e3642f622a28127adadeacf80defd263936d6335225ff087ae`
+- Blocks: 181
+- Deterministic repair attempts: 0

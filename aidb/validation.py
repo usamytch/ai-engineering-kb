@@ -242,7 +242,7 @@ def _validate_schema(
 
 
 _NUMBER_RE = re.compile(
-    r"(?<![\w.])[+-]?\d+(?:[.,]\d+)?(?:%|(?![\w.%]))"
+    r"(?<![\w.])[+-]?(?:\d+(?:[.,]\d+)?|[.,]\d+)(?:%|(?![\w%]|[.,]\d))"
 )
 
 
@@ -303,7 +303,12 @@ def validate_summary(
                 _fail(reference_path, "quote must be a non-empty string")
             normalized_quote = normalize_evidence_text(quote)
             if normalized_quote not in block_text[block_id]:
-                _fail(reference_path, "quote is not an exact normalized block substring")
+                _fail(
+                    reference_path,
+                    "quote is not an exact normalized block substring; "
+                    f"block_id={block_id!r}; quote={quote!r}; "
+                    f"source block={block_text[block_id]!r}",
+                )
             quoted_texts.append(normalized_quote)
 
         if path.startswith("$.results"):

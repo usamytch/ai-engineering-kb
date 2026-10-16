@@ -1,0 +1,35 @@
+{
+  "abstract": "Multi-hop retrieval-augmented generation (RAG) requires an agent to retrieve evidence for a sequence of dependent sub-questions. When a wrong answer lacks a required passage, the passage may be inaccessible to the retriever, or the agent may have failed to issue a query that would retrieve it. Standard retrieval evaluations conflate these two causes. We study how much apparent retrieval failure is instead caused by search drift: the search no longer tracks an unanswered sub-question. Holding the retriever, corpus, and generation model fixed, we introduce ExecutionRAG, a training-free requirement register that records open sub-questions and their supporting evidence. The register changes search guidance but not evidence access, so each gold passage it recovers certifies that the passage was reachable by the original retriever. On 1,000 MuSiQue questions, the number of wrong answers with unretrieved required evidence falls from 382 to 234 with all-MiniLM-L6-v2 and from 383 to 274 with Qwen3-Embedding-0.6B. These counts correspond to 69% to 44% and 66% to 48% of each system's wrong answers, respectively. Crucially, evidence recovery does not produce a proportional reduction in total error: premature resolutions and abstentions increase as missing-evidence failures decrease. The central finding is therefore a shift in the remaining bottleneck, from guiding search toward required evidence to verifying that the retrieved evidence is sufficient.",
+  "arxiv_id": "2610.21184v1",
+  "authors": [
+    "Jiaqi Wei",
+    "Wenxuan Huang",
+    "Chengdong Xu",
+    "Xiang Zhang",
+    "Wanli Ouyang"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2610.21184v1",
+  "categories": [
+    "cs.CL"
+  ],
+  "comment": "Accepted by DAI 2026 Oral",
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2610.21184v1",
+  "latest_seen_version": 1,
+  "paper_id": "2610.21184",
+  "paper_version_id": "2610.21184v1",
+  "published": "2026-10-15T03:39:25+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "Beyond Retrieval Failure: Understanding Why LLMs Miss Evidence in Multi-Hop RAG",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-10-15T03:39:25+00:00",
+  "url": "https://arxiv.org/abs/2610.21184v1"
+}

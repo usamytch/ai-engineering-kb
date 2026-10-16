@@ -382,6 +382,22 @@ class SummaryPipelineTest(unittest.TestCase):
 
         self.assertEqual(result["results"][0]["result"], output["results"][0]["result"])
 
+    def test_numeric_grounding_accepts_sentence_final_numbers(self):
+        for value in ("2860", "2,860", "50.2", ".229", "+.214"):
+            with self.subTest(value=value):
+                blocks = copy.deepcopy(BLOCKS)
+                blocks[1]["text"] = f"Accuracy improved on TestSet with a measured value of {value}."
+                output = valid_model_output()
+                output["results"][0]["result"] = f"The measured value was {value} in this evaluation."
+                output["results"][0]["evidence"][0]["quote"] = blocks[1]["text"]
+                analyze_document(blocks, {}, FakeProvider(output), SCHEMA)
+
+    def test_rejects_ungrounded_leading_decimal(self):
+        output = valid_model_output()
+        output["results"][0]["result"] = "The measured value was .9999."
+        with self.assertRaisesRegex(SummaryValidationError, "numeric values absent"):
+            analyze_document(BLOCKS, {}, FakeProvider(output), SCHEMA)
+
     def test_rejects_missing_required_deep_section(self):
         output = valid_model_output()
         del output["limitations"]

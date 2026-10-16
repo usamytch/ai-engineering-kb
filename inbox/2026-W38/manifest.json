@@ -1,0 +1,634 @@
+{
+  "batch_id": "2026-W38",
+  "entries": [
+    {
+      "abstract": "",
+      "authors": [
+        "Jacksunwei"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "Google ADK Python releases"
+      ],
+      "id": "url:d79f0c94a46be338e0e0",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-15T18:03:42+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v2.9.1",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-09-15T18:03:42+00:00",
+      "url": "https://github.com/google/adk-python/releases/tag/v2.9.1"
+    },
+    {
+      "abstract": "An agentic society is a collection of AI agents that coordinate autonomously across trust boundaries, on behalf of different principals whose objectives may only partially align. We show experimentally that in agentic societies even honest, competent agents often fail to reach satisfactory outcomes with existing harnesses and messaging primitives, and that faulty or malicious agents can stall collaboration, influence outcomes, and pursue other harmful goals by exploiting vulnerabilities in communication (``speech''). We argue that agentic societies need a \\emph{social harness} for inter-agent interactions, in addition to each agent's \\emph{personal harness}, which manages its private context and communication with its principal. We propose a layered architecture for social harnesses which (i) prevents classes of failures outright, (ii) enables agents to detect invalid messages at runtime, and (iii) supports post-facto investigation and consequences, and highlight directions for future research to realize these capabilities.",
+      "authors": [
+        "Tapan Chugh",
+        "Vidushi Singh",
+        "Krish Jain",
+        "Arvind Krishnamurthy",
+        "Ratul Mahajan"
+      ],
+      "categories": [
+        "cs.MA",
+        "cs.AI",
+        "cs.NI"
+      ],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2609.17527v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2609.17527",
+      "paper_version_id": "2609.17527v1",
+      "published": "2026-09-15T17:57:27+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Agentic Societies Need a Social Harness",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-09-15T17:57:27+00:00",
+      "url": "https://arxiv.org/abs/2609.17527v1"
+    },
+    {
+      "abstract": "We introduce and release ScienceBuddy, an interactive scientific research workspace that brings continually improving scientific agents into researchers' everyday workflows. ScienceBuddy supports researchers in carrying out scientific tasks while transforming their requests, feedback, and execution evidence into tasks and evaluation rubrics for continual learning. At its core is recursive-in-recursive self-improvement, a paradigm that couples harness evolution with model reinforcement learning: the inner recursion improves the harness with the model fixed, while the outer recursion trains the model under the improved harness. Harness evolution shapes training experience, and model learning creates new opportunities for harness adaptation. We present case studies of researcher interaction, harness refinement, and model learning, with the benchmark cases spanning four scientific task families. By releasing ScienceBuddy as a research product, we make this paradigm available to the scientific community and take a step toward discovery intelligence: scientific AI that advances through sustained collaboration with researchers and evolves alongside the research it supports. Website: http://science-buddy.io",
+      "authors": [
+        "Shuhan Xue",
+        "Jianyuan Zhong",
+        "Ziyuan Nan",
+        "Wenbin Li",
+        "Zhaochen Yu",
+        "Jinchao Ding",
+        "Qiang Gao",
+        "Pengyu Zhan",
+        "Yuntong Zhang",
+        "Tian Cheng",
+        "Zhenfei Yin",
+        "Yingcheng Wu",
+        "Ling Yang"
+      ],
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "comment": "Website: http://science-buddy.io, Code: https://github.com/Gen-Verse/ScienceBuddy-RSI",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2609.17523v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2609.17523",
+      "paper_version_id": "2609.17523v1",
+      "published": "2026-09-15T17:55:28+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "ScienceBuddy: Recursive-in-Recursive Self-Improvement for Interactive Scientific Agents",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-09-15T17:55:28+00:00",
+      "url": "https://arxiv.org/abs/2609.17523v1"
+    },
+    {
+      "abstract": "Uncertainty estimation for Vision-Language-Navigation (VLN) models is a critical task since it can help identify ambiguous and unreliable predictions, enabling agents to make safer navigation decisions. As one of the most advanced uncertainty estimation frameworks, conformal prediction (CP) offers a promising approach for uncertainty estimation in VLN. However, given that VLN agent requires a sequence of steps, standard calibration in conformal prediction fails to provide coverage guarantee it promises over a dependent, variable-length VLN episode. To this end, we propose Episode-Normalized Conformal Prediction (ENCP), which rescales a nonconformity score by the policy's residual confidence and calibrates one maximum score per episode. Under exchangeable calibration and test episodes, this construction covers the ground truth at every step with probability at least $1 - α$, while allowing dependence among steps within an episode. Across four VLN policies and three nonconformity scores on R2R and REVERIE dataset, ENCP meets all reported empirical step-coverage targets on the seen-to-unseen evaluation. These results demonstrate that ENCP can provide model-agnostic uncertainty estimates, which might be useful for determining when a VLN agent should defer to a more capable predictor, including human assistance.",
+      "authors": [
+        "Vicky Feliren",
+        "A. Taufiq Asyhari",
+        "Muhamad Risqi U. Saputra"
+      ],
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.RO"
+      ],
+      "comment": "8 pages, 5 figures",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2609.17499v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2609.17499",
+      "paper_version_id": "2609.17499v1",
+      "published": "2026-09-15T17:42:15+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "ENCP: Episode-Normalized Conformal Prediction for Vision-and-Language Navigation",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-09-15T17:42:15+00:00",
+      "url": "https://arxiv.org/abs/2609.17499v1"
+    },
+    {
+      "abstract": "LLM assistants are widely used for daily social advice, yet evaluating their social reasoning in such consultation settings remains challenging since (i) it requires setups where the assistant learns about social situations from subjective user narratives, and (ii) social properties, such as others' intentions, typically lack verifiable ground truth. To address these challenges, we introduce Fuse, a multi-agent simulation framework for studying user-mediated social reasoning. In Fuse, a target agent with a hidden motive interacts with other agents including one representing the user, who then consults the evaluated assistant to infer the target's motive, providing verifiable ground truth by construction. Simulation faithfulness is validated through a human study with 24k annotations. We apply Fuse to 12 LLMs and demonstrate its analytical utility by systematically isolating key factors, showing that (i) user mediation compounds the inherent difficulty of social reasoning; (ii) LLMs exhibit systematic sensitivity to biased user framing; (iii) models can require more details than humans need to reach a correct prediction; and (iv) longer conversations do not always improve performance despite providing opportunities for clarifying questions. We open-source Fuse and a dataset with 21k examples.",
+      "authors": [
+        "Amir Taubenfeld",
+        "Zorik Gekhman",
+        "Avigail Grinstein-Dabush",
+        "Itay Laish",
+        "Ariel Goldstein",
+        "Marian Croak",
+        "Avinatan Hassidim",
+        "Yossi Matias",
+        "Amir Feder"
+      ],
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "comment": "First two authors contributed equally and the order between them was chosen randomly",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2609.17496v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2609.17496",
+      "paper_version_id": "2609.17496v1",
+      "published": "2026-09-15T17:37:29+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Verifiable Social Reasoning for LLM Assistants",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-09-15T17:37:29+00:00",
+      "url": "https://arxiv.org/abs/2609.17496v1"
+    },
+    {
+      "abstract": "Multi-agent systems split a task across a tree of agents and justify the split with folklore: smaller contexts, cleaner separation, parallelism. We ask what the split does to how much of what the leaves discover reaches the root. Model a decomposition as a tree in which an agent handed $b$ items keeps any one with probability $r(b)$. If $r(b)=1/b$, every tree delivers exactly one finding, for every task size and every shape; we verify this to $2.4 \\times 10^{-15}$ on 20,000 random irregular trees. If $r(b)=Cb^{-δ}$, a depth-$k$ tree over $N$ findings yields $C^k N^{1-δ}$: task size and architecture separate, and architecture contributes only $C \\le 1$ per level, so flat is optimal for yield and no arrangement of agents escapes the exponent $δ$. On 600 production deep-research traces $δ= 0.34$ [0.30, 0.38], by three identifications that do not share a failure mode. At a hop where item boundaries come from the tool rather than a text heuristic, and where $b=1$ occurs 550 times, $C = 0.571$ [0.527, 0.615] is observed rather than extrapolated, over 16,082 hops. A tier also costs alignment: on 1,012 annotated multi-agent traces one brief in sixteen goes off-target, giving $μ= 0.939$ and a per-tier penalty $Cμ= 0.536$. Depth is bought on two other axes. The root context is the only state that persists and the only one that cannot cheaply forget, and depth cuts its exposure from $N$ items to $N^{1/k}$. Depth is also cheaper: production flat agents bill as $N^{1.39}$, not the $N^2$ an append-only context predicts, and at equal spend two tiers overtake flat at 403 findings. Across every parameter we measured the model says 0.7% to 11.3% of production sessions are worth delegating, against 7.8% that do. A hazard model on 743,819 production tool calls finds that delegation does not respond to a filling context and is instead an opening move.",
+      "authors": [
+        "Rong He"
+      ],
+      "categories": [
+        "cs.MA",
+        "cs.AI",
+        "cs.DC"
+      ],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2609.17464v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2609.17464",
+      "paper_version_id": "2609.17464v1",
+      "published": "2026-09-15T17:04:09+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Decomposition Buys Integrity, Not Yield",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-09-15T17:04:09+00:00",
+      "url": "https://arxiv.org/abs/2609.17464v1"
+    },
+    {
+      "abstract": "Reliable quantum engineering is essential for turning quantum phenomena into practical technologies. As quantum platforms grow in scale and complexity, their characterization and operation require increasing human effort and coordination. Scientific artificial intelligence agents, which can plan experiments, operate instruments, and analyze observations, offer a promising route towards autonomous quantum engineering. Yet whether current agents can perform reliably in this setting has not been systematically established. To fill this gap, we developed Quantum-Harbor, a virtual laboratory that provides a controlled execution environment for agents to interact with quantum systems. This design enables direct verification of both the actions taken and the conclusions drawn. Building on this framework, we introduce QIQCBench, a benchmark of $49$ expert-authored tasks spanning multiple layers including calibration and control, error correction and compilation, sensing and networking. Across $17$ frontier agentic systems, QIQCBench reveals wide variation in verified performance. These results expose a substantial gap between demonstrating capability and achieving reliable operation, and establish Quantum-Harbor as a foundation for measuring progress towards verified autonomy in quantum engineering.",
+      "authors": [
+        "Naixu Guo",
+        "Changhao Li",
+        "Siyu Cheng",
+        "Qicheng Tang",
+        "Binzhao Luo",
+        "Bikun Li",
+        "Yuxuan Du",
+        "Shihao Ru",
+        "Jiaqi Cai"
+      ],
+      "categories": [
+        "quant-ph",
+        "cs.AI"
+      ],
+      "comment": "10 pages, 4 figures",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2609.17439v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2609.17439",
+      "paper_version_id": "2609.17439v1",
+      "published": "2026-09-15T16:46:08+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Evaluating Verified Autonomy in Quantum Engineering",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-09-15T16:46:08+00:00",
+      "url": "https://arxiv.org/abs/2609.17439v1"
+    },
+    {
+      "abstract": "This paper addresses the challenge of making complex healthcare information more accessible through automated Plain Language Adaptation (PLA). PLA aims to simplify technical medical language, bridging a critical gap between the complexity of healthcare texts and patients' reading comprehension. Recent advances in Large Language Models (LLMs), such as GPT and BART, have opened new possibilities for PLA, especially in zero-shot and few-shot learning contexts where task-specific data is limited. In this work, we leverage the capabilities of LLMs such as GPT-4o-mini, Gemini-1.5-pro, and LLaMA for text simplification. Additionally, we incorporate Mixture-of-Agents (MoA) techniques to enhance adaptability and robustness in PLA tasks. Key contributions include a comparative analysis of prompting strategies, finetuning with QLoRA on different LLMs, and the integration of MoA technique. Our findings demonstrate the effectiveness of LLM-driven PLA, showcasing its potential in making healthcare information more comprehensible while preserving essential content.",
+      "authors": [
+        "Ting-Wei Chang",
+        "Hen-Hsen Huang",
+        "Hsin-Hsi Chen"
+      ],
+      "categories": [
+        "cs.CL"
+      ],
+      "comment": "10 pages, 3 figures, 6 tables. Published in the Proceedings of the Thirty-Third Text REtrieval Conference (TREC 2024), Plain Language Adaptation of Biomedical Abstracts (PLABA) track",
+      "decision": "untriaged",
+      "doi": "10.6028/nist.sp.1329plaba-ntu_nlp",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2609.17398v1",
+      "journal_ref": "Proceedings of the Thirty-Third Text REtrieval Conference (TREC 2024), NIST Special Publication 1329, 2024",
+      "license_url": "",
+      "paper_id": "2609.17398",
+      "paper_version_id": "2609.17398v1",
+      "published": "2026-09-15T16:33:38+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Enhancing Accessibility of Medical Texts through Large Language Model-Driven Plain Language Adaptation",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-09-15T16:33:38+00:00",
+      "url": "https://arxiv.org/abs/2609.17398v1"
+    },
+    {
+      "abstract": "Small differences on coding-agent leaderboards are often read as an ordering of systems. We audit whether the published verdicts support this reading, using 254 SWE-bench submissions across four splits without running models. On Verified, the leading two entries each resolve 396 of 500 instances. The top ten share 285 successes and 51 failures, leaving 164 instances that distinguish their outcomes. Frontier solution sets have median nesting 0.935 against a score-implied baseline of 0.774, indicating strongly shared successes. Scores also depend on the evaluated model-scaffold pair: observed within-model scaffold ranges reach 29.8 percentage points, compared with the 8.8-point spread of the top thirty. Six of nine cell-mean interaction tests remain significant after Holm correction, although this observational design does not identify causal scaffold effects. Exact paired McNemar tests separate none of the 29 adjacent Verified top-thirty pairs at alpha=0.05, while the larger Test split separates 14 of 23. A stated leader-based rule yields three descriptive tiers, or two after Holm correction; non-rejection does not establish equivalence. We release the partition and a five-step audit protocol that profiles shared outcomes, tests paired differences, reports grouping sensitivity, and estimates the instance budget needed for resolution. The results motivate reporting comparison-set-specific resolution and model-scaffold provenance instead of interpreting small aggregate gaps as established rank differences.",
+      "authors": [
+        "Fengshuo Liu",
+        "Ying Liu",
+        "Ruize Sun",
+        "Lie Luo",
+        "Siyuan Guo"
+      ],
+      "categories": [
+        "cs.SE",
+        "cs.AI"
+      ],
+      "comment": "Accepted at ADMA 2026 (International Conference on Advanced Data Mining and Applications), Special Session on Responsible Data Intelligence. Camera-ready version, 15 pages, 4 figures",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2609.17394v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2609.17394",
+      "paper_version_id": "2609.17394v1",
+      "published": "2026-09-15T16:29:12+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Coding Agents Have Converged: Why the SWE-bench Leaderboard Can No Longer Order Its Top Entries, and What to Measure Instead",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-09-15T16:29:12+00:00",
+      "url": "https://arxiv.org/abs/2609.17394v1"
+    },
+    {
+      "abstract": "Model serving is one of the largest cost drivers in production recommender systems. Maximizing its throughput requires navigating a deeply layered hierarchy: GPU kernels, the ML framework computation graph, the model server, and on-demand feature processing -- each demanding specialized domain expertise. Such cross-layer expertise is inherently difficult to acquire, and does not scale with a workload that continuously grows and evolves, leaving significant cost efficiency gains unrealized. While recent AI agents have demonstrated human expert level efficiency in standalone GPU kernel optimization, automated tuning and optimization for the rest of the serving stack remain largely unexplored. We present FlashVector, an agentic system that optimizes performance across all layers of the model serving stack. The key contribution is an extensible framework to generalize the single kernel optimization agent paradigm to heterogeneous technical stacks, and to deliver performance improvements holistically. After deployment in Unity's Vector advertising platform, FlashVector achieved up to 2x throughput increase and up to 1.98x latency speedup on model server, and up to 1.6x throughput increase on feature store. These optimizations were discovered not only at the GPU kernel and computation graph levels, but also across the other components of the model serving stack, such as the model server (NVIDIA Triton's C++ codebase) and the on-demand feature transformation service (Python codebase), demonstrating the extensibility of the framework to more complex system architectures.",
+      "authors": [
+        "Qi Wu",
+        "Lohan Lemire",
+        "Kai Meng",
+        "Zhongmou Cai",
+        "Raphael Bargues",
+        "Petr Zhitnikov",
+        "Zeyuan Cao",
+        "Yao Wang",
+        "Shujun Bian",
+        "Wei Chen",
+        "Sean Sheng"
+      ],
+      "categories": [
+        "cs.AI",
+        "cs.PF"
+      ],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2609.17391v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2609.17391",
+      "paper_version_id": "2609.17391v1",
+      "published": "2026-09-15T16:27:45+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "FlashVector: Agent for Hierarchical Model Serving Stack Optimization",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-09-15T16:27:45+00:00",
+      "url": "https://arxiv.org/abs/2609.17391v1"
+    },
+    {
+      "abstract": "Collision avoidance constraints for autonomous systems are typically formulated in position or velocity space, implicitly reacting to geometric proximity. We propose an alternative paradigm based on the adversarial time-to-collision (aTTC): the minimum time in which an adversary could achieve a collision given its dynamical constraints. By defining a control barrier function (CBF) directly in the time domain, the resulting controller is inherently anticipatory. The evading agent responds not only to whether a pursuer is on a collision course, but to how quickly it could reach one. This formulation enables velocity modulation that exploits the pursuers dynamic limits as an evasive strategy, a behavior not captured by standard distance-based CBFs. Since exact aTTC computation requires integrating the full system dynamics, we employ a lightweight neural network surrogate that admits a real-time quadratic program-based control law. We validate the approach in a 2D comparative study and a 3D multi-agent pursuit-evasion scenario, where the aTTC-based CBF outperforms a higher-order distance-based baseline by more effectively buying time against superior pursuers with a significant speed advantage.",
+      "authors": [
+        "Benedikt Barthel Sorensen",
+        "Mitchell Black",
+        "Erfaun Noorani",
+        "Themistoklis P. Sapsis"
+      ],
+      "categories": [
+        "eess.SY"
+      ],
+      "comment": "Accepted for presentation at the 65th IEEE Conference on Decision and Control (CDC 2026), Honolulu, Hawaii, USA",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2609.17347v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2609.17347",
+      "paper_version_id": "2609.17347v1",
+      "published": "2026-09-15T15:47:46+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "A Time-to-Collision Barrier Function Approach to Collision Avoidance for Stochastic Systems",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-09-15T15:47:46+00:00",
+      "url": "https://arxiv.org/abs/2609.17347v1"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "TQCB"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:739c7bab1386d6688f5e",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-12T18:42:01+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.29.1rc0",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-12T18:42:01+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.29.1rc0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "BugenZhao"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:47805f91d098078f11df",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-11T08:30:05+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "proto-v0.1.0",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-11T08:30:05+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/proto-v0.1.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "khluu"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:448701fe99745f6407d1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-10T23:53:36+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.29.0",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-10T23:53:36+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.29.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "GWeale"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "Google ADK Python releases"
+      ],
+      "id": "url:9601bd3ea0a1c6cc9c46",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-10T21:22:43+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v2.9.0",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-09-10T21:22:43+00:00",
+      "url": "https://github.com/google/adk-python/releases/tag/v2.9.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "seratch"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "OpenAI Agents SDK releases"
+      ],
+      "id": "url:800d4f28f9ee69480c3c",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-09T12:36:10+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.22.2",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-09-09T12:36:10+00:00",
+      "url": "https://github.com/openai/openai-agents-python/releases/tag/v0.22.2"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "seratch"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "OpenAI Agents SDK releases"
+      ],
+      "id": "url:52cef0c70f5575cec8d1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-08T09:18:00+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.22.1",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-09-08T09:18:00+00:00",
+      "url": "https://github.com/openai/openai-agents-python/releases/tag/v0.22.1"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "ZJY0516"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:42f282bec9bac1dc708e",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-08T08:34:20+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.29.0rc6",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-08T08:34:20+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.29.0rc6"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "ZJY0516"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:f386999f3e701a7d7ce7",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-09-08T08:20:33+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.29.0rc5",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-09-08T08:20:33+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.29.0rc5"
+    }
+  ],
+  "errors": [],
+  "generated_at": "2026-09-16T07:18:15+00:00",
+  "schema_version": 1
+}

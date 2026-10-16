@@ -1,0 +1,36 @@
+{
+  "abstract": "Agents that answer questions from compressed or retrieved memory must recognize when the evidence a query needs is no longer in memory. Benchmarks for this task usually create insufficient-evidence examples by deleting supporting passages. We show that this construction leaks the label through memory size: on MuSiQue, a classifier that only counts paragraphs reaches an area under the ROC curve (AUROC) of $0.979$ for detecting unsafe memory, higher than the lexical estimator we initially evaluated. We propose a size-matched construction that provably removes this shortcut, and use it to study MemSafe, an estimator that cross-encodes the query with each memory unit and aggregates the units with a set transformer. Across three multi-hop question answering datasets and five seeds, MemSafe reaches $0.968$ and $0.983$ AUROC on MuSiQue and HotpotQA, $0.26$ to $0.39$ above a lexical baseline, while the third dataset, 2WikiMultiHopQA, is saturated. A frozen pretrained cross-encoder with a logistic head already closes $41\\%$ of the MuSiQue gap between the lexical baseline and MemSafe. At the same time, MemSafe degrades more than a weak baseline on the unanswerable questions released with MuSiQue, reaches only $0.639$ AUROC on SQuAD~2.0, and needs several thousand clinical training examples before it outperforms a feature-based estimator. Used as a gate for a 7B reader, it reduces the error rate on answered questions from $0.850$ to $0.631$ at $5\\%$ coverage, outperforming both reader confidence and, on average, the ground-truth integrity label, although a 7B LLM judge is the better gate at $10\\%$ coverage. These results indicate that the way insufficient evidence is constructed matters as much as the estimator that detects it.",
+  "arxiv_id": "2609.32269v1",
+  "authors": [
+    "Joyanta Jyoti Mondal",
+    "Md. Shifatul Ahsan Apurba",
+    "Mridul Banik",
+    "Md Masud Al Mahmud",
+    "Ibne Farabi Shihab"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2609.32269v1",
+  "categories": [
+    "cs.CL",
+    "cs.LG"
+  ],
+  "comment": "24 pages, 10 figures",
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2609.32269v1",
+  "latest_seen_version": 1,
+  "paper_id": "2609.32269",
+  "paper_version_id": "2609.32269v1",
+  "published": "2026-09-26T05:53:10+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "Before Answering: Evidence Sufficiency under Size-Matched Memory Construction",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-09-26T05:53:10+00:00",
+  "url": "https://arxiv.org/abs/2609.32269v1"
+}

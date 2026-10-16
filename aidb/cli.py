@@ -30,7 +30,7 @@ from aidb.weekly import (
     render_week_index,
     write_week_batch,
 )
-from scripts.refresh_inbox import collect_entries
+from scripts.refresh_inbox import collect_entries, parse_since
 
 
 def _default_root() -> Path:
@@ -63,7 +63,10 @@ def build_parser() -> argparse.ArgumentParser:
     start = commands.add_parser("week-start", help="collect feeds into an ISO-week inbox folder")
     start.add_argument("--week", default=current_iso_week())
     start.add_argument("--days", type=int, default=8)
-    start.add_argument("--limit-per-feed", type=int, default=10)
+    start.add_argument("--limit-per-feed", type=int, default=0, help="0 means unlimited")
+    start.add_argument("--since", type=parse_since, help="inclusive UTC start date or timestamp")
+    start.add_argument("--page-size", type=int, default=200)
+    start.add_argument("--cache-dir", type=Path, help="response cache for this discovery run")
     start.add_argument("--network-timeout", type=float, default=20.0)
     start.add_argument("--dry-run", action="store_true")
 
@@ -155,23 +158,28 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def _week_start(root: Path, args: argparse.Namespace) -> int:
+    report: dict = {}
     now, entries, errors, feed_count = collect_entries(
         root,
         days=args.days,
         limit_per_feed=args.limit_per_feed,
         timeout=args.network_timeout,
+        since=args.since,
+        page_size=args.page_size,
+        cache_dir=args.cache_dir,
+        report=report,
     )
     if args.dry_run:
         candidates = merge_candidates(Candidate.from_entry(entry) for entry in entries)
-        print(render_week_index(args.week, candidates, errors, now))
+        print(render_week_index(args.week, candidates, errors, now, discovery=report))
     else:
-        batch, discovered = write_week_batch(root, entries, errors, now, args.week)
+        batch, discovered = write_week_batch(root, entries, errors, now, args.week, discovery=report)
         print(
             f"Wrote {batch.relative_to(root)}: discovered={discovered} "
             f"unique={len(merge_candidates(Candidate.from_entry(entry) for entry in entries))} "
             f"feed_errors={len(errors)}"
         )
-    return 0 if entries or len(errors) < feed_count else 1
+    return 1 if errors else 0
 
 
 def _week_status(root: Path, args: argparse.Namespace) -> int:

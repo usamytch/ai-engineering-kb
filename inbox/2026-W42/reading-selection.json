@@ -1,0 +1,22 @@
+{
+  "status": "full-text-analyzed-awaiting-human-review",
+  "read_at": "2026-10-16",
+  "selection_basis": "Editorial selection after reading these abstracts; relevance to AIDB memory, RAG, evaluation and agent reliability. This is not an exhaustive review of the discovery corpus.",
+  "papers": [
+    {"id": "2610.21184v1", "reason": "Separate query-planning failures from retrieval failures and evidence sufficiency."},
+    {"id": "2609.33226v1", "reason": "Compare raw-history retrieval with lossy memory construction."},
+    {"id": "2609.32658v1", "reason": "Resolve updates before multi-hop evidence selection."},
+    {"id": "2609.33517v1", "reason": "Admit or reject stale memory when an agent returns after a pause."},
+    {"id": "2609.23570v1", "reason": "Evaluate memory with executable downstream coding outcomes."},
+    {"id": "2609.32961v1", "reason": "Measure compression cost, latency and task success together."},
+    {"id": "2610.20927v1", "reason": "Check source support for decisions introduced by context compaction."},
+    {"id": "2610.21170v1", "reason": "Use traces and runtime memory state to localize architecture repairs."},
+    {"id": "2610.20022v1", "reason": "Evaluate interaction between personal memory and procedural skills."},
+    {"id": "2609.32574v1", "reason": "Measure implicit multimodal evidence, retrieval noise and refusal."},
+    {"id": "2609.32590v1", "reason": "Isolate memory delivery from retrieval with matched evidence."},
+    {"id": "2609.32269v1", "reason": "Inspect evidence-sufficiency benchmark leakage and out-of-domain limits."},
+    {"id": "2608.19564v2", "reason": "Test remembering, verification, clarification and actual tool choices."},
+    {"id": "2607.28103v2", "reason": "Assess memory-injection defenses, efficiency and transfer limits."},
+    {"id": "2609.31342v1", "reason": "Distinguish relevant historical documents from currently valid evidence."}
+  ]
+}

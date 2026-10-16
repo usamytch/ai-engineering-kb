@@ -1,0 +1,594 @@
+{
+  "aidb_assessment": {
+    "confidence": "high",
+    "novelty": "High as a benchmark contribution: it isolates recurring peripheral visual and acoustic cues, includes ambient audio, separates preservation, retrieval, and evidence-use interventions, and jointly evaluates memory use and refusal.",
+    "rationale": "Adopt as a targeted diagnostic benchmark, not as a standalone deployment-readiness measure. The controlled comparisons, oracle conditions, retrieval metrics, human checks, and explicit negative results support actionable diagnosis. Any adoption should preserve separate reporting by task, evidence type, modality, token cost, and refusal behavior; a single aggregate score would conceal the principal trade-offs.",
+    "recommended_action": "adopt",
+    "usefulness": "High for diagnosing multimodal memory pipelines and testing selective cue retention. Lower for estimating real-world user benefit because histories are synthetic, questions are multiple choice, users are few, and the ethical acceptability of retaining incidental cues is outside benchmark accuracy."
+  },
+  "claims": [
+    {
+      "claim": "CUE-Mem specifically operationalizes implicit multimodal memory as recurring, unstated background evidence rather than ordinary semantic inference from explicit text.",
+      "evidence": [
+        {
+          "block_id": "b00148-11b9ae12b7",
+          "quote": "Implicit: the target is never stated and must instead be inferred from a peripheral visual object or an ambient, non-speech sound."
+        },
+        {
+          "block_id": "b00150-175d75e205",
+          "quote": "“implicit” does not mean that the answer requires ordinary semantic inference from an explicit sentence."
+        }
+      ]
+    },
+    {
+      "claim": "The benchmark spans four complementary memory capabilities and includes both explicit and implicit instances.",
+      "evidence": [
+        {
+          "block_id": "b00053-d3ea0554fa",
+          "quote": "CUE-Mem evaluates long-term user memory through four multiple-choice tasks: Entity Recall, Long Pattern, Personalized Recommendation, and Answer Refusal"
+        },
+        {
+          "block_id": "b00053-d3ea0554fa",
+          "quote": "Each task includes explicit and implicit instances."
+        }
+      ]
+    },
+    {
+      "claim": "The main technical conclusion is that implicit-memory failure is distributed across preservation, retrieval, and evidence use rather than attributable to question answerability alone.",
+      "evidence": [
+        {
+          "block_id": "b00102-079d1562b0",
+          "quote": "Cue-aware textualization narrows this gap at growing token cost."
+        },
+        {
+          "block_id": "b00102-079d1562b0",
+          "quote": "Native multimodal access preserves missing information, but gains depend on the backbone"
+        },
+        {
+          "block_id": "b00102-079d1562b0",
+          "quote": "multimodal indexing adds noise."
+        }
+      ]
+    },
+    {
+      "claim": "The dataset underwent substantial automatic and human filtering, with agreement reported for three review dimensions.",
+      "evidence": [
+        {
+          "block_id": "b00046-8731129ee3",
+          "quote": "Together, these checks remove 42.80% of the initial samples."
+        },
+        {
+          "block_id": "b00048-6179b13a0d",
+          "quote": "The average Fleiss’ κ across the three dimensions is 0.73."
+        },
+        {
+          "block_id": "b00048-6179b13a0d",
+          "quote": "Human review removes an additional 22.10% of the remaining samples."
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "ablations": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00092-292a5bb8e7",
+            "quote": "GPT-5.4 generates Brief, Medium, and Detailed captions through prompts that increasingly emphasize peripheral details."
+          }
+        ],
+        "text": "Image textualization compares Brief, Medium, and Detailed captions that progressively preserve peripheral content."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00092-292a5bb8e7",
+            "quote": "For audio, ASR uses Qwen3-ASR-1.7B (Shi et al. 2026); Hint uses Gemini 3.1 Pro to caption mixed speech and background audio; Split separates them"
+          }
+        ],
+        "text": "Audio textualization compares ASR, mixed-waveform Hint, and Split speech/background representations."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00098-eb66027580",
+            "quote": "We test native multimodal access during indexing and evidence use in our RAG-based system"
+          },
+          {
+            "block_id": "b00307-f67ce71dcb",
+            "quote": "Text-Index embeds one textualized dialogue round, including available image and audio captions."
+          },
+          {
+            "block_id": "b00307-f67ce71dcb",
+            "quote": "MM-Use instead restores the original images and audio associated with the retrieved turn"
+          }
+        ],
+        "text": "Native RAG uses a controlled matrix crossing Text-Index or MM-Index with Text-Use or MM-Use."
+      }
+    ],
+    "baselines": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00080-40a4f511d3",
+            "quote": "Systems include Full Memory, NaiveRAG (Lewis et al. 2020), Generative Agents (Park et al. 2023), Reflexion (Shinn et al. 2023), MemGPT (Packer et al. 2023), A-Mem (Xu et al. 2025b), and MemoryOS (Kang et al. 2025)."
+          },
+          {
+            "block_id": "b00078-618abef58e",
+            "quote": "No Context omits the history, whereas Oracle Evidence supplies the source text prompts used to synthesize multimodal clues."
+          }
+        ],
+        "text": "No Context, Oracle Evidence, Full Memory, NaiveRAG, Generative Agents, Reflexion, MemGPT, A-Mem, MemoryOS, and human full-history/oracle conditions."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00082-64c3ccbe5b",
+            "quote": "We use Qwen3.6-35B-A3B (Yang et al. 2025) and GPT-5.4-mini (Singh et al. 2025) for textualized memory"
+          },
+          {
+            "block_id": "b00082-64c3ccbe5b",
+            "quote": "Qwen3-Omni-30B-A3B-Instruct (Xu et al. 2025a) and MiniCPM-o-4.5 (Cui et al. 2026) for native multimodal memory"
+          }
+        ],
+        "text": "Textualized answer backbones are Qwen3.6-35B-A3B and GPT-5.4-mini; native multimodal backbones are Qwen3-Omni-30B-A3B-Instruct and MiniCPM-o-4.5."
+      }
+    ],
+    "datasets": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00067-0274031f07",
+            "quote": "CUE-Mem contains 20 synthetic users, 648 sessions, and 5,798 dialogue turns, including 496 images and 2,228 audio clips."
+          },
+          {
+            "block_id": "b00067-0274031f07",
+            "quote": "The benchmark contains 2,674 QA pairs: 1,401 explicit and 1,273 implicit."
+          }
+        ],
+        "text": "CUE-Mem: synthetic Chinese multi-session text-image-audio conversations for 20 users, containing 648 sessions, 5,798 turns, 496 images, 2,228 audio clips, and 2,674 QA pairs."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00032-966bd71b56",
+            "quote": "We initialize each synthetic user with a persona seed from ALOE (Wu et al. 2025) or PersonaHub (Ge et al. 2024)."
+          },
+          {
+            "block_id": "b00034-bbb9667752",
+            "quote": "we construct an ambient-sound seed pool from ESC-50 (Piczak 2015) and FSD50K (Fonseca et al. 2021)."
+          }
+        ],
+        "text": "Profile seeds come from ALOE or PersonaHub; ambient-sound categories are derived from ESC-50 and FSD50K."
+      }
+    ],
+    "metrics": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00078-618abef58e",
+            "quote": "We report accuracy under explicit and implicit evidence settings and define EI-Gap as Accexplicit−Accimplicit"
+          },
+          {
+            "block_id": "b00078-618abef58e",
+            "quote": "Memory Avg. averages Entity Recall, Long Pattern, and Personalized Recommendation; Answer Refusal measures calibration under insufficient evidence and is reported separately."
+          }
+        ],
+        "text": "Accuracy by explicitness and task; EI-Gap is explicit accuracy minus implicit accuracy. Memory Avg. macro-averages Entity Recall, Long Pattern, and Personalized Recommendation, with Answer Refusal reported separately."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00353-51062cdfcc",
+            "quote": "Table 16 gives the complete Recall@k and Precision@k breakdown behind the RQ3 retrieval analysis."
+          },
+          {
+            "block_id": "b00322-b56d30d29a",
+            "quote": "We report risk differences in percentage points as effect sizes, two-sided bootstrap-tail p-values, and Holm-adjusted p-values"
+          }
+        ],
+        "text": "Retrieval evaluation reports Recall@k and Precision@k; statistical analysis uses percentage-point risk differences, bootstrap intervals, and Holm-adjusted p-values."
+      }
+    ],
+    "negative_results": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00094-68f9043a72",
+            "quote": "Meanwhile, implicit Answer Refusal drops by 16.9 points for images."
+          }
+        ],
+        "text": "Better cue preservation can harm refusal calibration: detailed image captions reduce implicit Answer Refusal by 16.9 points."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00099-03960baf96",
+            "quote": "For MiniCPM, it reduces performance by 8.4 and 5.1 points, respectively."
+          }
+        ],
+        "text": "Native multimodal evidence use is not universally beneficial and reduces MiniCPM performance under both tested indices."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00101-c64ee7b7d6",
+            "quote": "Holding evidence use fixed, MM-Index lowers implicit Memory Avg. for both backbones."
+          }
+        ],
+        "text": "Multimodal indexing lowers implicit Memory Avg. for both native backbones under the tested settings."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00365-06ffdaa02a",
+            "quote": "Recurrence count and temporal spacing were not independently randomized"
+          },
+          {
+            "block_id": "b00365-06ffdaa02a",
+            "quote": "no matched evaluation was run in which the same question was answered after one versus several occurrences."
+          }
+        ],
+        "text": "Cue recurrence was not causally ablated; no matched one-versus-many-occurrence evaluation was performed."
+      }
+    ]
+  },
+  "executive_summary": "CUE-Mem is a synthetic Chinese text-image-audio benchmark for memories implied by recurring peripheral objects and ambient sounds. Its controlled experiments convincingly expose three distinct bottlenecks: cue preservation during textualization, retrieval amid noisy histories, and evidence integration by the answer model. Detailed captions and separated background audio substantially improve implicit-memory accuracy, but increase token cost and can weaken refusal behavior. Native multimodal access helps one backbone and harms another; multimodal indexing raises recall while sharply reducing precision. The benchmark is useful for diagnosing memory pipelines, but its synthetic users, unpaired evidence conditions, multiple-choice format, narrow language coverage, and incomplete full-scale repeated runs limit claims about deployment behavior.",
+  "labels": {
+    "ablations": "Ablations",
+    "action_adopt": "adopt",
+    "action_read": "read",
+    "action_reject": "reject",
+    "action_watch": "watch",
+    "aidb_assessment": "AIDB assessment",
+    "assumptions": "Assumptions",
+    "available_artifacts": "Available artifacts",
+    "baseline": "Baseline",
+    "baselines": "Baselines",
+    "blocks": "Blocks",
+    "claims": "Main claims",
+    "confidence": "Confidence",
+    "confidence_high": "high",
+    "confidence_low": "low",
+    "confidence_medium": "medium",
+    "context": "Context",
+    "datasets": "Datasets",
+    "document_sha256": "Document SHA-256",
+    "evaluation": "Experimental evaluation",
+    "evidence": "Evidence",
+    "executive_summary": "Executive summary",
+    "generated": "Generated",
+    "hypothesis": "Hypothesis",
+    "importance": "Why it matters",
+    "key_components": "Key components",
+    "limitations": "Limitations",
+    "metadata_sha256": "Metadata SHA-256",
+    "method": "Method",
+    "metrics": "Metrics",
+    "missing_pieces": "Missing pieces",
+    "negative_results": "Negative results",
+    "novelty": "Novelty",
+    "open_questions": "Open questions",
+    "primary_metric": "Primary metric",
+    "problem": "Problem",
+    "profile": "Profile",
+    "proposed_experiments": "Proposed AIDB experiments",
+    "provenance": "Provenance",
+    "provider": "Provider",
+    "rationale": "Rationale",
+    "recommended_action": "Recommended action",
+    "repair_count": "Deterministic repair attempts",
+    "reproducibility": "Reproducibility",
+    "results": "Results",
+    "schema": "Schema",
+    "scope": "Scope",
+    "statement": "Statement",
+    "status": "Status",
+    "status_partial": "partial",
+    "status_strong": "strong",
+    "status_unknown": "unknown",
+    "status_weak": "weak",
+    "stop_condition": "Stop condition",
+    "uncertainties": "Uncertainties",
+    "usefulness": "Usefulness"
+  },
+  "language": {
+    "code": "en",
+    "name": "English"
+  },
+  "limitations": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00403-231abe18f8",
+          "quote": "Its profiles, dialogues, images, and speech may contain generation artifacts, overly coherent personalities, or repeated visual and acoustic patterns"
+        },
+        {
+          "block_id": "b00403-231abe18f8",
+          "quote": "CUE-Mem does not evaluate preference drift, contradictory disclosures, corrections, or forgetting over longer interaction."
+        }
+      ],
+      "limitation": "The synthetic, deliberately stable histories may contain generation artifacts and do not test preference drift, contradictions, corrections, or long-term forgetting."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00405-93ed1cdb85",
+          "quote": "CUE-Mem contains 20 synthetic users and Chinese multi-session conversations covering the six profile domains used in construction."
+        },
+        {
+          "block_id": "b00405-93ed1cdb85",
+          "quote": "Its multimodal scope is text, shared images, and voice messages with environmental audio."
+        }
+      ],
+      "limitation": "Coverage is narrow: 20 synthetic users, Chinese conversations, and only text, shared images, and voice messages with environmental audio."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00407-d81f408569",
+          "quote": "These are modality-specific constructions, not perceptually matched difficulty levels."
+        },
+        {
+          "block_id": "b00407-d81f408569",
+          "quote": "Explicit– implicit comparisons should therefore be interpreted at the aggregate condition level rather than as paired counterfactual effects."
+        }
+      ],
+      "limitation": "Explicit and implicit cues are not perceptually matched or paired counterfactuals, so EI-Gap is an aggregate condition difference rather than a clean per-example causal effect."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00409-ccac906543",
+          "quote": "All four tasks use four-way single-answer questions."
+        },
+        {
+          "block_id": "b00409-ccac906543",
+          "quote": "does not measure how systems form, revise, explain, or abstain from memories in open-ended conversation."
+        }
+      ],
+      "limitation": "Four-way multiple choice does not measure open-ended memory formation, revision, explanation, or abstention in conversation."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00409-ccac906543",
+          "quote": "Performance also depends on the evaluated answer backbones, seven memory systems, captioning granularities, audio textualizations, embedding model, and retrieval cutoffs."
+        },
+        {
+          "block_id": "b00409-ccac906543",
+          "quote": "neither exhausts possible native multimodal memory designs."
+        }
+      ],
+      "limitation": "The design space is not exhaustive: results depend on selected backbones, memory implementations, textualizers, embedding model, and retrieval cutoffs."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00396-03ef7f2333",
+          "quote": "Recurrence does not by itself make such an inference accurate or consented to."
+        },
+        {
+          "block_id": "b00396-03ef7f2333",
+          "quote": "strong benchmark performance should not be treated as permission to retain or profile background information from real interactions."
+        }
+      ],
+      "limitation": "Implicit-memory capability raises privacy and consent risks because incidental background information may be retained or profiled without active disclosure."
+    }
+  ],
+  "method": {
+    "assumptions": [
+      "Repeated synthetic cues constitute valid longitudinal evidence for a stable profile attribute.",
+      "Multiple-choice accuracy is an adequate controlled proxy for memory recovery, aggregation, application, and refusal.",
+      "Automatic similarity thresholds and unanimous human review sufficiently control leakage, recognizability, identity consistency, and answer support.",
+      "Aggregate explicit and implicit conditions are comparable enough for EI-Gap analysis even though examples are not one-to-one counterparts.",
+      "Oracle source text is a useful ceiling for question answerability after the target information has been cleanly preserved."
+    ],
+    "key_components": [
+      "Operational evidence taxonomy: explicit targets are stated or foregrounded; implicit targets are unstated and carried by peripheral imagery or ambient non-speech sound.",
+      "Three-stage construction: profile and event scripts, multimodal dialogue synthesis, then automatic and human review.",
+      "Four tasks separate fact recovery, cross-session aggregation, application to recommendations, and calibrated refusal.",
+      "Textualized evaluation compares full history, retrieval-based and structured memory systems against no-context and oracle-evidence controls.",
+      "Cue-preservation interventions vary image-caption granularity and audio representation among speech-only, mixed-waveform hinting, and separate speech/background descriptions.",
+      "Native evaluation crosses text versus multimodal indexing with text versus original-media evidence use, helping distinguish retrieval from evidence-integration failures."
+    ],
+    "overview": "The authors generate structured synthetic profiles, assign attributes to explicit or implicit evidence plans, distribute recurring cues across dated sessions, synthesize dialogue and media, and apply automatic plus human quality control. They then construct four-way questions for entity recall, longitudinal pattern aggregation, personalized recommendation, and refusal. Experiments compare textualized memory systems, caption and audio-textualization variants, and a controlled native-multimodal RAG matrix that independently varies index modality and evidence-use modality."
+  },
+  "open_questions": [
+    "Can a matched counterfactual dataset express the same target memory with controlled explicit and implicit evidence while equalizing perceptual salience and question wording?",
+    "Can selective captioning or event-triggered retention recover peripheral cues without the token growth and refusal degradation of uniformly detailed captions?",
+    "Would temporal or entity-aware multimodal consolidation outperform independent item retrieval while maintaining precision?",
+    "How do results change with natural, consented user histories containing drift, corrections, contradictions, and genuinely ambiguous cues?",
+    "Can confidence calibration distinguish repeated but weak evidence from unsupported inference in open-ended responses?",
+    "Do full-dataset repeated runs preserve the reported system ordering and backbone-dependent native-access effects?"
+  ],
+  "problem": {
+    "importance": "A system that misses such evidence cannot personalize reliably, while a system that converts weak incidental cues into durable claims may over-infer sensitive facts. The paper therefore treats both successful memory use and refusal under insufficient evidence as necessary capabilities.",
+    "scope": "The study evaluates synthetic Chinese multi-session histories containing text, images, and voice messages. Implicit evidence is restricted to recurring peripheral visual objects and ambient non-speech audio; unstated information inferred from text alone is excluded.",
+    "statement": "Long-term assistants must recover user information that was never directly stated but is repeatedly implied by peripheral visual objects or non-speech sounds. Existing evaluations emphasize textual or foregrounded evidence and do not adequately isolate this failure mode."
+  },
+  "proposed_experiments": [
+    {
+      "baseline": "Uniform Detailed captions and the paper’s Medium-caption textualized RAG configuration.",
+      "hypothesis": "Selective cue extraction conditioned on recurrence and uncertainty matches uniformly Detailed captions on implicit-memory accuracy while reducing input cost and preserving refusal calibration.",
+      "primary_metric": "Implicit Memory Avg. jointly reported with retrieved tokens per question and implicit Answer Refusal accuracy.",
+      "stop_condition": "Stop if the selective method does not reach the Detailed-caption implicit Memory Avg., fails to reduce retrieved tokens by at least 30%, or lowers implicit Answer Refusal accuracy relative to Medium captions."
+    },
+    {
+      "baseline": "The paper’s unified MM-Index with the same embedding backbone, query construction, and retrieval cutoff.",
+      "hypothesis": "Entity- and event-linked multimodal consolidation improves implicit retrieval precision without sacrificing the recall advantage of multimodal indexing.",
+      "primary_metric": "Implicit retrieval F1 at the fixed cutoff, with downstream implicit Memory Avg. as a required secondary check.",
+      "stop_condition": "Stop if retrieval F1 does not improve on a held-out split or if downstream implicit Memory Avg. decreases under either native answer backbone."
+    },
+    {
+      "baseline": "Matched histories containing one target occurrence, with identical questions, distractors, total history length, and non-target content.",
+      "hypothesis": "Increasing independently spaced cue recurrence improves Long Pattern accuracy only up to a saturation point and may increase unsupported inference.",
+      "primary_metric": "Long Pattern accuracy as a function of one, two, three, and five occurrences, accompanied by Answer Refusal false-claim rate.",
+      "stop_condition": "Stop after confidence intervals show no practically meaningful gain across two successive recurrence levels, or if gains are accompanied by a larger increase in false claims on matched refusal items."
+    }
+  ],
+  "provenance": {
+    "block_count": 409,
+    "document_sha256": "093b9683f9c88fba9c1106cfb82238519e456d61be3e04664d00e9e0750970cd",
+    "generated_at": "2026-10-16T14:20:12.931491+00:00",
+    "metadata_sha256": "38fd3d845c73debfe414f2e5eb8dacb0b37e702da0127fa23185b2afcaf42f17",
+    "profile": "deep",
+    "provider": "codex-exec:configured-default",
+    "repair_count": 0,
+    "schema_version": "paper-summary-v1"
+  },
+  "reproducibility": {
+    "artifacts": [
+      "The metadata identifies an open-source repository and a dataset location.",
+      "Programs are described for construction, synthesis, textualization, QA generation, clue verification, evaluation, retrieval analysis, token analysis, statistics, and table/figure generation.",
+      "Experiment configurations record models, memory systems, textualization conditions, seeds, and expected input/output structure.",
+      "Checkpointing and resume support are described for expensive stages."
+    ],
+    "assessment": "The package description is unusually detailed and includes checked-in configurations and end-to-end stages, but exact replication is blocked by missing caption-generation provenance, absent ASR decoding parameters, proprietary model-service dependencies, and incomplete repeated-run provenance. The reported robustness audit covers only a fixed subset rather than every full-scale configuration.",
+    "missing": [
+      "The transferred full RQ1–RQ3 result trees contain only one identified artifact per configuration, not three complete independent runs.",
+      "Distinct prompts and generation logs for Brief, Medium, and Detailed image captions are absent.",
+      "The Qwen3-ASR decoding command and parameters are absent.",
+      "Per-reason filtering counts were not preserved in the transferred snapshot.",
+      "Reproduction requires machine-specific paths, API credentials, and access to corresponding model services."
+    ],
+    "status": "partial"
+  },
+  "results": [
+    {
+      "context": "This is the strongest evidence that answerability is not the sole bottleneck. Human readers of the full textualized histories score similarly on explicit and implicit samples, although that human comparison does not isolate retrieval from other human advantages.",
+      "evidence": [
+        {
+          "block_id": "b00086-069a8f538b",
+          "quote": "The best implicit Memory Avg. reaches only 38.5 with Qwen3.6-35B-A3B and 41.9 with GPT-5.4-mini, compared with 80.8 and 78.4 for Oracle Evidence."
+        },
+        {
+          "block_id": "b00086-069a8f538b",
+          "quote": "Humans reading full textualized histories achieve 83.2 and 82.8 on explicit and implicit samples"
+        }
+      ],
+      "result": "Textualized systems remain far below clean oracle evidence: the best implicit Memory Avg. is 38.5 for Qwen3.6-35B-A3B and 41.9 for GPT-5.4-mini, versus 80.8 and 78.4 with Oracle Evidence."
+    },
+    {
+      "context": "The controlled representation changes support a preservation bottleneck for peripheral image details and background sounds. The gains vary by task, so improved encoding is necessary but not sufficient.",
+      "evidence": [
+        {
+          "block_id": "b00093-083472e2f0",
+          "quote": "Detailed image captions raise implicit Memory Avg. from 26.9 to 46.4 and reduce the EI-Gap from 35.9 to 27.1 points."
+        },
+        {
+          "block_id": "b00093-083472e2f0",
+          "quote": "Audio splitting similarly raises implicit Memory Avg. from 40.1 to 51.0 and reduces the gap from 29.4 to 19.4 points."
+        }
+      ],
+      "result": "Cue-aware textualization improves implicit memory without closing the gap: Detailed image captions move implicit Memory Avg. from 26.9 to 46.4 and EI-Gap from 35.9 to 27.1 points; audio splitting moves implicit Memory Avg. from 40.1 to 51.0 and EI-Gap from 29.4 to 19.4 points."
+    },
+    {
+      "context": "The asymmetry favors richer captions for implicit evidence, but the cost increase and smaller explicit gain argue for selective cue retention rather than uniformly verbose captioning.",
+      "evidence": [
+        {
+          "block_id": "b00095-b859dc136c",
+          "quote": "increase retrieved input from 1.9k tokens per QA with Medium captions to 7.0k."
+        },
+        {
+          "block_id": "b00095-b859dc136c",
+          "quote": "implicit accuracy rises from 53.3 to 62.2, while explicit accuracy increases only from 70.9 to 72.4."
+        }
+      ],
+      "result": "The image-preservation gain has a steep efficiency cost: retrieved input rises from 1.9k to 7.0k tokens per QA, while implicit accuracy rises from 53.3 to 62.2 and explicit accuracy from 70.9 to 72.4."
+    },
+    {
+      "context": "This controlled index/use comparison rejects a general claim that restoring raw media automatically fixes textualization loss. The answer backbone must still interpret and integrate the localized evidence.",
+      "evidence": [
+        {
+          "block_id": "b00099-03960baf96",
+          "quote": "MM-Use improves Qwen’s implicit Memory Avg. by 2.2 points with Text-Index and 7.4 points with MM-Index."
+        },
+        {
+          "block_id": "b00099-03960baf96",
+          "quote": "For MiniCPM, it reduces performance by 8.4 and 5.1 points, respectively."
+        }
+      ],
+      "result": "Native multimodal evidence use is backbone-dependent: with a fixed index it improves Qwen implicit Memory Avg. by 2.2 or 7.4 points, but reduces MiniCPM performance by 8.4 or 5.1 points."
+    },
+    {
+      "context": "This provides a retrieval-level mechanism for why multimodal indexing does not consistently improve end-task accuracy. The index surfaces weak cues but also expands distractor exposure.",
+      "evidence": [
+        {
+          "block_id": "b00353-51062cdfcc",
+          "quote": "Its largest implicit-recall advantage is at k=25 (29.7 versus 23.1)."
+        },
+        {
+          "block_id": "b00353-51062cdfcc",
+          "quote": "implicit Precision@10 is 8.6 for the multimodal index versus 16.2 for the text index."
+        }
+      ],
+      "result": "Multimodal indexing recovers more implicit clues but introduces substantial noise: implicit Recall@25 is 29.7 versus 23.1, whereas implicit Precision@10 is 8.6 versus 16.2 for the text index."
+    }
+  ],
+  "title": "CUE-Mem: Benchmarking Long-Term User Memory via Implicit Cues in Multimodal Conversations",
+  "uncertainties": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00011-eb0beb8522",
+          "quote": "The two conditions enable aggregate comparison, but individual examples are not constructed as one-to-one counterparts."
+        },
+        {
+          "block_id": "b00407-d81f408569",
+          "quote": "These are modality-specific constructions, not perceptually matched difficulty levels."
+        }
+      ],
+      "uncertainty": "Whether the explicit–implicit gap reflects implicitness itself, unmatched perceptual difficulty, or differences in the independently constructed question sets.",
+      "why_it_matters": "The paper supports an aggregate benchmark gap but not a per-example causal effect of converting the same memory from explicit to implicit evidence."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00271-7fcc853b90",
+          "quote": "the transferred RQ1–RQ3 result trees contain one result artifact per configuration rather than three independently identified runs."
+        },
+        {
+          "block_id": "b00409-ccac906543",
+          "quote": "the repeated-run significance analysis uses a fixed five-profile sample"
+        }
+      ],
+      "uncertainty": "How stable the main results are across complete repeated full-scale runs.",
+      "why_it_matters": "Most transferred configurations have one result artifact; the three-run audit is limited to fixed profiles, so system rankings and smaller effects may be less stable than the headline trends."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00405-93ed1cdb85",
+          "quote": "Results therefore should not be assumed to transfer to other languages, cultural settings, cue distributions, or broader media settings without additional evaluation."
+        }
+      ],
+      "uncertainty": "Whether performance transfers to natural histories, other languages, cultures, cue distributions, or media types.",
+      "why_it_matters": "Synthetic regularity and narrow coverage may make both cue recognition and distractor structure unlike deployment data."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00365-06ffdaa02a",
+          "quote": "These statistics characterize a construction control, not an accuracy ablation."
+        },
+        {
+          "block_id": "b00365-06ffdaa02a",
+          "quote": "We therefore do not claim that the observed counts causally improve detection or aggregation."
+        }
+      ],
+      "uncertainty": "Whether increasing recurrence causally improves memory accuracy.",
+      "why_it_matters": "Recurrence is central to the benchmark definition, but its count and spacing are construction controls rather than randomized interventions."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00382-96a615bf28",
+          "quote": "We do not report frequencies for these categories because the cases below were selected for diagnosis rather than drawn as a frequency-estimation sample."
+        }
+      ],
+      "uncertainty": "How often each diagnosed failure mode occurs.",
+      "why_it_matters": "Selected examples localize plausible mechanisms but cannot establish their prevalence or relative importance across the benchmark."
+    }
+  ]
+}

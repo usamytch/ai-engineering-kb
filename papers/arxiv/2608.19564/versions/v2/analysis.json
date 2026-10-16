@@ -1,0 +1,642 @@
+{
+  "aidb_assessment": {
+    "confidence": "high",
+    "novelty": "The paper’s distinctive contribution is a four-action decision boundary that separates durable persistence, ephemeral use, externally authoritative verification, and user-authoritative clarification, then tests both labels and structured memory operations. The independently adjudicated evidence-flip and naturalistic extensions strengthen the benchmark design, although the core scenarios remain authored and structurally predictable.",
+    "rationale": "The benchmark targets a practically important, under-measured failure boundary and reports unusually candid negative results and validity constraints. The frozen artifact appears suitable for replication and internal policy testing. Adoption as a definitive benchmark should wait for matched label/tool prompts, evaluation of the complete policy, larger naturalistic clarification samples, and end-to-end outcome measurements.",
+    "recommended_action": "read",
+    "usefulness": "Useful as an auditable diagnostic suite for memory-gate policies and especially for detecting erroneous persistence or label/tool inconsistencies. It should not be treated as a deployment-readiness test because it does not execute memory systems, measure downstream utility, or establish privacy and interaction costs."
+  },
+  "claims": [
+    {
+      "claim": "MCB evaluates a four-way reuse-time commitment decision rather than retrieval or storage execution.",
+      "evidence": [
+        {
+          "block_id": "b00006-da941a33c0",
+          "quote": "an agent selects one of four actions: persist, ephemeral use, verify against an external source, or clarify with the user."
+        },
+        {
+          "block_id": "b00024-82a88aaa82",
+          "quote": "MCB records action selection; storage writes, source checks, user answers, and backend-specific transitions are not executed."
+        }
+      ]
+    },
+    {
+      "claim": "The held-out annotations have substantial independent auditing rather than relying only on author labels.",
+      "evidence": [
+        {
+          "block_id": "b00055-90942348b6",
+          "quote": "Two non-authors independently labeled the 70 held-out primary and 70 contrast items while blinded to author labels, categories, rationales, model outputs, and each other."
+        },
+        {
+          "block_id": "b00055-90942348b6",
+          "quote": "Agreement across all 140 items was 0.971 (κ=0.962)"
+        },
+        {
+          "block_id": "b00055-90942348b6",
+          "quote": "Majority adjudication changed eight primary labels and no contrast labels."
+        }
+      ]
+    },
+    {
+      "claim": "The benchmark separates uncertainty requiring a world source from uncertainty requiring the user.",
+      "evidence": [
+        {
+          "block_id": "b00006-da941a33c0",
+          "quote": "An external source establishes changing world facts, while the user establishes intent, scope, and ambiguous reference."
+        }
+      ]
+    },
+    {
+      "claim": "The released artifact is intended to make the reported analyses auditable from frozen inputs and outputs.",
+      "evidence": [
+        {
+          "block_id": "b00142-1a3c489900",
+          "quote": "supplies the benchmark and executable reproduction code."
+        },
+        {
+          "block_id": "b00143-3ff3961575",
+          "quote": "Model access is not needed."
+        },
+        {
+          "block_id": "b00143-3ff3961575",
+          "quote": "This validates the frozen data and regenerates the primary baselines, class metrics, recall comparisons, and descriptive naturalistic analysis."
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "ablations": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00062-09a7483129",
+            "quote": "Bare provides definitions only; policy adds the original five rules; few-shot adds four development examples."
+          }
+        ],
+        "text": "Bare definitions versus the original policy prompt versus four-shot prompting."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00089-30b19cfdba",
+            "quote": "Table 7 compares each bare label run to its tool-selection run."
+          }
+        ],
+        "text": "Bare label output versus structured tool selection."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00094-4f290b24d8",
+            "quote": "On the combined 140 Qwen items, bare, policy, and few-shot accuracy is .614, .757, and .843."
+          }
+        ],
+        "text": "Controlled Qwen evaluation combining primary and evidence-flip items."
+      }
+    ],
+    "baselines": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00072-e10d18fa9f",
+            "quote": "Reference systems are Always-Persist, a fixed temporal/scope keyword heuristic, Majority Action, and a category-majority oracle."
+          }
+        ],
+        "text": "Always-Persist reference."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00072-e10d18fa9f",
+            "quote": "The fixed keyword rules receive the same scenario text as models and do not inspect test labels."
+          }
+        ],
+        "text": "Fixed temporal/scope keyword heuristic receiving the same scenario text as models."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00072-e10d18fa9f",
+            "quote": "Majority Action uses the evaluated split’s most frequent gold action"
+          }
+        ],
+        "text": "Majority Action distribution diagnostic."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00072-e10d18fa9f",
+            "quote": "the oracle uses both test gold labels and category IDs hidden from models."
+          },
+          {
+            "block_id": "b00075-0f95569f1e",
+            "quote": "prevents interpreting it as a fair trained competitor."
+          }
+        ],
+        "text": "Category-majority oracle using hidden category identities and test labels; explicitly not a deployable or fair competitor."
+      }
+    ],
+    "datasets": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00054-1215e26c35",
+            "quote": "The 140 primary items are deterministically split 70/70 by sorted identifier within category."
+          }
+        ],
+        "text": "MCB primary benchmark: authored English scenarios, deterministically split into development and held-out sets within category."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00054-1215e26c35",
+            "quote": "A separate 70-item contrast extension contains 35 evidence-flip pairs and is used only as a controlled sensitivity analysis."
+          }
+        ],
+        "text": "Evidence-flip contrast extension: paired, rule-authored scenarios used only for controlled sensitivity analysis."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00059-feafa1b9b5",
+            "quote": "Forty English user turns pass automated privacy/safety screens and a pre-annotation quality review."
+          },
+          {
+            "block_id": "b00060-d34ef84e71",
+            "quote": "Majority vote excludes four unsupported candidates and retains 36"
+          },
+          {
+            "block_id": "b00059-feafa1b9b5",
+            "quote": "this is a source-grounded naturalistic check, not a longitudinal memory log."
+          }
+        ],
+        "text": "Naturalistic extension: screened English user turns from a frozen WildChat revision, producing an independently adjudicated descriptive set rather than a longitudinal memory log."
+      }
+    ],
+    "metrics": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00066-4b2c9d954e",
+            "quote": "Accuracy measures the proportion of correct decisions."
+          },
+          {
+            "block_id": "b00066-4b2c9d954e",
+            "quote": "F1 combines precision and recall, and macro-F1 weights all four actions equally."
+          }
+        ],
+        "text": "Accuracy, per-action precision, recall, F1, and macro-F1."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00066-4b2c9d954e",
+            "quote": "Over-memory (OM) is erroneous persistence divided by all items."
+          },
+          {
+            "block_id": "b00066-4b2c9d954e",
+            "quote": "Under-memory (UM) is the proportion of gold-persist items missed"
+          }
+        ],
+        "text": "Over-memory measures erroneous persistence over all items; under-memory measures missed gold-persist cases, with different denominators."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00067-5def1ab8f5",
+            "quote": "2,000 bootstrap resamples quantify uncertainty due to the evaluated items."
+          },
+          {
+            "block_id": "b00067-5def1ab8f5",
+            "quote": "Exact two-sided McNemar tests count items on which one run alone is correct."
+          },
+          {
+            "block_id": "b00068-d5f671127c",
+            "quote": "a two-sided Fisher test compares correct/incorrect counts on 18 verify and 12 clarify items."
+          }
+        ],
+        "text": "Uncertainty and paired inference use bootstrap intervals, exact two-sided McNemar tests, and Holm correction; verify-versus-clarify recall uses exploratory two-sided Fisher tests."
+      }
+    ],
+    "negative_results": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00080-874e6a8997",
+            "quote": "No Claude comparison passes this correction."
+          }
+        ],
+        "text": "The corrected recall comparison yields no significant Claude verification-versus-clarification difference."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00086-bbae96ae29",
+            "quote": "Haiku’s few-shot gain is not significant after correction (pH=.070)."
+          },
+          {
+            "block_id": "b00086-bbae96ae29",
+            "quote": "Gemma’s policy and few-shot gains, +.100 and +.086, are also not significant (pH=.898 for each)."
+          }
+        ],
+        "text": "Several prompt gains do not survive correction."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00087-099585079d",
+            "quote": "these changes are not significant (pH=.051 and .273)."
+          }
+        ],
+        "text": "Policy-associated reductions in erroneous persistence for Qwen and Gemma are not significant after the expanded correction."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00096-b6154db877",
+            "quote": "No local condition exceeds its accuracy."
+          },
+          {
+            "block_id": "b00097-d45efcb09a",
+            "quote": "All 16 local conditions miss both."
+          }
+        ],
+        "text": "The naturalistic extension supplies no condition beating the majority-ephemeral accuracy and no successful clarification decision."
+      }
+    ]
+  },
+  "executive_summary": "The paper introduces MCB, a benchmark for deciding whether interaction-derived information should be persisted, used ephemerally, externally verified, or clarified with the user at reuse time. Its strongest evidence is an independently adjudicated held-out set plus controlled prompt and label-versus-tool comparisons. Prompting materially helps some models, but clarification remains difficult. Tool-selection behavior can diverge sharply from label decisions, although unmatched prompts prevent causal attribution to interface alone. The work is valuable as a diagnostic benchmark, not evidence that any memory backend or end-to-end agent is safe or useful.",
+  "labels": {
+    "ablations": "Ablations",
+    "action_adopt": "adopt",
+    "action_read": "read",
+    "action_reject": "reject",
+    "action_watch": "watch",
+    "aidb_assessment": "AIDB assessment",
+    "assumptions": "Assumptions",
+    "available_artifacts": "Available artifacts",
+    "baseline": "Baseline",
+    "baselines": "Baselines",
+    "blocks": "Blocks",
+    "claims": "Main claims",
+    "confidence": "Confidence",
+    "confidence_high": "high",
+    "confidence_low": "low",
+    "confidence_medium": "medium",
+    "context": "Context",
+    "datasets": "Datasets",
+    "document_sha256": "Document SHA-256",
+    "evaluation": "Experimental evaluation",
+    "evidence": "Evidence",
+    "executive_summary": "Executive summary",
+    "generated": "Generated",
+    "hypothesis": "Hypothesis",
+    "importance": "Why it matters",
+    "key_components": "Key components",
+    "limitations": "Limitations",
+    "metadata_sha256": "Metadata SHA-256",
+    "method": "Method",
+    "metrics": "Metrics",
+    "missing_pieces": "Missing pieces",
+    "negative_results": "Negative results",
+    "novelty": "Novelty",
+    "open_questions": "Open questions",
+    "primary_metric": "Primary metric",
+    "problem": "Problem",
+    "profile": "Profile",
+    "proposed_experiments": "Proposed AIDB experiments",
+    "provenance": "Provenance",
+    "provider": "Provider",
+    "rationale": "Rationale",
+    "recommended_action": "Recommended action",
+    "repair_count": "Deterministic repair attempts",
+    "reproducibility": "Reproducibility",
+    "results": "Results",
+    "schema": "Schema",
+    "scope": "Scope",
+    "statement": "Statement",
+    "status": "Status",
+    "status_partial": "partial",
+    "status_strong": "strong",
+    "status_unknown": "unknown",
+    "status_weak": "weak",
+    "stop_condition": "Stop condition",
+    "uncertainties": "Uncertainties",
+    "usefulness": "Usefulness"
+  },
+  "language": {
+    "code": "en",
+    "name": "English"
+  },
+  "limitations": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00108-9858668e25",
+          "quote": "The primary test has 70 authored English items, including 12 clarify and 18 verify cases"
+        },
+        {
+          "block_id": "b00108-9858668e25",
+          "quote": "The category oracle’s .800 accuracy reveals strong category/action structure."
+        },
+        {
+          "block_id": "b00108-9858668e25",
+          "quote": "Class content and difficulty differ"
+        }
+      ],
+      "limitation": "The primary evidence comes from a small authored English set with unequal action counts and strong category/action structure, limiting generalization and making class-recall comparisons vulnerable to content and difficulty differences."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00109-d478ffe239",
+          "quote": "The original policy omits conflict, second-hand preference, and expired-scope clarification rules"
+        },
+        {
+          "block_id": "b00109-d478ffe239",
+          "quote": "no act-plus-policy comparison isolates these factors."
+        }
+      ],
+      "limitation": "The original policy omits important clarification rules, while label and tool prompts differ beyond output format; therefore neither full-policy effectiveness nor a causal interface effect is established."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00110-4d1a62ceaf",
+          "quote": "The naturalistic extension has 36 items, only two requiring clarification, and no Claude evaluation."
+        },
+        {
+          "block_id": "b00110-4d1a62ceaf",
+          "quote": "It is neither a longitudinal deployment study nor a statistically stable clarification evaluation."
+        }
+      ],
+      "limitation": "The naturalistic extension is too small and imbalanced for stable clarification estimates, excludes Claude, and is not a longitudinal deployment study."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00111-cc89b8cfa9",
+          "quote": "We use one serving configuration per checkpoint and one quantized version per local model."
+        },
+        {
+          "block_id": "b00111-cc89b8cfa9",
+          "quote": "comparisons with dense models do not isolate scale."
+        }
+      ],
+      "limitation": "Only one serving configuration per checkpoint and one quantized local-model version are tested, so robustness across sampling, serving systems, quantization, and scale is unknown."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00111-cc89b8cfa9",
+          "quote": "without extracting candidates, executing writes or checks, obtaining user answers, or measuring retrieval and task utility."
+        },
+        {
+          "block_id": "b00025-7a2945ab78",
+          "quote": "We do not measure these costs or establish that the preference is optimal."
+        }
+      ],
+      "limitation": "The benchmark stops at decision selection and does not measure memory writes, verification, dialogue resolution, retrieval, task utility, or the costs induced by conservative intervention."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00113-d584604401",
+          "quote": "automated de-identification cannot guarantee zero residual privacy risk."
+        },
+        {
+          "block_id": "b00113-d584604401",
+          "quote": "a clarification policy can burden users, and a verification policy can expose sensitive queries to external services."
+        }
+      ],
+      "limitation": "The naturalistic data retain residual privacy risk, and real verification or clarification can create disclosure and user-burden costs absent from benchmark scores."
+    }
+  ],
+  "method": {
+    "assumptions": [
+      "The annotation policy intentionally prefers weaker commitment when persistence remains uncertain.",
+      "Reuse context is known when the model decides; findings do not transfer automatically to acquisition-time gating.",
+      "User intent, preferences, and referents are user-authoritative, whereas changing facts, versions, and schedules are externally authoritative.",
+      "The benchmark labels operationalize a stated conservative policy, not universal ground truth.",
+      "Bootstrap intervals characterize uncertainty over evaluated items, not repeated stochastic model sampling."
+    ],
+    "key_components": [
+      "Each scenario supplies acquisition context, a candidate update, and a visible later reuse context.",
+      "The four actions distinguish durable commitment, local use, world-authoritative verification, and user-authoritative clarification.",
+      "Two non-authors label the held-out primary and contrast sets independently; a blind third annotator resolves disagreements.",
+      "MCB-Act replaces labels with one structured call among memory_write, use_now, check_source, and ask_user.",
+      "Prompt conditions comprise bare definitions, the original five-rule policy, and four development demonstrations.",
+      "The evidence-flip extension changes evidence within paired, rule-authored scenarios; the naturalistic extension uses screened public user turns and a standardized later context."
+    ],
+    "overview": "MCB frames memory handling as four-way classification over persist, ephemeral, verify, and clarify. The primary benchmark is split into development and held-out portions; a rule-authored evidence-flip contrast set tests controlled sensitivity, and a small WildChat-derived extension provides a descriptive naturalistic check. Four checkpoints are evaluated with bare definitions, an archived policy prompt, few-shot examples, and a structured tool-selection condition. Held-out labels are independently audited, and analyses include action-level metrics, bootstrap intervals, exact paired tests, and exploratory class-recall comparisons."
+  },
+  "open_questions": [
+    "How do fully guide-aligned label and tool prompts compare when decision rules, examples, wording, and role framing are matched?",
+    "Does the verification-versus-clarification gap survive on larger naturalistic samples with balanced actions and matched item difficulty?",
+    "How should application-specific costs of erroneous persistence, missed persistence, unnecessary questions, and external verification be calibrated?",
+    "Do MCB improvements translate into fewer harmful writes and better downstream retrieval or task outcomes in real memory backends?",
+    "How robust are the findings across repeated serving, decoding settings, quantization levels, languages, domains, and model families?"
+  ],
+  "problem": {
+    "importance": "A mistaken durable update can silently affect future behavior, while world facts, user intent, scope, and referents require different authorities. A memory system therefore needs a decision boundary before treating interaction-derived information as durable.",
+    "scope": "The study evaluates reuse-time action selection under a conservative policy. It does not evaluate candidate extraction, acquisition-time filtering, actual writes, external checks, user answers, retrieval, or downstream task utility.",
+    "statement": "Given interaction history, a candidate memory update, and a later reuse context, determine whether the candidate warrants durable persistence, current-context use only, an external check, or clarification from the user."
+  },
+  "proposed_experiments": [
+    {
+      "baseline": "For each checkpoint, compare the archived bare-label and original tool runs against matched complete-policy label and act-plus-policy runs on the same adjudicated primary and contrast items.",
+      "hypothesis": "With identical complete decision rules, examples, and role framing, label and tool outputs will show substantially higher agreement than the archived unmatched settings without increasing erroneous persistence.",
+      "primary_metric": "Paired label–tool agreement, with accuracy and over-memory as co-reported safety metrics.",
+      "stop_condition": "Stop after all preregistered checkpoints complete deterministic parsing and paired tests; reject the hypothesis if agreement does not improve or if over-memory worsens under the matched tool condition."
+    },
+    {
+      "baseline": "The original held-out verify and clarify subsets, evaluated with the same checkpoints and a fully guide-aligned prompt.",
+      "hypothesis": "Verification recall will no longer consistently exceed clarification recall after balancing classes and matching scenario difficulty, authority cues, lexical traps, and ambiguity strength.",
+      "primary_metric": "Within-model difference between verify recall and clarify recall, with multiplicity-corrected paired or stratified inference on a newly adjudicated balanced set.",
+      "stop_condition": "Stop at the preregistered sample size or earlier only for annotation-quality failure; reject the hypothesis if the corrected recall gap remains consistently positive across model families."
+    },
+    {
+      "baseline": "Always-Persist, the archived policy gate, and a matched complete-policy gate connected to the same memory backend and retrieval pipeline.",
+      "hypothesis": "A reuse-time gate using the complete policy reduces harmful durable writes while preserving downstream task utility compared with unconditional persistence and the archived policy.",
+      "primary_metric": "Rate of harmful durable updates measured on subsequent tasks, jointly reported with downstream task success and user-intervention burden.",
+      "stop_condition": "Stop after the preregistered longitudinal task set; reject the hypothesis if harmful writes do not decrease, or if task success or intervention burden crosses predefined non-inferiority limits."
+    }
+  ],
+  "provenance": {
+    "block_count": 166,
+    "document_sha256": "9d98294df5a3b3aeb3bd8e9128c562df03527e495dd743feec6b09d647e8e044",
+    "generated_at": "2026-10-16T14:27:23.949279+00:00",
+    "metadata_sha256": "16eb4e17e69b3407959f3d14d77437439dd8c7f401f5715364d2469eeeb3c4f5",
+    "profile": "deep",
+    "provider": "codex-exec:configured-default",
+    "repair_count": 0,
+    "schema_version": "paper-summary-v1"
+  },
+  "reproducibility": {
+    "artifacts": [
+      "Supplementary archive named NORA2026_camera_ready_supplement.zip.",
+      "All primary, contrast, and adjudicated naturalistic items.",
+      "Frozen non-author annotation decisions and annotator packets.",
+      "Archived prompts and checkpoint metadata.",
+      "Item-level predictions, raw outputs, parsed actions, and tests.",
+      "Executable reproduction script reproduce_camera_ready.py.",
+      "Complete guide-aligned policy implementation in src/aligned_policy.py, explicitly unevaluated."
+    ],
+    "assessment": "Reproducibility of the frozen numerical analyses is strong: the archive reportedly contains data, annotations, prompts, predictions, metadata, tests, and a script that regenerates the analyses without model access. Reproduction of live model behavior and extensions beyond the archived prompts is only partial because there is no claimed public repository, the aligned policy is unevaluated, and backend execution is outside scope.",
+    "missing": [
+      "No public repository URL is claimed in the paper.",
+      "Fresh model inference for hosted checkpoints may depend on external access and serving behavior.",
+      "The complete guide-aligned label and tool policies have no reported runs.",
+      "No repeated-seed or repeated-serving robustness study is reported.",
+      "No executable end-to-end memory backend, source-check, or user-clarification evaluation is reported."
+    ],
+    "status": "strong"
+  },
+  "results": [
+    {
+      "context": "This supports a recurring pattern on the authored held-out set, not a general model property: class content and difficulty differ, and the tests were added after review.",
+      "evidence": [
+        {
+          "block_id": "b00080-874e6a8997",
+          "quote": "Verification recall exceeds clarification recall in all 12 original label conditions"
+        },
+        {
+          "block_id": "b00080-874e6a8997",
+          "quote": "only Qwen bare (pH=.004), Qwen policy (pH<.001), and Gemma policy (pH=.012) remain significant."
+        },
+        {
+          "block_id": "b00080-874e6a8997",
+          "quote": "No Claude comparison passes this correction."
+        }
+      ],
+      "result": "Verification recall exceeded clarification recall in every original label condition, but only three exploratory comparisons survived multiplicity correction, and none involved Claude."
+    },
+    {
+      "context": "The archived policy is incomplete relative to the annotation guide, so these comparisons do not test a fully aligned policy.",
+      "evidence": [
+        {
+          "block_id": "b00086-bbae96ae29",
+          "quote": "Haiku policy is significant relative to bare (Δ=+.229, Holm-adjusted pH=.003)"
+        },
+        {
+          "block_id": "b00086-bbae96ae29",
+          "quote": "Qwen few-shot remains significant (Δ=+.214, pH=.002)."
+        },
+        {
+          "block_id": "b00086-bbae96ae29",
+          "quote": "Gemma’s policy and few-shot gains, +.100 and +.086, are also not significant (pH=.898 for each)."
+        }
+      ],
+      "result": "Prompt effects were model-dependent: Haiku policy improved accuracy by +.229 and Qwen few-shot by +.214, with corrected p-values of .003 and .002; several other apparent gains were not significant."
+    },
+    {
+      "context": "The comparison is consequential but confounded because role framing, wording, and policy content differ across modes; it cannot isolate output format.",
+      "evidence": [
+        {
+          "block_id": "b00092-67fe0d56b5",
+          "quote": "Haiku −.114 [−.214,−.014] .057 .571 Sonnet −.286 [−.414,−.143] <.001 .571"
+        },
+        {
+          "block_id": "b00092-67fe0d56b5",
+          "quote": "Qwen −.214 [−.386,−.029] .047 .229 Gemma −.471 [−.614,−.329] <.001 .243"
+        },
+        {
+          "block_id": "b00063-00005a985f",
+          "quote": "this comparison does not isolate output format as a causal factor."
+        }
+      ],
+      "result": "Label and tool-selection settings produced large behavioral shifts: agreement ranged from .229 to .571, while Sonnet, Qwen, and Gemma accuracy fell significantly in the tool condition."
+    },
+    {
+      "context": "All calls passed minimum structural checks, showing that syntactically valid tool output is not evidence of correct operation choice.",
+      "evidence": [
+        {
+          "block_id": "b00090-051199b83d",
+          "quote": "it calls memory_write 41 times, use_now 28 times, check_source once, and ask_user zero times."
+        },
+        {
+          "block_id": "b00090-051199b83d",
+          "quote": "Its accuracy falls by .471 (pH<.001), OM rises to .486"
+        },
+        {
+          "block_id": "b00090-051199b83d",
+          "quote": "Valid syntax and minimum argument checks do not establish correct operation choice."
+        }
+      ],
+      "result": "Gemma’s tool-selection run exposed a severe persistence failure: it selected memory_write 41 times, never selected ask_user, lost .471 accuracy, and reached .486 erroneous persistence."
+    },
+    {
+      "context": "The extension is small, class-imbalanced, uses a standardized counterfactual reuse context, excludes Claude, and reports descriptive results only.",
+      "evidence": [
+        {
+          "block_id": "b00096-b6154db877",
+          "quote": "The majority-ephemeral reference reaches .583 accuracy but only .184 macro-F1. No local condition exceeds its accuracy."
+        },
+        {
+          "block_id": "b00097-d45efcb09a",
+          "quote": "Only two items require clarification. All 16 local conditions miss both."
+        },
+        {
+          "block_id": "b00097-d45efcb09a",
+          "quote": "Even 0/2 has a 95% Wilson interval of approximately [0,.658]."
+        }
+      ],
+      "result": "The naturalistic check did not provide external validation: no evaluated local condition exceeded the .583 majority-ephemeral accuracy, and every one of the 16 local conditions missed both clarification cases."
+    }
+  ],
+  "title": "Remember, Verify, or Ask? Evaluating Memory Decisions at Reuse Time",
+  "uncertainties": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00068-d5f671127c",
+          "quote": "Class difficulty and prompt construction differ"
+        },
+        {
+          "block_id": "b00080-874e6a8997",
+          "quote": "it does not establish a general cross-model tendency to prefer verification."
+        }
+      ],
+      "uncertainty": "Whether the verification-over-clarification pattern persists on larger, independently sourced, difficulty-matched data.",
+      "why_it_matters": "The central behavioral pattern may reflect class composition, authored templates, or prompt coverage rather than a stable model tendency."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00063-00005a985f",
+          "quote": "Its role framing and wording also differ from label mode"
+        },
+        {
+          "block_id": "b00109-d478ffe239",
+          "quote": "no act-plus-policy comparison isolates these factors."
+        }
+      ],
+      "uncertainty": "Whether tool-selection degradation is caused by output interface, missing policy rules, tool semantics, or role framing.",
+      "why_it_matters": "Without isolating the causal factor, the results cannot prescribe whether systems should change interfaces, prompts, or training."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00102-bcca8c669a",
+          "quote": "We have not compared those implementations or tested the effects on retrieval and downstream utility."
+        }
+      ],
+      "uncertainty": "Whether improved benchmark decisions produce safer or more useful downstream memory behavior.",
+      "why_it_matters": "A classification gain may not reduce harmful writes, improve retrieval, or help users once checks, questions, and storage transitions are executed."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00025-7a2945ab78",
+          "quote": "This is an assumed cost preference"
+        },
+        {
+          "block_id": "b00113-d584604401",
+          "quote": "a clarification policy can burden users"
+        }
+      ],
+      "uncertainty": "Whether the conservative preference for weaker commitment has acceptable application-specific costs.",
+      "why_it_matters": "Unnecessary questions and external checks can burden users, delay tasks, or disclose sensitive information."
+    }
+  ]
+}

@@ -1,0 +1,817 @@
+{
+  "aidb_assessment": {
+    "confidence": "medium",
+    "novelty": "The key novelty is an explicit read-order contract: resolve overwritten relations into a current graph before traversing it to select provenance-linked original records. The fixed-extraction order control distinguishes this from merely refreshing values in an already selected context. The derived MQuAKE-MemStream dataset is also a useful controlled instrument, though its chronology is synthetic.",
+    "rationale": "The central causal comparison is compelling: extraction, reader, prompt, and budget are fixed while evidence-selection order changes, and the effect persists across readers, retrieval controls, matched evidence length, and a second constructed dataset. Adoption should wait for independent confirmation on naturally occurring update streams, stronger entity resolution, immutable reader replication, and end-to-end cost evaluation.",
+    "recommended_action": "read",
+    "usefulness": "High for long-lived assistants whose memory can be represented as ordered, mostly single-valued relational assertions and whose serving architecture permits offline compilation. The method is less immediately applicable to ambiguous entities, simultaneous truths, multi-agent disagreement, open-ended dialogue, or adaptive multi-call retrieval."
+  },
+  "claims": [
+    {
+      "claim": "An update may change not only a value but also which downstream memory key and source record must be read.",
+      "evidence": [
+        {
+          "block_id": "b00034-8c8bf0d4c1",
+          "quote": "The second lookup must change from Room A’s floor to Room B’s floor."
+        }
+      ]
+    },
+    {
+      "claim": "CMC resolves current relations before bounded traversal and returns the supporting original records for one reader call.",
+      "evidence": [
+        {
+          "block_id": "b00038-ccdd4f1f3a",
+          "quote": "For each question, it finds explicit subject anchors, traverses current outgoing edges up to five hops, and renders the supporting source records."
+        },
+        {
+          "block_id": "b00040-d0e89a12b2",
+          "quote": "The selected facts are returned as original text, together with unresolved records, for one frozen-reader generation."
+        }
+      ]
+    },
+    {
+      "claim": "The read contract guarantees currency and bounded graph coverage only for selected interpreted edges, not semantic completeness of unresolved text.",
+      "evidence": [
+        {
+          "block_id": "b00032-c8c684e581",
+          "quote": "Currency: every edge in Ch is the last-written parsed edge for its key."
+        },
+        {
+          "block_id": "b00032-c8c684e581",
+          "quote": "Bounded graph coverage: every current outgoing edge in Gt from a subject reachable at depth less than h is included."
+        },
+        {
+          "block_id": "b00032-c8c684e581",
+          "quote": "These graph properties do not assign versions to unresolved source text retained alongside the selected edges."
+        }
+      ]
+    },
+    {
+      "claim": "The primary mechanism comparison holds extraction, reader, prompt, histories, and evidence cap fixed while changing the records shown to the reader.",
+      "evidence": [
+        {
+          "block_id": "b00058-43d9813cf7",
+          "quote": "Every view uses the same source histories, HY4-preview reader, prompt, and 60,000-character evidence cap; only the evidence presented to the reader changes."
+        }
+      ]
+    },
+    {
+      "claim": "MQuAKE-MemStream is a controlled supplied-memory test rather than a test of parametric knowledge editing or unrestricted evidence discovery.",
+      "evidence": [
+        {
+          "block_id": "b00081-ef103b0198",
+          "quote": "Every method receives the answer-bearing support facts, so this is a controlled test of version resolution and evidence selection rather than the original model-editing task."
+        }
+      ]
+    },
+    {
+      "claim": "The demonstrated contribution is deliberately narrower than adaptive pipelines that can perform additional reads or modify memory state.",
+      "evidence": [
+        {
+          "block_id": "b00302-0cf3edeab4",
+          "quote": "These policies can issue further reads or change their stored state; the CMC mechanism comparison holds source extraction and the answer call fixed."
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "ablations": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00276-1b753170c8",
+            "quote": "Multi-hop 400 21.50 78.25 56.75"
+          }
+        ],
+        "text": "Ordering ablation: compare resolve-then-traverse with traversal on prior values followed by current-value refresh."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00071-5befc7b4d8",
+            "quote": "Stale closure keeps CMC’s selected relations but substitutes previous values where available"
+          }
+        ],
+        "text": "Version-choice ablation: stale closure preserves selected keys while replacing active values with earlier ones."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00280-6f143cd6cd",
+            "quote": "We vary the traversal cap over h∈{1,2,3,5} while keeping the LLM extraction, current-state construction, anchors, source-record renderer, 60,000-character cap, and HY4 reader fixed."
+          }
+        ],
+        "text": "Traversal-depth ablation evaluates one-, two-, three-, and five-hop caps under otherwise fixed conditions."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00221-74e2424fd1",
+            "quote": "The grammar adapter uses manually specified patterns; direct LLM extraction names relations from source records; the hybrid induces literal patterns from source examples."
+          }
+        ],
+        "text": "Frontend ablation compares a manually specified grammar adapter, direct LLM extraction, and a source-induced hybrid using the same CMC read and reader."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00241-fa28705229",
+            "quote": "Only the reader and its chat template change: Qwen3.5-4B"
+          },
+          {
+            "block_id": "b00245-e7e04f147a",
+            "quote": "This is a reader replacement on fixed extracted evidence."
+          }
+        ],
+        "text": "Reader ablation swaps HY4-preview for Qwen3.5-4B and Llama-3.1-8B while reusing fixed extraction and evidence."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00254-0126ab9e0e",
+            "quote": "For each question, its evidence allowance equals the cl100k token count of CMC’s rendered evidence"
+          }
+        ],
+        "text": "Evidence-budget ablation compares CMC with BM25 packed to each question’s CMC evidence allowance."
+      }
+    ],
+    "baselines": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00272-b5a9bc747f",
+            "quote": "We traverse the constructed graph to depth five, then replace each selected key’s value with its current assertion."
+          },
+          {
+            "block_id": "b00272-b5a9bc747f",
+            "quote": "Thus all returned parsed facts are current, while the selected keys can differ."
+          }
+        ],
+        "text": "Prior read + refresh: traverse a graph built from earlier differing values, then replace selected values with current assertions; isolates selection before update resolution."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00191-3897a138a1",
+            "quote": "Stale closure takes the closure our compiler admitted and substitutes the immediately preceding version when one exists"
+          }
+        ],
+        "text": "Stale closure: hold CMC’s selected keys fixed but substitute immediately preceding versions where available; isolates version choice."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00265-53a9242514",
+            "quote": "The latest-state control returns all current assertions."
+          },
+          {
+            "block_id": "b00265-53a9242514",
+            "quote": "The raw-history control retains every version before applying the reader’s window policy."
+          }
+        ],
+        "text": "Latest state and raw history: present all current assertions or retained history subject to the reader window and rendering policy."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00237-0d59ca7953",
+            "quote": "Fact BM25, size matched 97.00 7.25 182 0 Fact dense (BGE-M3) 96.50 33.25 1,535 0"
+          },
+          {
+            "block_id": "b00206-a3b0dadd11",
+            "quote": "Qwen3-Embedding-8B dense top-100 retrieval, Qwen3-Reranker-4B top-10 reranking"
+          }
+        ],
+        "text": "Lexical and dense retrieval over current facts: fact BM25, size-matched BM25, BGE-M3, and a dense-plus-reranker pipeline."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00212-6965d720d1",
+            "quote": "The disjoint random negative control draws from the active state while excluding the query projection keys, matching cardinality exactly on all 800 questions"
+          }
+        ],
+        "text": "A disjoint random negative control excludes CMC-selected keys while matching evidence cardinality."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00200-3bc8938e8e",
+            "quote": "The G-Walk and MeLLo rows in Table 5 use the released MQuAKE-Remastered implementations and prompts"
+          },
+          {
+            "block_id": "b00247-518fa1e721",
+            "quote": "Both systems receive the original histories and use HY4-preview."
+          }
+        ],
+        "text": "End-to-end and ported comparisons include adapted SH-Conflict/CAR, G-Walk, MeLLo, suffix retrieval, BM25, dense+BM25, and published MemoryAgentBench systems."
+      }
+    ],
+    "datasets": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00056-50ae2af981",
+            "quote": "Its 800 questions comprise equal single- and multi-hop sets across 6K, 32K, 64K, and 262K histories"
+          }
+        ],
+        "text": "FactConsolidation: 800 questions split equally between single-hop and multi-hop sets across 6K, 32K, 64K, and 262K histories with contradictory updates."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00082-c13c288674",
+            "quote": "Frozen Qwen3.5-4B reader; 800 single-hop and 798 multi-hop questions."
+          },
+          {
+            "block_id": "b00263-6c34752fb6",
+            "quote": "The final dataset has 798 multi-hop and 800 single-hop questions."
+          }
+        ],
+        "text": "MQuAKE-MemStream: a derived controlled dataset from two-hop MQuAKE-Remastered counterfactual cases, ending with 800 single-hop and 798 multi-hop questions."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00285-095f6b7b10",
+            "quote": "These span 14 source datasets and 130 histories."
+          }
+        ],
+        "text": "The broader MemoryAgentBench campaign spans 14 source datasets and 130 histories across accurate retrieval, test-time learning, long-range understanding, and fact consolidation."
+      }
+    ],
+    "metrics": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00056-50ae2af981",
+            "quote": "we use the released substring exact-match score."
+          }
+        ],
+        "text": "Primary FactConsolidation metric: released substring exact-match accuracy, reported separately for single-hop and multi-hop questions."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00202-570ee15996",
+            "quote": "Requiring each saved parsed answer to equal a reference alias after the released normalization"
+          }
+        ],
+        "text": "Strict normalized exact match is reported as a sensitivity analysis."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00059-e1189d1065",
+            "quote": "SH and MH are accuracy (%); Tokens is mean reader-input length; Trunc. counts clipped contexts."
+          },
+          {
+            "block_id": "b00310-5a175d43b5",
+            "quote": "Read columns give median / 95th percentile in milliseconds."
+          }
+        ],
+        "text": "Efficiency measurements include mean reader-input tokens, clipped-context counts, CPU replay/read time, and recorded request duration."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00214-b8e0475897",
+            "quote": "paired contrasts use query-cluster percentile bootstrap at 10,000 replicates."
+          }
+        ],
+        "text": "Paired comparisons report win, tie, and loss counts with query-cluster percentile bootstrap intervals."
+      }
+    ],
+    "negative_results": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00090-f930bd0a62",
+            "quote": "but trails dense+BM25 on summarization (10.2 versus 15.2) and DetectiveQA (67.6 versus 78.9)."
+          }
+        ],
+        "text": "CMC trails dense+BM25 on summarization and DetectiveQA in the broader same-reader suite."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00223-9872a7c8f6",
+            "quote": "The hybrid has one failed reader request after a no-anchor read falls back to an oversized history; the failure remains in the denominator."
+          }
+        ],
+        "text": "The hybrid extraction frontend has lower observed accuracy than direct extraction and suffers a failed reader request after an oversized no-anchor fallback."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00267-b2d1b97157",
+            "quote": "Extending the same construction to all 3,000 CF-3k cases alters at least one released post-edit hop in 431 cases."
+          },
+          {
+            "block_id": "b00267-b2d1b97157",
+            "quote": "We therefore do not use that larger run as confirmatory evidence."
+          }
+        ],
+        "text": "The larger MQuAKE-MemStream pooling run is not used as confirmatory evidence because cross-case overwrites alter released support hops."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00312-25bc935b77",
+            "quote": "At 262K, the two read medians are close, but CMC has a higher 95th percentile."
+          },
+          {
+            "block_id": "b00312-25bc935b77",
+            "quote": "these measurements do not establish a CPU latency advantage."
+          }
+        ],
+        "text": "The runtime audit does not establish a CPU latency advantage for CMC, whose high-tail latency is worse in the reported long-history measurement."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00307-59e83c6a4b",
+            "quote": "On the 100 summary questions, 12 history-suffix and 73 CMC outputs have invalid judgments."
+          },
+          {
+            "block_id": "b00307-59e83c6a4b",
+            "quote": "CMC summaries exceed the requested 1,200-word limit on 76 items"
+          }
+        ],
+        "text": "CMC’s summary outputs exhibit substantial judge-format and length failures, preventing a clean interpretation of the low summary score."
+      }
+    ]
+  },
+  "executive_summary": "The paper identifies update-dependent evidence selection as a distinct failure mode in long-term agent memory: an updated relation can change which older record is needed downstream. CMC extracts provenance-linked relations offline, resolves each subject–relation key by source order, traverses the resulting current graph from entities explicitly named in a question, and renders original records for one answer-model call. Fixed-extraction controls strongly support the central ordering claim on FactConsolidation, and a constructed MQuAKE-MemStream test shows a similar effect. The evidence is unusually well controlled and artifact-rich, but external validity is limited by ordered, single-valued assertions, exact surface-form anchoring, a fixed traversal cap, development-grid use, constructed chronology, and partially unpinned reader infrastructure.",
+  "labels": {
+    "ablations": "Ablations",
+    "action_adopt": "adopt",
+    "action_read": "read",
+    "action_reject": "reject",
+    "action_watch": "watch",
+    "aidb_assessment": "AIDB assessment",
+    "assumptions": "Assumptions",
+    "available_artifacts": "Available artifacts",
+    "baseline": "Baseline",
+    "baselines": "Baselines",
+    "blocks": "Blocks",
+    "claims": "Main claims",
+    "confidence": "Confidence",
+    "confidence_high": "high",
+    "confidence_low": "low",
+    "confidence_medium": "medium",
+    "context": "Context",
+    "datasets": "Datasets",
+    "document_sha256": "Document SHA-256",
+    "evaluation": "Experimental evaluation",
+    "evidence": "Evidence",
+    "executive_summary": "Executive summary",
+    "generated": "Generated",
+    "hypothesis": "Hypothesis",
+    "importance": "Why it matters",
+    "key_components": "Key components",
+    "limitations": "Limitations",
+    "metadata_sha256": "Metadata SHA-256",
+    "method": "Method",
+    "metrics": "Metrics",
+    "missing_pieces": "Missing pieces",
+    "negative_results": "Negative results",
+    "novelty": "Novelty",
+    "open_questions": "Open questions",
+    "primary_metric": "Primary metric",
+    "problem": "Problem",
+    "profile": "Profile",
+    "proposed_experiments": "Proposed AIDB experiments",
+    "provenance": "Provenance",
+    "provider": "Provider",
+    "rationale": "Rationale",
+    "recommended_action": "Recommended action",
+    "repair_count": "Deterministic repair attempts",
+    "reproducibility": "Reproducibility",
+    "results": "Results",
+    "schema": "Schema",
+    "scope": "Scope",
+    "statement": "Statement",
+    "status": "Status",
+    "status_partial": "partial",
+    "status_strong": "strong",
+    "status_unknown": "unknown",
+    "status_weak": "weak",
+    "stop_condition": "Stop condition",
+    "uncertainties": "Uncertainties",
+    "usefulness": "Usefulness"
+  },
+  "language": {
+    "code": "en",
+    "name": "English"
+  },
+  "limitations": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00303-0d98a51923",
+          "quote": "CMC’s last-write-wins rule is specific to the benchmark’s ordered, single-valued relations; it does not resolve simultaneous values or multi-agent conflicts."
+        }
+      ],
+      "limitation": "The demonstrated guarantee and gain apply to ordered, single-valued relations with last-write-wins semantics, not simultaneous values, multi-agent conflicts, or other update models."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00046-80ec254de0",
+          "quote": "This is a deterministic surface-form rule; entity disambiguation and alias inference are outside this implementation."
+        }
+      ],
+      "limitation": "Exact surface-form anchoring cannot disambiguate entities or infer aliases."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00032-c8c684e581",
+          "quote": "Its usefulness depends on the supporting facts being parsed and reachable within h hops of an explicit anchor."
+        },
+        {
+          "block_id": "b00099-4c3b9702dc",
+          "quote": "exact anchoring, missing links, and the hop limit restrict coverage."
+        }
+      ],
+      "limitation": "Coverage depends on successful parsing, reachability from explicit anchors, and the fixed hop bound."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00099-4c3b9702dc",
+          "quote": "FactConsolidation came from a broader development grid, so independent confirmation remains needed."
+        }
+      ],
+      "limitation": "The primary FactConsolidation evidence comes from a broader development grid rather than an independent confirmatory evaluation."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00203-d274ab7fdb",
+          "quote": "These flags need manual adjudication."
+        },
+        {
+          "block_id": "b00099-4c3b9702dc",
+          "quote": "An automated screen flags 33 of 800 reference answers as possibly superseded; all remain in the official scores."
+        }
+      ],
+      "limitation": "Official FactConsolidation labels may contain superseded answers, and the automated flags still require manual adjudication."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00263-6c34752fb6",
+          "quote": "This ordering is imposed by our adaptation: MQuAKE does not provide a chronological agent-memory stream."
+        },
+        {
+          "block_id": "b00263-6c34752fb6",
+          "quote": "these results do not test extraction from open-form language."
+        }
+      ],
+      "limitation": "MQuAKE-MemStream imposes chronology not present in the source benchmark and tests grammar-parsed supplied facts rather than open-form extraction."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00239-44762da7f0",
+          "quote": "HY4-preview is a provider alias rather than a pinned weight revision; we record the model identifier returned for each request."
+        }
+      ],
+      "limitation": "The primary HY4-preview reader is a provider alias rather than an immutable checkpoint."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00216-3b39f05a3a",
+          "quote": "They exclude offline parsing, indexing, embedding, graph construction, and storage"
+        }
+      ],
+      "limitation": "Reported token accounting excludes offline parsing, indexing, embeddings, graph construction, and storage, limiting end-to-end cost conclusions."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00036-78582184c7",
+          "quote": "Selecting among competing closures when the window binds remains a separate extension of this read interface."
+        }
+      ],
+      "limitation": "When the evidence window binds, CMC uses suffix clipping rather than optimizing among competing graph closures."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00086-208cf8001c",
+          "quote": "Only SF uses the current-graph read; direct comparisons use the four local HY4-preview rows."
+        }
+      ],
+      "limitation": "Broader-suite interfaces are task-specific; only selective forgetting uses the current-graph read, so the full table is not a pure evaluation of Algorithm 1."
+    }
+  ],
+  "method": {
+    "assumptions": [
+      "Source position provides the relevant recency order.",
+      "Each modeled subject–relation key has one active value under last-write-wins semantics.",
+      "Answer-bearing relations can be extracted or retained as unresolved source text.",
+      "The question contains an explicit surface-form anchor matching a graph subject.",
+      "Required support is reachable within the bounded traversal depth.",
+      "The reader can choose the relevant relation from the potentially branching closure.",
+      "The selected records fit the reader contract or remain useful after suffix clipping."
+    ],
+    "key_components": [
+      "Classify each source record as facts, unresolved, or no_fact; validate structured triples and retain source positions and original wording.",
+      "Align equivalent relation slots and normalize entity keys while preserving unresolved records as residual evidence.",
+      "Replay accepted assertions in source order and keep the latest edge for each normalized subject–relation key.",
+      "Anchor graph subjects by whole normalized spans explicitly present in the question, preferring longer overlapping matches.",
+      "Traverse every current outgoing edge breadth-first from the anchors through the bounded depth, allowing updated objects to redirect later evidence selection.",
+      "Deduplicate supporting records by source position, restore source order, add unresolved records, and retain a newest contiguous suffix if the evidence budget overflows.",
+      "Pass the rendered evidence and question to the reader in one generation call."
+    ],
+    "overview": "CMC compiles an ordered assertion history into a provenance-linked current graph before answering questions. At query time it anchors explicit subject strings, performs bounded breadth-first traversal over current edges, retrieves their original source records plus unresolved records, restores source order, applies an evidence budget, and invokes a frozen reader once."
+  },
+  "open_questions": [
+    "Can the read contract be extended from last-write-wins keys to temporally scoped, multi-valued, uncertain, or conflicting assertions?",
+    "Can learned alias resolution and entity disambiguation improve recall without introducing unacceptable false anchors?",
+    "What strategy should select among branches or closures when the rendered evidence exceeds the reader window?",
+    "Does resolve-then-traverse retain its advantage on independently collected, naturally chronological multi-session conversations?",
+    "What are extraction precision, relation-alignment error rates, and downstream sensitivity to individual parsing failures?",
+    "How does CMC compare with adaptive iterative retrieval under matched total calls, tokens, latency, and source-processing cost?",
+    "Can summary and DetectiveQA regressions be separated from formatting and judge failures through a corrected evaluation contract?"
+  ],
+  "problem": {
+    "importance": "Refreshing values inside evidence chosen from an earlier state cannot recover a newly relevant record that was omitted; this makes update resolution and evidence selection inseparable for multi-hop reading.",
+    "scope": "The demonstrated mechanism targets ordered assertion streams with last-write-wins, single-valued subject–relation keys and one bounded evidence-selection pass before a single answer-model call.",
+    "statement": "Select the original memory records needed to answer a multi-hop question after later assertions have overwritten earlier relations, especially when an updated value introduces a downstream entity not named in the question."
+  },
+  "proposed_experiments": [
+    {
+      "baseline": "Prior read + refresh and current-fact BM25 using the same frozen extraction, reader, prompt, and evidence budget.",
+      "hypothesis": "Resolve-then-traverse improves multi-hop accuracy on natural multi-session dialogue updates, not only assertion-style or constructed streams.",
+      "primary_metric": "Paired multi-hop exact-match accuracy on a preregistered held-out dialogue set with manually verified current answers and evidence paths.",
+      "stop_condition": "Stop after the preregistered sample is complete; reject the hypothesis if the lower bound of the paired confidence interval against both baselines is not above zero."
+    },
+    {
+      "baseline": "The paper’s exact whole-span anchoring rule.",
+      "hypothesis": "Alias-aware anchoring increases coverage without materially increasing false graph closures.",
+      "primary_metric": "Answer accuracy stratified by alias requirement, accompanied by anchor precision and evidence-path recall.",
+      "stop_condition": "Stop after all preregistered alias strata are evaluated; reject if answer accuracy fails to improve or anchor precision falls below the preregistered safety threshold."
+    },
+    {
+      "baseline": "Newest-contiguous-suffix clipping of rendered CMC records.",
+      "hypothesis": "A budget-aware closure selector preserves CMC’s multi-hop advantage when complete bounded closures exceed the reader window.",
+      "primary_metric": "Multi-hop exact-match accuracy on overflow cases at identical character budgets.",
+      "stop_condition": "Stop after the fixed overflow suite is exhausted; reject if the selector does not outperform suffix clipping under paired evaluation."
+    },
+    {
+      "baseline": "Fact BM25, dense retrieval, and an adaptive iterative-retrieval pipeline under identical hardware and reader models.",
+      "hypothesis": "CMC remains competitive after all offline and online costs are included.",
+      "primary_metric": "End-to-end cost per correct multi-hop answer, including extraction, alignment, indexing, updates, retrieval, rendering, and generation.",
+      "stop_condition": "Stop after each method processes the same frozen workload and update stream; reject if CMC is Pareto-dominated on accuracy, latency, and total cost."
+    },
+    {
+      "baseline": "Original CMC with one active value per subject–relation key.",
+      "hypothesis": "Extending the state model beyond last-write-wins improves correctness for simultaneous and conflicting facts without degrading ordinary overwrite cases.",
+      "primary_metric": "Macro-averaged exact match across overwrite, simultaneous-value, temporal-scope, and conflict-resolution subsets.",
+      "stop_condition": "Stop after the preregistered balanced suite is complete; reject if macro accuracy does not improve or overwrite-only accuracy drops beyond the allowed margin."
+    },
+    {
+      "baseline": "The reported summary prompt, generation cap, word-limit instruction, and judge parser.",
+      "hypothesis": "Correcting summary output and judging contracts explains a substantial portion of CMC’s broader-suite summarization deficit.",
+      "primary_metric": "Valid-judgment rate and summary score under a format-constrained decoder with blind human adjudication of disagreements.",
+      "stop_condition": "Stop after every summary item has both protocol scores and adjudication; reject if validity improves but the CMC score gap remains within the preregistered equivalence band of the original deficit."
+    }
+  ],
+  "provenance": {
+    "block_count": 315,
+    "document_sha256": "5b0355f4ae679571a580a79ce5aa53db445bc7823cc0834870107a4ac5b48a49",
+    "generated_at": "2026-10-16T14:05:15.481825+00:00",
+    "metadata_sha256": "a05a9c92b961e95c4ba7c8cef124c41d20d554d4df87f40c4c344902f3428148",
+    "profile": "deep",
+    "provider": "codex-exec:configured-default",
+    "repair_count": 0,
+    "schema_version": "paper-summary-v1"
+  },
+  "reproducibility": {
+    "artifacts": [
+      "Compiler",
+      "Evaluation scripts",
+      "MQuAKE-MemStream data",
+      "Per-example predictions",
+      "Dataset reconstruction and evaluation code",
+      "Runtime timing script",
+      "Recorded inputs, model identifiers, prompts, settings, outputs, and native scores"
+    ],
+    "assessment": "Reproducibility is strong by paper standards: the authors claim code, data, predictions, detailed frozen protocols, pinned revisions for local readers and scorers, replay checks, and a timing script. Confidence is reduced by the unpinned HY4-preview alias, replay checks that do not regenerate all model outputs or extraction, incomplete end-to-end cost accounting, and unresolved label audits.",
+    "missing": [
+      "An immutable checkpoint for HY4-preview",
+      "Independent rerun of GPU generation and original source extraction in the replay checks",
+      "Finish reasons for broad-suite generations",
+      "A complete end-to-end wall-clock and cost measurement including offline extraction, indexing, embeddings, storage, and answer generation",
+      "Manual adjudication of possibly superseded FactConsolidation references",
+      "Independent confirmatory evaluation outside the development grid"
+    ],
+    "status": "strong"
+  },
+  "results": [
+    {
+      "context": "Primary pooled comparison across the benchmark’s four history lengths.",
+      "evidence": [
+        {
+          "block_id": "b00060-13813e918c",
+          "quote": "CMC 97.25 78.25 185 0"
+        }
+      ],
+      "result": "On FactConsolidation with shared extraction and the HY4-preview reader, CMC obtained 97.25% single-hop and 78.25% multi-hop accuracy with 185 mean input tokens and no clipped contexts."
+    },
+    {
+      "context": "Fixed extraction and reader order-of-operations control; all returned parsed facts in the control are current.",
+      "evidence": [
+        {
+          "block_id": "b00064-b63457ff04",
+          "quote": "CMC ties this control at 97.25% single-hop and scores 78.25% versus 21.50% multi-hop."
+        },
+        {
+          "block_id": "b00064-b63457ff04",
+          "quote": "With extraction and reader fixed, the 56.75-point gap isolates record selection (Appendix G)."
+        }
+      ],
+      "result": "Resolving updates before selecting evidence produced a 56.75-point multi-hop advantage over selecting keys from prior values and then refreshing them: 78.25% versus 21.50%, while both scored 97.25% on single-hop questions."
+    },
+    {
+      "context": "Shared direct-LLM extraction, same reader, and untruncated structured contexts.",
+      "evidence": [
+        {
+          "block_id": "b00237-0d59ca7953",
+          "quote": "CMC 97.25 78.25 185 0 Fact BM25 97.50 20.75 1,528 0"
+        },
+        {
+          "block_id": "b00237-0d59ca7953",
+          "quote": "Fact dense (BGE-M3) 96.50 33.25 1,535 0"
+        }
+      ],
+      "result": "Against retrieval over the same current facts, CMC scored 78.25% multi-hop versus 20.75% for BM25 while using 185 versus 1,528 mean reader-input tokens; dense BGE-M3 reached 33.25% with 1,535 tokens."
+    },
+    {
+      "context": "Evidence-length control packing whole current facts from a fixed BM25 ranking.",
+      "evidence": [
+        {
+          "block_id": "b00237-0d59ca7953",
+          "quote": "CMC 97.25 78.25 185 0"
+        },
+        {
+          "block_id": "b00237-0d59ca7953",
+          "quote": "Fact BM25, size matched 97.00 7.25 182 0"
+        }
+      ],
+      "result": "At nearly matched evidence length, BM25 reached 7.25% multi-hop accuracy with 182 mean input tokens, whereas CMC reached 78.25% with 185."
+    },
+    {
+      "context": "Reader swaps using fixed shared-LLM extraction and evidence packets.",
+      "evidence": [
+        {
+          "block_id": "b00076-814a68dabf",
+          "quote": "With Qwen3.5-4B, CMC reaches 76.50% multi-hop versus 20.50% for fact BM25; with Llama-3.1-8B, it reaches 55.00% versus 11.50%."
+        }
+      ],
+      "result": "The evidence-selection advantage persisted after changing readers: CMC versus fact BM25 was 76.50% versus 20.50% multi-hop with Qwen3.5-4B and 55.00% versus 11.50% with Llama-3.1-8B."
+    },
+    {
+      "context": "Constructed two-hop memory streams with a frozen Qwen3.5-4B reader and supplied answer-bearing facts.",
+      "evidence": [
+        {
+          "block_id": "b00084-96f0eb7018",
+          "quote": "CMC reaches 96.62% multi-hop accuracy, versus 53.38% when the reader sees all current facts and 13.41% when the selected relations use earlier values."
+        },
+        {
+          "block_id": "b00084-96f0eb7018",
+          "quote": "Selecting a connected read from the current state gains 43.23 points over presenting that state in full."
+        },
+        {
+          "block_id": "b00084-96f0eb7018",
+          "quote": "Resolving values within the selected relations gains 83.21 points over stale values."
+        }
+      ],
+      "result": "On MQuAKE-MemStream, CMC reached 96.62% multi-hop accuracy, compared with 53.38% for all current facts and 13.41% for stale values; the reported gains were 43.23 and 83.21 points."
+    },
+    {
+      "context": "Depth ablation with extraction, current state, anchors, renderer, evidence cap, and reader fixed.",
+      "evidence": [
+        {
+          "block_id": "b00281-1bc13caf9a",
+          "quote": "Multi-hop accuracy rises from 5.50% at one hop to 54.00%, 71.75%, and 78.25% at two, three, and five hops."
+        },
+        {
+          "block_id": "b00281-1bc13caf9a",
+          "quote": "The corresponding mean reader inputs are 115.29, 138.42, 158.41, and 184.64 tokens."
+        }
+      ],
+      "result": "Increasing the traversal cap raised multi-hop accuracy from 5.50% at one hop to 54.00%, 71.75%, and 78.25% at two, three, and five hops, with mean reader inputs rising from 115.29 to 184.64 tokens."
+    },
+    {
+      "context": "The official long-history split within the broader MemoryAgentBench evaluation.",
+      "evidence": [
+        {
+          "block_id": "b00089-14c6ae9de9",
+          "quote": "CMC reaches 95.0% single-hop and 61.0% multi-hop, versus 8.0% and 1.0% for the suffix and 30.0% and 2.0% for same-reader BM25."
+        }
+      ],
+      "result": "On the 262K FactConsolidation split, CMC reached 95.0% single-hop and 61.0% multi-hop, versus 8.0% and 1.0% for a history suffix and 30.0% and 2.0% for same-reader BM25."
+    },
+    {
+      "context": "Same-reader MemoryAgentBench comparison using task-specific interfaces; only selective forgetting used the current-graph read.",
+      "evidence": [
+        {
+          "block_id": "b00090-f930bd0a62",
+          "quote": "but trails dense+BM25 on summarization (10.2 versus 15.2) and DetectiveQA (67.6 versus 78.9)."
+        }
+      ],
+      "result": "CMC did not dominate the broader suite: it scored 10.2 versus 15.2 for dense+BM25 on summarization and 67.6 versus 78.9 on DetectiveQA."
+    },
+    {
+      "context": "Local timing on frozen extraction; answer generation and one-time BM25 index construction were excluded.",
+      "evidence": [
+        {
+          "block_id": "b00311-1db2a8d9b7",
+          "quote": "262K 0.204 13.78 / 144.34 14.33 / 17.96"
+        }
+      ],
+      "result": "At 262K, CMC’s CPU read measured 13.78 ms median and 144.34 ms at the 95th percentile, compared with 14.33 ms and 17.96 ms for fact BM25."
+    }
+  ],
+  "title": "Contract Memory Compiler: Resolve, Then Traverse",
+  "uncertainties": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00223-9872a7c8f6",
+          "quote": "It does not establish generalization to unseen writing styles or relation types."
+        },
+        {
+          "block_id": "b00263-6c34752fb6",
+          "quote": "these results do not test extraction from open-form language."
+        }
+      ],
+      "uncertainty": "How much of the gain transfers to natural conversational histories with ambiguous references, aliases, negation, simultaneous values, and relations outside the extraction schema?",
+      "why_it_matters": "The main benchmarks largely present ordered assertion-like records, while the second dataset is grammar parsed; production memory is substantially less regular."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00274-1f1ab0ebdd",
+          "quote": "The HY4 alias is unpinned, so the recorded reader settings do not establish an immutable model checkpoint across execution dates."
+        }
+      ],
+      "uncertainty": "Would the headline scores reproduce with the same immutable reader weights?",
+      "why_it_matters": "The principal HY4-preview runs record returned identifiers but do not pin a model-weight revision across execution dates."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00203-d274ab7fdb",
+          "quote": "These flags need manual adjudication."
+        },
+        {
+          "block_id": "b00203-d274ab7fdb",
+          "quote": "this conditional bound does not establish absolute accuracy."
+        }
+      ],
+      "uncertainty": "What is the true accuracy after manual adjudication of potentially superseded reference answers?",
+      "why_it_matters": "Official scores retain flagged labels, and the paper supplies only conditional lower bounds rather than corrected absolute accuracy."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00036-78582184c7",
+          "quote": "All CMC contexts in the shared direct-extraction comparison fit its window."
+        },
+        {
+          "block_id": "b00036-78582184c7",
+          "quote": "Selecting among competing closures when the window binds remains a separate extension of this read interface."
+        }
+      ],
+      "uncertainty": "How does CMC behave when relevant closures exceed the evidence budget?",
+      "why_it_matters": "The main structured comparison fits the window, while the current implementation clips to a recent suffix rather than selecting among competing closures."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00313-634ebd03e2",
+          "quote": "The present numbers are not a full end-to-end wall-clock cost."
+        }
+      ],
+      "uncertainty": "Is CMC cheaper end to end than strong retrieval or adaptive pipelines once extraction, alignment, indexing, graph maintenance, and generation are included?",
+      "why_it_matters": "Reported reader-token and CPU-read advantages omit substantial offline and serving components and do not establish full wall-clock cost."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00307-59e83c6a4b",
+          "quote": "These observations suggest an output-format interaction, but do not establish what another judging contract would score."
+        }
+      ],
+      "uncertainty": "How much do summary and DetectiveQA regressions reflect memory selection versus output-format and judging interactions?",
+      "why_it_matters": "The broader-suite weaknesses cannot be cleanly attributed to the graph mechanism because task interfaces differ and many summary judgments are invalid."
+    }
+  ]
+}

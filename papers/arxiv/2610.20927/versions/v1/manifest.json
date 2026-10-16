@@ -1,0 +1,61 @@
+{
+  "artifacts": {
+    "article.html": {
+      "available": true,
+      "bytes": 482864,
+      "cached": true,
+      "error": null,
+      "fetched_at": "2026-10-16T13:53:00.604244+00:00",
+      "mime_type": "text/html",
+      "name": "article.html",
+      "path": ".aidb/artifacts/arxiv/2610.20927/v1/article.html",
+      "sha256": "105ddeb75485114bce882face5d04c96a1b262d57e5d839e44dfd2bc97b40e98",
+      "status": "cached",
+      "url": "https://arxiv.org/html/2610.20927v1"
+    },
+    "paper.pdf": {
+      "available": true,
+      "bytes": 608950,
+      "cached": true,
+      "error": null,
+      "fetched_at": "2026-10-16T13:53:01.019454+00:00",
+      "mime_type": "application/pdf",
+      "name": "paper.pdf",
+      "path": ".aidb/artifacts/arxiv/2610.20927/v1/paper.pdf",
+      "sha256": "ebd82e4e5aa53f009dcbab11f7e8d2f0963c4a106d438895379bac4d2ce48851",
+      "status": "cached",
+      "url": "https://arxiv.org/pdf/2610.20927v1"
+    }
+  },
+  "base_id": "2610.20927",
+  "extraction": {
+    "block_count": 200,
+    "document_jsonl_sha256": "3706afe4139c3b454396f9ff35751b0ae4bbfdabe38e82fb75139e080c6f8529",
+    "document_markdown_sha256": "87e06aa2eb8c94ad388e358a2c7808aa5c4fe323db5a98489af41b042332e038",
+    "extracted_at": "2026-10-16T14:31:48.917765+00:00",
+    "extractor_version": 1,
+    "source_format": "html"
+  },
+  "html_usable": true,
+  "path_key": "2610.20927",
+  "pipeline_version": 1,
+  "policy": "normal",
+  "schema_version": 1,
+  "source": "arxiv",
+  "summary": {
+    "analysis_sha256": "1fe73469bd01639a770728d3ad43a757fb809c82816a697a0bec2b965ab4b670",
+    "document_jsonl_sha256": "3706afe4139c3b454396f9ff35751b0ae4bbfdabe38e82fb75139e080c6f8529",
+    "generated_at": "2026-10-16T14:31:48.924454+00:00",
+    "metadata_sha256": "1ae55a3baa104d14795ccc51210d12f98d232ff6a18bd6592aefe00ba4f112fc",
+    "pipeline_version": 1,
+    "profile": "deep",
+    "prompt_sha256": "753fcae4b2a63db5542a73036bb295579dfa0096727f5dbedfc8c87462265258",
+    "provider": "reviewed-candidate",
+    "schema_sha256": "8c703ea226fda477d6522236d796e523af9dc6dc2110cbf27fa7b645a7487ecd",
+    "status": "ai-draft",
+    "summary_sha256": "ad3b5b09a0ed8252fdbb7b703e58d936aa6036862819583e6a0441460d98251b"
+  },
+  "updated_at": "2026-10-16T14:31:48.929297+00:00",
+  "version_id": "2610.20927v1",
+  "version_tag": "v1"
+}

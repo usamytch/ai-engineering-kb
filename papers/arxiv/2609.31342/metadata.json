@@ -1,0 +1,33 @@
+{
+  "abstract": "Retrieval-augmented generation (RAG) is often used to address outdated knowledge by providing external evidence. But retrieval helps only when that evidence is still valid. We identify a temporal alignment failure, stale-document poisoning, in which outdated evidence makes a model wrong despite answering correctly without retrieval. We construct a benchmark of 317 verified knowledge reversals across medicine, law, software, and platform policy, grounded in dated official sources. Across 12 models, recent medical reversals are harder than long-established ones. More importantly, outdated retrieval flips 30% of Llama and 37% of Qwen answers even without instructions to trust the document; explicit follow instructions raise these rates to 66% and 75%. Across four open models and four domains, poisoning ranges from 17-91%, while matched up-to-date evidence is followed in 97-100% of trials. To isolate temporal applicability, we keep the historical evidence unchanged across 50 reversals and vary only the evaluation date. A clear pattern emerges: dates alone produce only modest adaptation, but when models are explicitly told when the old evidence stops applying, the larger models switch to the appropriate answer almost perfectly. Causal interventions confirm that this validity information directly shapes the final decision. The same internal components also support broader comparison tasks, suggesting that temporal applicability can recruit a general reasoning mechanism used for other comparisons. Finally, a fixed recency-aware hybrid re-ranker reduces poisoning by 4.6-10.0 points when dates are accurate, with gains that depend on reliable temporal metadata. Reliable RAG therefore requires selective trust: models must determine not only what retrieved evidence says, but whether it still applies.",
+  "arxiv_id": "2609.31342v1",
+  "authors": [
+    "Md Shamim Ahmed",
+    "Lukas Galke Poech",
+    "Richard Röttger"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2609.31342v1",
+  "categories": [
+    "cs.CL"
+  ],
+  "comment": "17 pages, 3 figures",
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2609.31342v1",
+  "latest_seen_version": 1,
+  "paper_id": "2609.31342",
+  "paper_version_id": "2609.31342v1",
+  "published": "2026-09-25T14:43:43+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "Stale-Document Poisoning: When Outdated Retrieval Overrides Correct Model Answers",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-09-25T14:43:43+00:00",
+  "url": "https://arxiv.org/abs/2609.31342v1"
+}

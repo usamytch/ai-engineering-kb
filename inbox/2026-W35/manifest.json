@@ -1,0 +1,619 @@
+{
+  "batch_id": "2026-W35",
+  "entries": [
+    {
+      "abstract": "",
+      "authors": [
+        "khluu"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:99ece13e787f34878e1a",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-08-24T23:42:42+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.28.0: [CI/Build] Pin Cython below 3.3 for arm64 tilelang sdist (#53358)",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-08-24T23:42:42+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.28.0"
+    },
+    {
+      "abstract": "Modern software systems accumulate technical debt over decades of development, which makes migration expensive and largely manual. As coding agents become increasingly capable at bug fixing, can they autonomously perform such migrations? Existing benchmarks cannot answer this question because they evaluate only behavioural correctness, not whether the migration actually occurred. This leads an easy hack: agents copy the original implementation to make tests pass. We call this Blindness. To address this problem, we introduce SWE Refactor Bench, a benchmark comprising 20 whole-repository migrations, covering 4 kinds of technical debt. A three-stage evaluation protocol measures both migration completeness and behavioural correctness. (1) Migration Audit verifies that the migration occurred. (2) Behavioural Tests measure correctness with a fixed test suite. (3) Agentic Verification uses 6 independent coding agents to generate targeted tests for hidden behavioural differences. Across 520 runs from 8 frontier models and 26 model-effort configurations, only 28 of 520 runs ($5.4\\%$) pass all three stages, 13 of the 20 tasks receive no accepted solution, and the best model (claude-opus-5) scores $47.0/100$. Migration completeness and behavioural correctness are distinct abilities: a few runs preserve behaviour by skipping the migration and are stopped at Migration Audit; most attempt it and break behaviour, and are stopped at Behavioural Tests. Agents cannot deliver a perfect migration: among the 340 runs that pass Migration Audit, $58\\%$ reach $99\\%$ of the fixed checks, yet only $26\\%$ reach $100\\%$. Agent capability differs across migration categories: agents score $31.4$ on build toolchain rewrites but only $5.6$ on language rewrites. Together, these findings position SWE Refactor Bench as a rigorous testbed for developing coding agents for reliable whole-repository migrations.",
+      "authors": [
+        "Deyao Hong",
+        "Yizhe Chi",
+        "Wenyi Li",
+        "Xiaoqiu Wang",
+        "Mingju Gao",
+        "Kaisen Yang",
+        "Bingxiang He",
+        "Youjie Zheng",
+        "Calvin Xiao",
+        "Qinhuai Na"
+      ],
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.SE"
+      ],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.23564v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.23564",
+      "paper_version_id": "2608.23564v1",
+      "published": "2026-08-24T17:59:04+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "SWE Refactor Bench: Can Coding Agents Complete a Long-Horizon, Whole-Repository Stack Migration?",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-24T17:59:04+00:00",
+      "url": "https://arxiv.org/abs/2608.23564v1"
+    },
+    {
+      "abstract": "Language models are sequential processors, but long-horizon agency requires external information and computation beyond model weights and active context. Prime Agent is an open-source harness for long-horizon evaluation and coding-agent workflows. A persistent IPython REPL follows the Recursive Language Model abstraction for programmatic context processing and test-time compute, while Continual Harness preserves histories, memories, skills, prompts, and subagent specifications across trajectories. Recursive subagents coordinate through direct agent-to-agent communication, and the Agents View lets humans inspect and manage daemon-backed sessions. Prime Agent standardizes execution, recovery, verification, and resource accounting while leaving strategy construction to the model. This low-friction, expressive membrane prevents harness failures from becoming model failures and pushes measurement toward the model's true maximal underlying capability. Prime Agent raises ARC-AGI-3 RHAE Best@1 from 30% to 95.5% and matches or exceeds native and popular harnesses across long-context coding, GPU-kernel generation, emulator construction, and autonomous nanoGPT speedruns. On Factorio, we find refinement allows for continuous technology progression and dedicated subagents enable parallelized work. Code is available at https://github.com/PrimeIntellect-ai/prime-agent.",
+      "authors": [
+        "Seth Karten",
+        "Alex L. Zhang",
+        "Kevin Thomas",
+        "Sebastian Müller",
+        "Elie Bakouch",
+        "Daniel Auras",
+        "Mika Senghaas",
+        "Fares Obeid",
+        "Konstantin Dunas",
+        "Johannes Hagemann",
+        "Sami Jaghouar"
+      ],
+      "categories": [
+        "cs.AI",
+        "cs.CL",
+        "cs.SE"
+      ],
+      "comment": "16 pages, 10 figures. Technical report. Code: https://github.com/PrimeIntellect-ai/prime-agent",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.23552v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.23552",
+      "paper_version_id": "2608.23552v1",
+      "published": "2026-08-24T17:54:19+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Prime Agent: A Self-Improving RLM Harness",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-24T17:54:19+00:00",
+      "url": "https://arxiv.org/abs/2608.23552v1"
+    },
+    {
+      "abstract": "In CLAUDE.md, \"do not\" is a natural-language instruction that the model interprets. Claude Code's deny is a built-in control that blocks an action before the agent can take it. Both can express the same security goal, but they control the agent in different ways. We measure this gap in 481 public CLAUDE.md files. An LLM matched the extracted candidate rules against Claude Code's documented controls, and two security practitioners independently checked a sample without seeing the model's answers or each other's labels. Depending on how closely a control had to match the written rule, only about 4-16% of the retrieved security rules had a matching built-in control. Under the strictest standard the estimate was 4.4% (95% CI: 2.6-6.7%), and the two annotators agreed closely on which rules had a match. A manual review of complete files found that our extraction method captured 66.3% of eligible security rules; the reported rates therefore apply to the rules it captured. This is a usable security problem: CLAUDE.md is a write-only channel. A developer writes a security rule but gets no feedback on whether a control will enforce it. The same plain-text form hides two kinds of rule: those a permission rule, mode, or sandbox can enforce, and those left to the model to interpret.",
+      "authors": [
+        "Ting Yan"
+      ],
+      "categories": [
+        "cs.HC",
+        "cs.CR"
+      ],
+      "comment": "11 pages, 5 figures",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.23550v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.23550",
+      "paper_version_id": "2608.23550v1",
+      "published": "2026-08-24T17:52:57+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "When \"Do Not\" Is Not Deny: Security Rules in CLAUDE.md vs Built-In Controls",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-24T17:52:57+00:00",
+      "url": "https://arxiv.org/abs/2608.23550v1"
+    },
+    {
+      "abstract": "Does multi-agent LLM interaction help or hurt? Some work reports gains from debate (Du et al., 2024), critique loops (Chen et al., 2025), and mixture-of-agents synthesis (Wang et al., 2025), while other work finds that interaction adds cost without improving quality under equal budgets (Tran & Kiela, 2026; Xu et al., 2026; Jarrett et al., 2025), or that independent sampling already captures multi-agent gains (Li et al., 2024). We argue this contradiction partly reflects a missing distinction, because not all multi-agent communication is equal. Different model families find structurally different solutions, but when agents read each other's complete outputs, their proposals converge within one round, erasing the diversity that motivates using multiple models. We call this the interaction tax. We test 11 verifier-scored optimization tasks under matched budgets and find that full-solution interaction is a weak default. Independent proposal generation avoids this collapse. Full-solution interaction mainly makes agents stay close to the first solution they see instead of trying different approaches, and critique helps only if the violated rule is easy for the LLM to find and fix. These results suggest that multi-agent performance depends less on the number of agents than on the information they exchange, and interaction helps only when agents share the right information at the right time.",
+      "authors": [
+        "Summer Eunhyung Ann",
+        "Haokun Liu",
+        "Chenhao Tan"
+      ],
+      "categories": [
+        "cs.MA",
+        "cs.AI"
+      ],
+      "comment": "14 pages, 3 figures. Accepted at ICML 2026 (PMLR 306)",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.23541v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.23541",
+      "paper_version_id": "2608.23541v1",
+      "published": "2026-08-24T17:45:15+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "The Interaction Tax: When Communication Erases Diversity in Multi-Agent Teams",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-24T17:45:15+00:00",
+      "url": "https://arxiv.org/abs/2608.23541v1"
+    },
+    {
+      "abstract": "Earth-system analysis reconstructs changing physical processes from observations that differ in source, scale, timing, and modality. Natural hazards make this work consequential because incomplete evidence can change estimates of severity, exposure, and mechanism. We introduce EarthVerse, a benchmark that evaluates scientific agents through package-scoped investigations. Its 405 reproducible tasks are grounded in 199 documented events and 19 hazard families. Agents inspect heterogeneous event packages, choose compatible evidence, execute transparent calculations, reconcile source differences, and preserve provenance in the final answer. We provide executable ground truth that decomposes each task into fine-grained answer units, together with task-specific rubrics that assess the supporting research process while allowing multiple valid paths. We evaluate 25 model and agent systems under a controlled tool-using protocol, then use controlled studies to locate failures in evidence access, tool selection, memory, reasoning, interaction, and scientific execution. Across systems, the best mean answer-unit accuracy is 84.65%, while the highest Strict@95 is only 34.81%. The gap shows that current agents often complete individual steps without maintaining a consistent chain across evidence, scales, units, calculations, and physical interpretation. EarthVerse provides a reproducible basis for measuring end-to-end scientific reliability in dynamic Earth systems.",
+      "authors": [
+        "Zhiqing Cui",
+        "Xinxiang Yin",
+        "Yihong Tang",
+        "Xinglang Zhang",
+        "Yuanzhe Hu",
+        "Siru Zhong",
+        "Weidong Tang",
+        "Yuxuan Liang",
+        "Weijia Li",
+        "Ming Jin",
+        "Shirui Pan",
+        "Yuhao Kang",
+        "Dingyi Zhuang",
+        "Jinhua Zhao"
+      ],
+      "categories": [
+        "cs.AI"
+      ],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.23525v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.23525",
+      "paper_version_id": "2608.23525v1",
+      "published": "2026-08-24T17:29:16+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "EarthVerse: Benchmarking Scientific Agents Across Dynamic Earth Systems and Natural Hazards",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-24T17:29:16+00:00",
+      "url": "https://arxiv.org/abs/2608.23525v1"
+    },
+    {
+      "abstract": "Finding people from a natural-language description (``ML engineers transitioning to research roles in biotech'') is increasingly delegated to LLM agents and framed as information retrieval. We argue that it is fundamentally a requirements engineering task: such a request is an under-determined requirement with implicit constraints, many valid answers, and no acceptance criterion, so useful answers require eliciting, validating, and verifying the requirement before search can matter. We present \\sys{}, to our knowledge the first interactive, requirements-driven candidate-sourcing agent (it elicits, validates, retrieves, and verifies a vague people-request into a justified slate through bounded elicitation, workflow templates, a two-stage commit protocol, and bidirectional termination guards) and \\bench{}, a benchmark that runs the requirements lifecycle (criteria-anchored validation, multi-model evidence-grounded oracle construction, and cost-aware verification). Across $21$ systems and all $691$ requirements, \\sys{} dominates breadth ($100%$ coverage at $2.5\\times$ the yield) and is \\emph{near-orthogonal} to the field, with $90%$ of the people it returns are surfaced by \\emph{none} of $20$ strong LLM-plus-web baselines combined. Beyond breadth, an evidence-grounded judging of every system shows \\sys{} \\emph{recalls} the most relevant real people: $0.241$ of the union pool, $1.9\\times$ the next system, with a bootstrap $95%$ interval disjoint from every baseline. \\sys{} is thus the strongest \\emph{sourcing} engine (the deepest real, reachable candidate pool), while precision-ranking LLMs serve as~complementary verifiers.",
+      "authors": [
+        "Yuanpeng He",
+        "Fangjing Li",
+        "Xiangyu Ru",
+        "Kexin Sun",
+        "Kun Yang",
+        "Lijian Li",
+        "Chi-Man Pun",
+        "Qingsong Wen",
+        "Wenpin Jiao",
+        "Mingkai Guo",
+        "Yirong Feng",
+        "Daiheng Gao",
+        "Zhi Jin"
+      ],
+      "categories": [
+        "cs.SE"
+      ],
+      "comment": "12 pages",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.23501v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.23501",
+      "paper_version_id": "2608.23501v1",
+      "published": "2026-08-24T17:04:16+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "An Interactive Agent for Requirement-Driven Candidate Sourcing",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-24T17:04:16+00:00",
+      "url": "https://arxiv.org/abs/2608.23501v1"
+    },
+    {
+      "abstract": "Self-reflection is a powerful mechanism for credit assignment in human learning, converting sparse outcome feedback into actionable guidance. However, its potential for post-training Large Language Models (LLMs) remains underexplored. We propose Self-Reflective Policy Optimization (SRPO), a framework that internalizes this capability. SRPO enables LLMs to analyze their own completed trajectories, synthesize errors into concise \"reflection patches,\" and use reflection-conditioned teacher scores on student on-policy rollouts as dense token-level training signals. This process effectively transforms sparse terminal supervision into dense, token-level learning signals without requiring external critics, separate reward models, or larger teacher models. We demonstrate that SRPO achieves state-of-the-art performance across mathematical reasoning and long-horizon agentic benchmarks with exceptional data efficiency. Using a Qwen3-8B base model, SRPO attains 73.3% on AIME'24 using only 8% (0.08x) of the training FLOPs required by scaled supervised fine-tuning, while significantly improving success rates on WebShop (64.7%), ALFWorld (76.8%), and SWE-Bench-Lite (31.2%). Code is available at https://github.com/Galleons2029/SRPO",
+      "authors": [
+        "Jialong Liu",
+        "Yuling Shi",
+        "Ning Yang",
+        "Xiaodong Gu",
+        "Zuchao Li"
+      ],
+      "categories": [
+        "cs.AI"
+      ],
+      "comment": "Accepted to ICML 2026",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.23493v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.23493",
+      "paper_version_id": "2608.23493v1",
+      "published": "2026-08-24T16:55:09+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "SRPO: Self-Reflective Policy Optimization for Long-Horizon Reasoning",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-24T16:55:09+00:00",
+      "url": "https://arxiv.org/abs/2608.23493v1"
+    },
+    {
+      "abstract": "Time series forecasting (TSF) is evolving toward multimodal and agentic settings, yet using foundation models remains uneconomical in resource-constrained scenarios, where compact, specialized forecasters are more desirable. However, lightweight forecasters typically require substantial training data, limiting their use in domains with scarce, slowly accumulated, or privacy-sensitive time series. To address this dilemma, we investigate the challenging problem of few-shot learning for lightweight forecasters. We propose MetaCaster, a meta-harness-optimized multi-agent framework that uses agentic data generation to automatically train specialized lightweight forecasters from only a few examples and textual contexts. Our work highlights a new TSF paradigm in which agents act not as forecasters but as intermediary engineers that prepare efficient, task-specific forecasters for deployment. Experiments on 18 datasets, 23 state-of-the-art lightweight forecasters, and 14 baselines demonstrate that MetaCaster achieves both data efficiency and computational efficiency while maintaining high-quality TSF performance.",
+      "authors": [
+        "ChengAo Shen",
+        "Wenchao Yu",
+        "Fangyu Wu",
+        "Dongjin Song",
+        "Hanghang Tong",
+        "Dongsheng Luo",
+        "Wei Cheng",
+        "Haifeng Chen",
+        "Jingchao Ni"
+      ],
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "comment": "Accepted by EMNLP 2026",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.23473v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.23473",
+      "paper_version_id": "2608.23473v1",
+      "published": "2026-08-24T16:40:25+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "MetaCaster: Meta-Harness-Optimized Agent for End-to-End Few-Shot Learning of Lightweight Time Series Forecasters",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-24T16:40:25+00:00",
+      "url": "https://arxiv.org/abs/2608.23473v1"
+    },
+    {
+      "abstract": "Memory is becoming a default subsystem in deployed LLM agents to provide persistent personalization and continuity. This naturally prompts a question: will memory system introduce new vulnerabilities into agents? Thus we propose InjecMEM, a novel memory injection attack paradigm that requires only a single interaction (no read/edit access to memory store) to steer later responses of related queries toward a pre-specified output. Guided by the retrieval-then-generate mechanism of memory systems, we craft the injection with a retriever-agnostic anchor and an adversarial command. The anchor contains high-recall topical cues so that downstream retrieval consistently associates the record with the target topic. The command is a short sequence optimized to remain effective under uncertain fused contexts, variable placements, and long prompts so that it reliably steers outputs once retrieved. We learn the command via gradient-based coordinate search, averaging over synthetic prompt templates and insertion positions, and extend it to joint optimization across backbones to study transfer. Evaluated across multiple memory systems and backbone models, InjecMEM achieves reliable topic-conditioned retrieval and targeted generation, remains effective under memory drift, and leaves non-target queries unaffected. Our results underscore the need to harden memory systems and provide a reproducible framework for studying agent memory.",
+      "authors": [
+        "Hanling Tian",
+        "Gengyu Zhang",
+        "Zeyang Sha",
+        "Jingying Wang",
+        "Yuhang Liu",
+        "Zhehao Huang",
+        "Kun Yang",
+        "Xiaolin Huang"
+      ],
+      "categories": [
+        "cs.CR",
+        "cs.AI"
+      ],
+      "comment": "29 pages, 3 figures. Accepted at COLM 2026",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.23471v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.23471",
+      "paper_version_id": "2608.23471v1",
+      "published": "2026-08-24T16:37:50+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "InjecMEM: Memory Injection Attack on LLM Agent Memory Systems",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-24T16:37:50+00:00",
+      "url": "https://arxiv.org/abs/2608.23471v1"
+    },
+    {
+      "abstract": "Space robots operate in extreme environments where hardware degradation can critically compromise traditional control strategies. While continual reinforcement learning offers a promising mechanism for online adaptation, it inherently requires access to a reward signal during deployment. However, precise reward computation in space is often infeasible due to the lack of external tracking systems and the overall complexity of the environment. To address the challenge of unobservable rewards, we introduce a reward-free continual learning framework that leverages latent-state world models. By pre-training a model-based agent across diverse simulations, the world model learns a robust predictor of the reward structure within its latent space. Upon deployment to an environment with severe hardware degradation, we freeze the observation encoder and reward predictor to update only the transition dynamics of the world model through unsupervised rollouts. By training the policy entirely on imagined trajectories generated by this updated world model, the agent adapts to altered dynamics without receiving new rewards. We demonstrate our approach across simulated planetary traversal, orbital navigation, and precision assembly tasks subjected to severe morphological failures.",
+      "authors": [
+        "Andrej Orsula",
+        "Miguel Olivares-Mendez",
+        "Carol Martinez"
+      ],
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "comment": "Accepted for publication at the Third Conference on AI in and for Space (SPAICE 2026) | The source code is available at https://github.com/AndrejOrsula/space_robotics_bench",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "arXiv: agents and RAG"
+      ],
+      "id": "arxiv:2608.23452v1",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": "2608.23452",
+      "paper_version_id": "2608.23452v1",
+      "published": "2026-08-24T16:23:36+00:00",
+      "source_type": "paper",
+      "status": "discovered",
+      "title": "Reward-Free Continual Adaptation for Resilient Space Robots",
+      "topics": [
+        "agents",
+        "rag",
+        "research"
+      ],
+      "updated": "2026-08-24T16:23:36+00:00",
+      "url": "https://arxiv.org/abs/2608.23452v1"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "dworthen"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "Microsoft GraphRAG releases"
+      ],
+      "id": "url:2f29d7be4ad3466fc62d",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-08-21T15:24:30+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v3.1.2",
+      "topics": [
+        "rag",
+        "graph"
+      ],
+      "updated": "2026-08-21T15:24:30+00:00",
+      "url": "https://github.com/microsoft/graphrag/releases/tag/v3.1.2"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "SubSir"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:31c6f260de9b1ca31ac7",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-08-21T06:47:39+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.28.0rc2: [Spec Decode] DFlash2: local convolution + candidate selector (#52816)",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-08-21T06:47:39+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.28.0rc2"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "jperezdealgaba"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "vLLM releases"
+      ],
+      "id": "url:3d23242522a95e0119db",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-08-20T09:30:39+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "v0.28.0rc1",
+      "topics": [
+        "inference",
+        "production"
+      ],
+      "updated": "2026-08-20T09:30:39+00:00",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.28.0rc1"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "github-actions[bot]"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "LangGraph releases"
+      ],
+      "id": "url:72c1c65856af7651e1ca",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-08-19T18:05:32+00:00",
+      "source_type": "release",
+      "status": "discovered",
+      "title": "langgraph-sdk==0.4.3",
+      "topics": [
+        "agents",
+        "runtime"
+      ],
+      "updated": "2026-08-19T18:05:32+00:00",
+      "url": "https://github.com/langchain-ai/langgraph/releases/tag/sdk%3D%3D0.4.3"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "seratch"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "OpenAI Agents SDK releases"
+      ],
+      "id": "url:52d7fe5e2f70c9ee2258",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-08-19T13:44:38+00:00",
+      "source_type": "release",
+      "status": "already-seen",
+      "title": "v0.22.0",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-08-19T13:44:38+00:00",
+      "url": "https://github.com/openai/openai-agents-python/releases/tag/v0.22.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "wuliang229"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "Google ADK Python releases"
+      ],
+      "id": "url:dc009bcabb091ae6098c",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-08-17T19:25:50+00:00",
+      "source_type": "release",
+      "status": "already-seen",
+      "title": "v1.39.0",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-08-17T19:25:50+00:00",
+      "url": "https://github.com/google/adk-python/releases/tag/v1.39.0"
+    },
+    {
+      "abstract": "",
+      "authors": [
+        "GWeale"
+      ],
+      "categories": [],
+      "comment": "",
+      "decision": "untriaged",
+      "doi": "",
+      "feeds": [
+        "Google ADK Python releases"
+      ],
+      "id": "url:7ac2ce458271723bdedb",
+      "journal_ref": "",
+      "license_url": "",
+      "paper_id": null,
+      "paper_version_id": null,
+      "published": "2026-08-17T18:28:14+00:00",
+      "source_type": "release",
+      "status": "already-seen",
+      "title": "v2.7.1",
+      "topics": [
+        "agents",
+        "sdk"
+      ],
+      "updated": "2026-08-17T18:28:14+00:00",
+      "url": "https://github.com/google/adk-python/releases/tag/v2.7.1"
+    }
+  ],
+  "errors": [],
+  "generated_at": "2026-08-25T08:49:20+00:00",
+  "schema_version": 1
+}
