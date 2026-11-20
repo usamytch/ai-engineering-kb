@@ -251,10 +251,10 @@ def render_week_index(
     surfaced = [candidate for candidate in candidates if candidate.status != "already-seen"]
     suppressed = [candidate for candidate in candidates if candidate.status == "already-seen"]
     if discovery:
-        complete = "полное для настроенных источников" if discovery.get("complete") else "неполное — см. ошибки и manifest"
+        complete = "обход завершён в границах источников, указанных в manifest.json" if discovery.get("complete") else "неполное — см. ошибки и manifest"
         position = lines.index("## Кандидаты")
         lines[position:position] = [
-            f"Период по дате обновления (UTC): {discovery.get('since')} → {discovery.get('until')}.",
+            f"Период по дате обновления или публикации (UTC): {discovery.get('since')} → {discovery.get('until')}.",
             f"Покрытие: {complete}. Кандидатов после дедупликации: {len(surfaced)}; повторов: {len(suppressed)}.",
             "",
         ]

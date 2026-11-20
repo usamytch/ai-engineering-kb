@@ -1,12 +1,14 @@
 from datetime import datetime, timezone
+import gzip
 import json
 from pathlib import Path
+import tempfile
 import unittest
 from unittest.mock import patch
 from urllib.parse import parse_qs, urlsplit
 
-from aidb.discovery import collect_paginated
-from scripts.refresh_inbox import parse_since
+from aidb.discovery import DiscoveryClient, collect_paginated
+from scripts.refresh_inbox import parse_feed, parse_since
 
 
 NOW = datetime(2026, 10, 16, tzinfo=timezone.utc)
@@ -156,6 +158,52 @@ class DiscoveryTest(unittest.TestCase):
     def test_since_dates_are_normalized_to_utc(self):
         self.assertEqual(parse_since("2026-09-16"), CUTOFF)
         self.assertEqual(parse_since("2026-09-16T03:00:00+03:00"), CUTOFF)
+
+    def test_rss_cdata_retains_title_description_and_publication(self):
+        payload = b'''<rss><channel><item>
+            <title><![CDATA[Memory & evaluations]]></title>
+            <description><![CDATA[Read <b>evidence</b> &amp; limitations.]]></description>
+            <link>https://example.com/paper</link><category><![CDATA[Research]]></category>
+            <pubDate>Thu, 01 Oct 2026 08:00:00 GMT</pubDate>
+        </item></channel></rss>'''
+        entry = parse_feed(payload, {"name": "RSS"})[0]
+        self.assertEqual(entry.title, "Memory & evaluations")
+        self.assertEqual(entry.summary, "Read evidence & limitations.")
+        self.assertEqual(entry.categories, ("Research",))
+        self.assertEqual(entry.published.isoformat(), "2026-10-01T08:00:00+00:00")
+
+    def test_snapshot_coverage_is_scoped_and_requires_boundary(self):
+        feed = {"name": "RSS", "url": "https://example.com/feed", "coverage": "dated-feed-snapshot"}
+        def rss(date):
+            return f'<rss><channel><item><title>Old</title><link>https://example.com/old</link><pubDate>{date}</pubDate></item></channel></rss>'.encode(), {}
+        _, errors, report, _ = self.collect([rss("2026-08-01")], feeds=[feed])
+        self.assertFalse(errors)
+        self.assertTrue(report["complete"])
+        self.assertIn("not the full archive", report["feeds"][0]["scope"])
+        for date in ["2026-10-01", ""]:
+            _, errors, report, _ = self.collect([rss(date)], feeds=[feed])
+            self.assertTrue(errors)
+            self.assertFalse(report["complete"])
+
+    def test_gzip_response_is_decoded_before_caching(self):
+        from unittest.mock import MagicMock
+        response = MagicMock()
+        response.read.return_value = gzip.compress(b"<rss />")
+        response.headers = {"Content-Encoding": "gzip"}
+        response.__enter__.return_value = response
+        with tempfile.TemporaryDirectory() as directory:
+            client = DiscoveryClient(20, Path(directory))
+            with patch("aidb.discovery.urlopen", return_value=response) as request:
+                self.assertEqual(client.get("https://example.com/feed"), (b"<rss />", {}))
+                self.assertEqual(client.get("https://example.com/feed"), (b"<rss />", {}))
+                self.assertEqual(request.call_count, 1)
+
+    def test_missing_snapshot_link_does_not_silently_reduce_coverage(self):
+        feed = {"name": "RSS", "url": "https://example.com/feed", "coverage": "dated-feed-snapshot"}
+        payload = b'<rss><channel><item><title>Lost</title><pubDate>2026-08-01</pubDate></item></channel></rss>'
+        _, errors, report, _ = self.collect([(payload, {})], feeds=[feed])
+        self.assertIn("without a link", errors[0][1])
+        self.assertFalse(report["complete"])
 
 
 if __name__ == "__main__":

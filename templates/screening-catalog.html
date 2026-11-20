@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIDB — __WEEK__</title>
+<style>
+  :root { color-scheme: light dark; font-family: system-ui, sans-serif; line-height: 1.5; }
+  body { max-width: 1080px; margin: auto; padding: 24px; background: light-dark(#f6f5f1, #161b1d); color: light-dark(#17272d, #e1e9e9); }
+  h1 { font-size: 2rem; margin: 0 0 12px; }
+  a { color: light-dark(#075e6c, #8bdae1); }
+  nav { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 24px; }
+  form { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; }
+  label { display: grid; gap: 4px; font-size: .9rem; }
+  input, select, button { font: inherit; color: inherit; background: light-dark(#fff, #263034); border: 1px solid #899c9e; border-radius: 5px; padding: 9px; min-width: 0; }
+  button { cursor: pointer; }
+  button:disabled { opacity: .4; cursor: default; }
+  .pager { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 20px 0; }
+  article { padding: 20px 0; border-top: 1px solid light-dark(#cad3d2, #425052); }
+  h2 { font-size: 1.12rem; margin: 0 0 8px; }
+  .meta { font-size: .82rem; color: light-dark(#536369, #aebfc3); }
+  p { margin: 8px 0; }
+  details { margin-top: 10px; font-size: .9rem; }
+  blockquote { margin: 10px 0; padding-left: 14px; border-left: 3px solid #899c9e; }
+  .note { display: inline-block; font-weight: 600; margin-top: 4px; }
+  @media (max-width: 650px) { body { padding: 16px; } form { grid-template-columns: 1fr; } }
+</style>
+<h1>AIDB · __WEEK__</h1>
+<nav><a href="reading-guide.md">Маршрут и резюме важных работ</a><a href="source-audit.md">Источники и границы покрытия</a><a href="index.md">Исходный inbox</a></nav>
+<form id="filters">
+  <label>Поиск по названию, резюме или ID<input id="query" type="search" autocomplete="off"></label>
+  <label>Тема<select id="topic"><option value="">Все темы</option></select></label>
+  <label>Первичный отбор<select id="priority"><option value="">Все записи</option><option value="read">Кандидаты на чтение</option><option value="reference">Справочно</option><option value="outside">Вне темы</option></select></label>
+  <label>Источник<select id="feed"><option value="">Все источники</option></select></label>
+  <label>Глубина разбора<select id="depth"><option value="">Все</option><option value="full">Есть отдельный полнотекстовый разбор</option><option value="screen">Только аннотация / описание</option></select></label>
+  <label>Что появилось в периоде<select id="event"><option value="">Всё</option><option value="new">Новые работы arXiv</option><option value="revision">Обновления прежних работ</option><option value="publication">Веб-публикации</option><option value="release">Релизы</option></select></label>
+</form>
+<div class="pager"><button id="previous" type="button">← Назад</button><span id="count" aria-live="polite"></span><button id="next" type="button">Дальше →</button></div>
+<main id="results"></main>
+<noscript>Для поиска включите JavaScript. Все записи также доступны в index.md и screening.jsonl.</noscript>
+<script id="records" type="application/json">__RECORDS__</script>
+<script>
+  const records = JSON.parse(document.getElementById('records').textContent);
+  const topics = { memory: 'Память', retrieval: 'Retrieval / RAG', context: 'Контекст и сжатие', evaluation: 'Оценка качества', safety: 'Безопасность', runtime: 'Исполнение и inference', training: 'Обучение', applications: 'Приложения', other: 'Другое' };
+  const priorities = { read: 'Кандидат на чтение', reference: 'Справочно', outside: 'Вне темы AIDB' };
+  const events = { new: 'Новая работа', revision: 'Обновление прежней работы', publication: 'Публикация', release: 'Релиз' };
+  const rank = { read: 0, reference: 1, outside: 2 };
+  const fields = Object.fromEntries(['query', 'topic', 'priority', 'feed', 'depth', 'event'].map(id => [id, document.getElementById(id)]));
+  let page = 0;
+  const pageSize = 50;
+  const option = (select, value, text) => { const item = document.createElement('option'); item.value = value; item.textContent = text; select.append(item); };
+  for (const [key, value] of Object.entries(topics)) option(fields.topic, key, value);
+  for (const feed of [...new Set(records.flatMap(row => row.feeds))].sort()) option(fields.feed, feed, feed);
+  records.sort((a, b) => Number(Boolean(b.note)) - Number(Boolean(a.note)) || rank[a.priority] - rank[b.priority] || b.date.localeCompare(a.date) || a.id.localeCompare(b.id));
+  function element(tag, text, className) { const node = document.createElement(tag); node.textContent = text; if (className) node.className = className; return node; }
+  function render() {
+    const query = fields.query.value.trim().toLocaleLowerCase();
+    const found = records.filter(row =>
+      (!query || `${row.title} ${row.assessment} ${row.id}`.toLocaleLowerCase().includes(query)) &&
+      (!fields.topic.value || row.topic === fields.topic.value) &&
+      (!fields.priority.value || row.priority === fields.priority.value) &&
+      (!fields.feed.value || row.feeds.includes(fields.feed.value)) &&
+      (!fields.event.value || row.event === fields.event.value) &&
+      (!fields.depth.value || Boolean(row.note) === (fields.depth.value === 'full')));
+    page = Math.max(0, Math.min(page, Math.ceil(found.length / pageSize) - 1));
+    const start = page * pageSize;
+    document.getElementById('count').textContent = found.length ? `${start + 1}–${Math.min(start + pageSize, found.length)} из ${found.length} · всего ${records.length}` : `Ничего не найдено · всего ${records.length}`;
+    document.getElementById('previous').disabled = page === 0;
+    document.getElementById('next').disabled = start + pageSize >= found.length;
+    const container = document.getElementById('results');
+    container.replaceChildren();
+    for (const row of found.slice(start, start + pageSize)) {
+      const article = document.createElement('article');
+      const title = document.createElement('h2');
+      const link = element('a', row.title); link.href = row.url; link.target = '_blank'; link.rel = 'noopener noreferrer'; title.append(link);
+      const date = row.kind === 'paper' && row.date !== row.published ? `Опубликована ${row.published}; обновлена ${row.date}` : row.date;
+      article.append(title, element('div', `${date} · ${events[row.event]}${row.already_seen ? ' · Уже встречалась' : ''} · ${topics[row.topic]} · ${priorities[row.priority]} · ${row.feeds.join(', ')}`, 'meta'));
+      article.append(element('p', row.assessment));
+      if (row.note) { const note = element('a', 'Открыть подробный разбор', 'note'); note.href = row.note; article.append(note); }
+      const details = document.createElement('details');
+      details.append(element('summary', 'Основание первичного отбора'), element('blockquote', row.evidence), element('p', `${row.id} · Анализ аннотации или описания источника; не подтверждение результатов эксперимента.`, 'meta'));
+      article.append(details); container.append(article);
+    }
+  }
+  document.getElementById('filters').addEventListener('submit', event => event.preventDefault());
+  for (const field of Object.values(fields)) field.addEventListener('input', () => { page = 0; render(); });
+  document.getElementById('previous').addEventListener('click', () => { page--; render(); window.scrollTo(0, 0); });
+  document.getElementById('next').addEventListener('click', () => { page++; render(); window.scrollTo(0, 0); });
+  render();
+</script>
+</html>

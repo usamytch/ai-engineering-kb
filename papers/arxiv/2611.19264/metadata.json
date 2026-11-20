@@ -1,0 +1,32 @@
+{
+  "abstract": "Agent-memory services assemble evidence through several reads across connections or stores. An update between those reads can pair an assertion with source content from another revision. We protect the complete recall, including enrichment and materialization, and evaluate the resulting evidence and service behavior in Hindsight and Cognee. A 600-run Cognee study compares unprotected recall, a repeated recall, a read/write lock, and optimistic epoch validation under default incremental updates and full rebuilds. At approximately 20 recalls/s, unprotected default updates yield 199 conflicting responses among 12,010 scheduled recalls with spaced writes and 284 among 12,010 with bursts. The lock and epoch validation each deliver complete, compatible evidence for all 24,020 default-update recalls. With default bursts, epoch validation reduces update p95 by 109 ms while adding 290 ms to recall p95 relative to the lock. A separate 160-run incremental-failure study distinguishes mixed revisions from complete new derived content whose canonical source record remains old. Both protected policies refuse service after failure; the first default retry restores all 80 fault runs through native full-rebuild fallback. In Hindsight, a shared PostgreSQL snapshot removes the mismatch in ten controlled pairs, with recall p95 rising from 19 ms to 29 ms. These results identify the read boundary needed for coherent evidence and the publication and recovery conditions governing service after an update fails.",
+  "arxiv_id": "2611.19264v1",
+  "authors": [
+    "Haoting Qiu",
+    "Qibai Chen"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2611.19264v1",
+  "categories": [
+    "cs.DB"
+  ],
+  "comment": "Accepted by IEEE CCWC 2027",
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2611.19264v1",
+  "latest_seen_version": 1,
+  "paper_id": "2611.19264",
+  "paper_version_id": "2611.19264v1",
+  "published": "2026-11-14T08:42:42+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "Read Boundaries in Agent Memory: Consistency, Completeness, and Repair",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-11-14T08:42:42+00:00",
+  "url": "https://arxiv.org/abs/2611.19264v1"
+}

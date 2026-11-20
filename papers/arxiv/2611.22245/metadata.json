@@ -1,0 +1,42 @@
+{
+  "abstract": "Multi-agent delegation lets LLM systems distribute evidence collection across workers with separate contexts. This creates a consistency challenge: facts retrieved by workers may be missing from the evidence available to the lead for a joint conclusion. We introduce a benchmark and evidence-flow profiler for studying multi-agent memory inconsistency through controlled factual conflicts in Harvey LAB document-review tasks. Pooled across three models with comparable generation spending, requiring delegation increases retrieval of both conflicting claims from 50.2% to 68.7% relative to single-agent execution, yet conflict detection falls from 16.2% to 13.2%. Within this setting, workers report both claims for only 35.2% of retrieved pairs, and pooled matched comparisons show higher detection than single-agent execution when one worker reads both claims but lower detection when the claims are split across workers. Worker-to-lead handoffs are a central target for improving conflict detection in multi-agent LLMs.",
+  "arxiv_id": "2611.22245v2",
+  "authors": [
+    "Hejia Zhang",
+    "Zhongming Yu",
+    "Yimin Ding",
+    "Wei-Ting Chen",
+    "Hengjia Yu",
+    "Wentao Ni",
+    "Yijun Liu",
+    "Cong Xu",
+    "Xin Chen",
+    "Matrix Yao",
+    "Fan Zhao",
+    "Jishen Zhao"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2611.22245v2",
+  "categories": [
+    "cs.AI",
+    "cs.MA"
+  ],
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2611.22245v2",
+  "latest_seen_version": 2,
+  "paper_id": "2611.22245",
+  "paper_version_id": "2611.22245v2",
+  "published": "2026-11-17T05:47:01+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "Multi-Agent Memory Inconsistency: Where Factual Conflicts Disappear in LLM Agents",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-11-18T06:42:29+00:00",
+  "url": "https://arxiv.org/abs/2611.22245v2"
+}

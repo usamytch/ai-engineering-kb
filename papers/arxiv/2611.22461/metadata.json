@@ -1,0 +1,36 @@
+{
+  "abstract": "Shared memory for multi-agent debate is usually built to resolve inconsistency: retrieval returns one winning fact and the disagreement disappears before any agent sees it. We ask whether that is correct. In DebateGraph, four backends share one contract (read/write/snapshot), so five mechanisms from the agent-memory literature can be removed independently under a fixed budget, each gated on a pre-declared threshold. Across 39 runs one survives: preserving contradictions and passing the ranked conflict set to the debate, rather than collapsing it to a winner, improves F1 by +0.340 (95% CI [+0.267, +0.414]) and cuts attack success from 22 to 7 of 122 poisoned items (McNemar exact p=0.0003), at equal cost. Reaching it meant fixing a bottleneck in our harness: conflict sets are built only over retrieved edges, and our pre-declared cap left three quarters of planted contradictions unretrievable, first measuring the mechanism at +0.084. The effect replicates on two retrieval substrates and directionally on HotpotQA documents. No other mechanism survives, and two are worse than inert: once contradictions reach the prompt, a write trust-gate and the router's provenance features each cost accuracy (-0.075 and -0.096 F1). The gate fails structurally: poisoned objects are always entities the graph already contains, against 53% of gold, so groundedness scores the lie above a truthful first mention. We release the harness, attack set, and logs, and argue that silently reconciling memory is the assumption worth abandoning.",
+  "arxiv_id": "2611.22461v1",
+  "authors": [
+    "Ziaullah Khan",
+    "Abdul Rehman Khalid",
+    "Shrestha Nischal Lal",
+    "Nheng Vanchhay",
+    "Md Ariful Islam Mozumder",
+    "Hee-Cheol Kim"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2611.22461v1",
+  "categories": [
+    "cs.MA",
+    "cs.CL"
+  ],
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2611.22461v1",
+  "latest_seen_version": 1,
+  "paper_id": "2611.22461",
+  "paper_version_id": "2611.22461v1",
+  "published": "2026-11-17T09:23:13+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "Surfacing Disagreement Beats Resolving It: A Gated Ablation Study of Provenance-Weighted Memory for Multi-Agent Debate",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-11-17T09:23:13+00:00",
+  "url": "https://arxiv.org/abs/2611.22461v1"
+}

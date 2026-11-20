@@ -1,0 +1,567 @@
+{
+  "aidb_assessment": {
+    "confidence": "high",
+    "novelty": "Moderate to high as an evaluation contribution. The paper does not claim the general sufficiency distinction, but operationalizes it with byte-identical compatible-world witnesses, public temporal certificates, conservative unresolved labels, and separate evaluator calibration.",
+    "rationale": "Adopt the separation of reference agreement, certified sufficiency, and context appropriateness, and require executable baselines where semantics permit. Treat the reported reader rates and format effects as bounded diagnostics rather than portable estimates. The careful negative results, replication, and validity boundaries make the paper decision-useful despite narrow external validity.",
+    "recommended_action": "adopt",
+    "usefulness": "High for designing or auditing agent-memory and history-QA evaluations. The protocol exposes when reference accuracy conflates evidence access with unsupported answering and supplies strong deterministic baselines. Immediate applicability is greatest in executable or tightly specified domains."
+  },
+  "claims": [
+    {
+      "claim": "Reference agreement and evidence sufficiency are distinct measurement axes; a correct-looking answer may be unsupported by the visible history.",
+      "evidence": [
+        {
+          "block_id": "b00005-a2e3788a5a",
+          "quote": "A model can agree with the hidden reference after a decisive tool outcome has been removed."
+        },
+        {
+          "block_id": "b00044-8fd509eb3c",
+          "quote": "The reference score remains useful, but answers a different measurement question."
+        }
+      ]
+    },
+    {
+      "claim": "The paper provides constructive, auditable insufficiency certificates rather than treating truncation or failed search as proof of insufficiency.",
+      "evidence": [
+        {
+          "block_id": "b00036-5efb563b5e",
+          "quote": "The resulting contexts must be byte-identical."
+        },
+        {
+          "block_id": "b00031-e5c4082237",
+          "quote": "Unclassified does not mean insufficient."
+        }
+      ]
+    },
+    {
+      "claim": "The evidence-sensitive answering contract fails in both hosted reader configurations tested.",
+      "evidence": [
+        {
+          "block_id": "b00095-a6fe21b123",
+          "quote": "Both readers frequently supply concrete values when compatible histories force different answers; some match the original reference."
+        },
+        {
+          "block_id": "b00076-bdc4a5c36f",
+          "quote": "The diagnosis persists under explicit instructions against guessing."
+        }
+      ]
+    },
+    {
+      "claim": "The study is an evaluation diagnosis, not a new retrieval or memory architecture and not a demonstration of natural-domain transfer.",
+      "evidence": [
+        {
+          "block_id": "b00011-0cb128496d",
+          "quote": "Our contribution is an executable, auditable evaluation protocol and a controlled empirical diagnosis, rather than a new retrieval or memory architecture."
+        },
+        {
+          "block_id": "b00101-463da1b580",
+          "quote": "Transfer to independent tasks, longer histories, and natural language remains open."
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "ablations": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00062-ca7e3f3a41",
+            "quote": "Two possible outcome assignments change the answer in the decisive arm; the irrelevant arm preserves a unique answer."
+          }
+        ],
+        "text": "Decisive versus irrelevant outcome masking with neutral padding."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00052-f9f18f8ccc",
+            "quote": "Raw-prefix and CSV-prefix policies truncate to a context-token budget and may cut a record."
+          },
+          {
+            "block_id": "b00052-f9f18f8ccc",
+            "quote": "Whole-record raw prefixes stop before the next record would exceed that budget."
+          }
+        ],
+        "text": "Raw, whole-record raw, and compact CSV prefixes under fixed context budgets, plus full-source controls."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00054-7b9d40ea57",
+            "quote": "DeepSeek’s replication changes only the model field of Qwen’s frozen request payloads, preserving messages, seed, and strict answer schema."
+          }
+        ],
+        "text": "Second-reader replication changing only the model field in frozen request payloads."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00085-7f88c22b16",
+            "quote": "Thus the comparison changes both reasoning setting and output budget; it is not an isolated causal test of reasoning effort."
+          }
+        ],
+        "text": "Paired judge configurations comparing low reasoning with a weaker configuration while also changing output limits."
+      }
+    ],
+    "baselines": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00081-b6ccbf9789",
+            "quote": "An END-only program abstains on every partial prefix and runs the executable query on full logs."
+          }
+        ],
+        "text": "END-only deterministic program that abstains on partial prefixes and executes queries on complete logs."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00081-b6ccbf9789",
+            "quote": "A cutoff-aware program also uses the public cutoff and first-route conditions."
+          }
+        ],
+        "text": "Cutoff-aware deterministic program using public cutoff and first-route conditions."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00086-1edfafb383",
+            "quote": "We compare a finite program, an extended program supporting the declared extra format, reference-only scoring, the model judge, and a program-first hybrid."
+          }
+        ],
+        "text": "Finite and extended evaluator programs, reference-only scoring, an LLM judge, and program-first hybrid routing."
+      }
+    ],
+    "datasets": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00047-2775221ce9",
+            "quote": "Masking and unordered packing use 40 exposed histories; the judge uses 120 reserved histories from that generator."
+          }
+        ],
+        "text": "Synthetic outcome-masking and unordered-packing development histories with controlled missing outcomes and multiple context budgets."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00047-2775221ce9",
+            "quote": "Qwen’s chronological study uses a new generator, 16 development histories, and 80 confirmation histories from an independent random stream."
+          },
+          {
+            "block_id": "b00047-2775221ce9",
+            "quote": "DeepSeek reuses those 80 histories after Qwen’s results are observed."
+          }
+        ],
+        "text": "Chronological confirmation histories from an independent random stream, reused as fixed inputs for the second reader."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00084-977a99b9e1",
+            "quote": "The judge study uses the 120 reserved histories from the outcome-masking generator."
+          },
+          {
+            "block_id": "b00084-977a99b9e1",
+            "quote": "It selects one query per history, balanced across the four operators, and constructs 16 candidates per selected query."
+          }
+        ],
+        "text": "Held-out constructed judge controls derived from reserved histories, with scalar and two-axis evidence candidates."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00168-3127d82a2f",
+            "quote": "It does not provide an external validation set for the executable evidence certificates."
+          }
+        ],
+        "text": "An exploratory natural-trajectory pilot excluded from controlled confirmation because it does not validate the executable certificates."
+      }
+    ],
+    "metrics": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00041-d0f4366ea6",
+            "quote": "Reference agreement is R=𝕀[a=y], even on insufficient contexts."
+          }
+        ],
+        "text": "Reference agreement against the executable complete-history answer."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00043-2d5502fac4",
+            "quote": "We report the certified denominator, reference hits on insufficient inputs, abstention on insufficient inputs, and incorrect abstention on sufficient inputs."
+          }
+        ],
+        "text": "Certified context appropriateness, including reference hits and abstention behavior by evidence status."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00043-2d5502fac4",
+            "quote": "This is an identification bound, not a confidence interval."
+          }
+        ],
+        "text": "All-input appropriateness identification bounds accounting for unresolved inputs."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00057-f0a452e57b",
+            "quote": "We resample whole histories with replacement, retaining all questions and paired conditions, for 10,000 bootstrap replicates."
+          }
+        ],
+        "text": "History-clustered percentile bootstrap intervals for paired contrasts."
+      }
+    ],
+    "negative_results": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00072-aca250d387",
+            "quote": "Neither lower endpoint is strictly positive."
+          }
+        ],
+        "text": "Neither hosted reader established a positive compact-CSV appropriateness effect under the prespecified criterion."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00079-b7b294b546",
+            "quote": "Thus a positive full-source CSV contrast is not established in both configurations."
+          }
+        ],
+        "text": "DeepSeek did not establish Qwen’s positive full-source CSV contrast."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00090-c0a085463c",
+            "quote": "The full prespecified reliability gate is not passed, despite the high aggregate score and zero false accepts on the separate scalar controls."
+          }
+        ],
+        "text": "The LLM judge failed the full reliability gate despite high aggregate correctness."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00168-3127d82a2f",
+            "quote": "The pilot neither estimates full AMA-Bench performance nor validates an architecture improvement."
+          }
+        ],
+        "text": "The exploratory natural-trajectory path does not validate architecture improvement or the main claims."
+      }
+    ]
+  },
+  "executive_summary": "The paper diagnoses a validity failure in agent-memory evaluation: agreement with a complete-history reference can look correct even when the visible context does not determine the answer. It introduces executable sufficiency and insufficiency certificates, then tests two hosted readers, compact packing, and an LLM judge on synthetic device logs. Both readers frequently answer insufficient inputs and sometimes match hidden references; compact CSV yields no conclusive appropriateness gain. A deterministic program solves the certified grammar, while the highly accurate judge still makes support errors. The protocol is valuable and unusually auditable, but evidence is restricted to short synthetic histories, fixed English queries, shared certification logic, and unpinned hosted models.",
+  "labels": {
+    "ablations": "Ablations",
+    "action_adopt": "adopt",
+    "action_read": "read",
+    "action_reject": "reject",
+    "action_watch": "watch",
+    "aidb_assessment": "AIDB assessment",
+    "assumptions": "Assumptions",
+    "available_artifacts": "Available artifacts",
+    "baseline": "Baseline",
+    "baselines": "Baselines",
+    "blocks": "Blocks",
+    "claims": "Main claims",
+    "confidence": "Confidence",
+    "confidence_high": "high",
+    "confidence_low": "low",
+    "confidence_medium": "medium",
+    "context": "Context",
+    "datasets": "Datasets",
+    "document_sha256": "Document SHA-256",
+    "evaluation": "Experimental evaluation",
+    "evidence": "Evidence",
+    "executive_summary": "Executive summary",
+    "generated": "Generated",
+    "hypothesis": "Hypothesis",
+    "importance": "Why it matters",
+    "key_components": "Key components",
+    "limitations": "Limitations",
+    "metadata_sha256": "Metadata SHA-256",
+    "method": "Method",
+    "metrics": "Metrics",
+    "missing_pieces": "Missing pieces",
+    "negative_results": "Negative results",
+    "novelty": "Novelty",
+    "open_questions": "Open questions",
+    "primary_metric": "Primary metric",
+    "problem": "Problem",
+    "profile": "Profile",
+    "proposed_experiments": "Proposed AIDB experiments",
+    "provenance": "Provenance",
+    "provider": "Provider",
+    "rationale": "Rationale",
+    "recommended_action": "Recommended action",
+    "repair_count": "Deterministic repair attempts",
+    "reproducibility": "Reproducibility",
+    "results": "Results",
+    "schema": "Schema",
+    "scope": "Scope",
+    "statement": "Statement",
+    "status": "Status",
+    "status_partial": "partial",
+    "status_strong": "strong",
+    "status_unknown": "unknown",
+    "status_weak": "weak",
+    "stop_condition": "Stop condition",
+    "uncertainties": "Uncertainties",
+    "usefulness": "Usefulness"
+  },
+  "language": {
+    "code": "en",
+    "name": "English"
+  },
+  "limitations": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00105-e3de34c15f",
+          "quote": "The histories are short and synthetic."
+        },
+        {
+          "block_id": "b00105-e3de34c15f",
+          "quote": "Our legal-world certificates do not resolve these issues, and these experiments do not measure long-horizon memory scaling."
+        }
+      ],
+      "limitation": "External validity is narrow: short synthetic device histories, fixed English templates, and explicit semantics do not represent ambiguous natural conversations or long-horizon memory."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00106-a1a25d6d02",
+          "quote": "Temperature zero does not ensure determinism, and server weights cannot be pinned."
+        },
+        {
+          "block_id": "b00106-a1a25d6d02",
+          "quote": "Successful contents are sampled once; reader variability and model-family-wide failure rates are not estimated."
+        }
+      ],
+      "limitation": "Only two hosted reader configurations are tested; server weights cannot be pinned, temperature zero does not ensure determinism, and responses are sampled once."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00107-1423b4890a",
+          "quote": "Coverage varies by representation."
+        },
+        {
+          "block_id": "b00107-1423b4890a",
+          "quote": "The main paired estimate is conditional on certification in both arms and does not identify the effect on all questions."
+        }
+      ],
+      "limitation": "Certification is conservative and representation-dependent; the paired format estimate excludes unresolved cases and does not identify the all-question effect."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00107-1423b4890a",
+          "quote": "Their agreement cannot exclude an error in the shared specification."
+        }
+      ],
+      "limitation": "The deterministic solver and certifier share rules, so agreement cannot detect a shared specification error."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00108-78b35e0db1",
+          "quote": "The masking arms differ in duplicate multiplicity for 47 queries. Format comparisons change syntax and token length together."
+        }
+      ],
+      "limitation": "Interventions remain confounded: masking differs in duplicate multiplicity, while format comparisons jointly change syntax and token length."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00109-9c7d6fe075",
+          "quote": "The chronological confirmation contains 80 histories and cannot rule out small effects."
+        },
+        {
+          "block_id": "b00109-9c7d6fe075",
+          "quote": "No human answer or evidence adjudication was performed."
+        }
+      ],
+      "limitation": "There is no independent human adjudication, and the confirmation cannot rule out small effects."
+    }
+  ],
+  "method": {
+    "assumptions": [
+      "The declared event grammar and public semantics correctly formalize the controlled task.",
+      "Chronological prefixes begin at the start of the log and are ordered by event time.",
+      "A concrete answer is appropriate only when uniquely determined; applications favoring guesses need another objective and explicit error costs.",
+      "Unclassified inputs are unresolved rather than presumed insufficient.",
+      "Program agreement checks implementation consistency within declared semantics, not unrestricted natural-language truth."
+    ],
+    "key_components": [
+      "An executable device-log environment with duplicate reports, accepted or rejected actions, three evidence labels, and four fixed query operators.",
+      "Answer validation using environment snapshots, Python replay, and SQL deduplication and temporal queries.",
+      "Exact repacking of insufficiency witnesses, requiring identical packed UTF-8 bytes and different executable answers.",
+      "Qwen3-32B confirmation and fixed-input DeepSeek-V4-Flash replication on identical visible inputs.",
+      "History-clustered bootstrap intervals and paired format contrasts restricted to jointly certified questions.",
+      "A held-out evaluator audit with constructed controls, deterministic programs, an LLM judge, and a program-first hybrid."
+    ],
+    "overview": "The authors define sufficiency relative to public task guarantees: all legal histories compatible with the exact packed context must yield the same executable answer. Insufficiency is certified by two legal histories that repack to byte-identical contexts but have different answers. Chronological sufficiency is certified using a complete-log marker, a complete record after the cutoff, or an already visible first accepted route. Inputs without either certificate remain unclassified. Reader outputs are scored separately for complete-history reference agreement and context appropriateness."
+  },
+  "open_questions": [
+    "Can same-context certificates be extended to natural trajectories with independently validated evidence labels and ambiguous language?",
+    "How much do current memory benchmarks overstate capability when hidden-reference agreement is separated from visible-context support?",
+    "Can certification coverage improve for partial records without assumptions unavailable to the reader?",
+    "Which intervention—record coverage, syntax, tokenization, completeness markers, or instructions—actually changes context-appropriate behavior?",
+    "Do repeated hosted runs, additional model families, and longer histories preserve the observed tendency to answer insufficient contexts?",
+    "How should appropriateness be generalized when applications assign explicit utilities to abstention and different error types?"
+  ],
+  "problem": {
+    "importance": "This can reward unsupported guessing as successful memory behavior and can mislabel a truncated but already sufficient history as unanswerable, confounding evidence access, reasoning, and abstention.",
+    "scope": "The paper studies controlled reading and evaluation over executable synthetic device logs with repeated reports, rejected actions, state transitions, and temporal cutoffs. It does not establish prevalence in deployed memory systems, natural-language evidence assessment, or superiority of a memory architecture.",
+    "statement": "Agent-memory evaluations often score an answer against a reference computed from the complete history without separately asking whether the history actually shown to the reader uniquely determines that answer."
+  },
+  "proposed_experiments": [
+    {
+      "baseline": "The same systems scored only by complete-history reference agreement, plus a deterministic executable subset where tool semantics permit certification.",
+      "hypothesis": "Evidence-sensitive scoring will materially lower apparent performance relative to hidden-reference accuracy on independently sampled natural agent trajectories.",
+      "primary_metric": "Paired difference between reference agreement and context appropriateness on independently human-adjudicated sufficient, insufficient, and unresolved cases.",
+      "stop_condition": "Stop and withhold a prevalence claim if blinded adjudicators miss the prespecified agreement threshold or the certifiable subset cannot achieve the prespecified interval width."
+    },
+    {
+      "baseline": "Raw serialization with the same records, completeness marker, partial-tail status, and model-native token budget.",
+      "hypothesis": "With visible records and byte content fixed, CSV syntax alone will not improve context appropriateness; observed gains primarily arise from complete-record coverage.",
+      "primary_metric": "History-clustered paired difference in certified context appropriateness between syntax-only conditions, with certification status fixed per question.",
+      "stop_condition": "Stop when the interval satisfies a prespecified equivalence margin or when record and byte matching fails for any compared pair."
+    },
+    {
+      "baseline": "The paper’s direct-answer prompt with the same model, visible bytes, decoding configuration, and output budget.",
+      "hypothesis": "Explicit evidence-state prediction before answer generation will reduce concrete answers on insufficient contexts without materially increasing abstention on sufficient contexts.",
+      "primary_metric": "Change in insufficient-context concrete-answer rate, jointly constrained by change in sufficient-context correct-answer rate.",
+      "stop_condition": "Reject the intervention if the insufficient concrete-answer rate does not improve beyond the prespecified margin or sufficient correct answering breaches its non-inferiority margin."
+    }
+  ],
+  "provenance": {
+    "block_count": 177,
+    "document_sha256": "fbeb28b0ca6cca940f1f76b55d663b2c9648d876a156ffcaef043f1cdc6d5447",
+    "generated_at": "2026-11-20T08:25:51.862855+00:00",
+    "metadata_sha256": "4407d3978a1d94a3009a652822771dc0d23d51f8aa153fdcd02f92a9e4a35974",
+    "profile": "deep",
+    "provider": "reviewed-candidate",
+    "repair_count": 0,
+    "schema_version": "paper-summary-v1"
+  },
+  "reproducibility": {
+    "artifacts": [
+      "Generation and scoring scripts, public prompts, ground-truth files, witnesses, request hashes, sanitized receipts, fee estimates, and offline replay checks are retained locally.",
+      "Seeds, software versions, tokenizer hash, request counts, transport attempts, API usage, and cost accounting are documented.",
+      "Network-disabled replay reportedly reproduces scored rows and the summary byte-for-byte."
+    ],
+    "assessment": "The internal audit trail is unusually detailed and supports reconstruction of retained results, but independent reproduction is limited by the absent public artifact and non-pinnable hosted models. Program-generated components appear substantially reproducible once released; exact model-response replication remains weak.",
+    "missing": [
+      "The retained materials were not publicly released with the paper.",
+      "Hosted model weight snapshots cannot be independently pinned.",
+      "Some historical software versions were not recorded.",
+      "A fresh hosted API run is not guaranteed to return identical contents.",
+      "AMA-Bench source histories are excluded from the intended release."
+    ],
+    "status": "partial"
+  },
+  "results": [
+    {
+      "context": "This fixed-input replication supports the central diagnosis: reference hits remain common even though compatible legal histories yield different answers.",
+      "evidence": [
+        {
+          "block_id": "b00074-d24f01c720",
+          "quote": "Insufficient: concrete 196/203 182/203 Insufficient: abstains 7/203 21/203 Insufficient: ref. hit 87/203 85/203"
+        }
+      ],
+      "result": "On certified insufficient raw prefixes, Qwen produced concrete answers on 196/203 cases, abstained on 7/203, and matched the hidden reference on 87/203. DeepSeek produced concrete answers on 182/203, abstained on 21/203, and matched the hidden reference on 85/203."
+    },
+    {
+      "context": "The primary format comparison is inconclusive. It is conditional on questions certified in both arms and does not establish equivalence or an all-question effect.",
+      "evidence": [
+        {
+          "block_id": "b00072-aca250d387",
+          "quote": "CSV minus raw appropriateness is +3.16 pp, CI [0.00,6.57], for Qwen and +2.46 pp, [−1.84,6.94], for DeepSeek."
+        },
+        {
+          "block_id": "b00072-aca250d387",
+          "quote": "Neither lower endpoint is strictly positive. These inconclusive results do not establish equivalence."
+        }
+      ],
+      "result": "The paired compact-CSV appropriateness effect was +3.16 percentage points with CI [0.00,6.57] for Qwen and +2.46 percentage points with [−1.84,6.94] for DeepSeek; neither lower endpoint was strictly positive."
+    },
+    {
+      "context": "Aggregate evaluator accuracy concealed support-axis errors, so the judge did not pass the full prespecified reliability gate.",
+      "evidence": [
+        {
+          "block_id": "b00090-c0a085463c",
+          "quote": "The low configuration is jointly correct on 1,908/1,920 cases (99.38%; history-clustered CI [98.91,99.74])."
+        },
+        {
+          "block_id": "b00090-c0a085463c",
+          "quote": "It falsely treats two concrete answers under decisive missing outcomes as context-appropriate; two other outputs truncate."
+        }
+      ],
+      "result": "The low-effort LLM judge was jointly correct on 1,908/1,920 cases (99.38%) but falsely supported two concrete answers under decisive missing outcomes and produced two truncated outputs."
+    },
+    {
+      "context": "The fixed executable grammar does not require an LLM, and the hybrid has no observed advantage over the strongest simple baseline. The solver shares rules with the certifier, so it is a consistency check rather than independent validation.",
+      "evidence": [
+        {
+          "block_id": "b00081-b6ccbf9789",
+          "quote": "It is appropriate on all 307, 307, and 298 certified cases, using zero model calls."
+        },
+        {
+          "block_id": "b00091-530ac29211",
+          "quote": "The extended program uses zero API calls and matches the hybrid’s observed 1,920/1,920 score."
+        }
+      ],
+      "result": "A cutoff-aware deterministic program was appropriate on all 307, 307, and 298 certified partial-arm cases using zero model calls; the extended evaluator program matched the hybrid’s observed 1,920/1,920 score."
+    }
+  ],
+  "title": "Correct Answers from Insufficient Histories: A Controlled Study of Agent Memory Evaluation",
+  "uncertainties": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00095-a6fe21b123",
+          "quote": "The evidence-sensitive contract fails in two hosted configurations, without estimating prevalence in deployed memory systems."
+        }
+      ],
+      "uncertainty": "How often unsupported reference matches occur in deployed memory systems or natural conversational histories is unknown.",
+      "why_it_matters": "The practical prevalence determines how urgently existing benchmarks and production evaluations need redesign."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00097-2882641a64",
+          "quote": "Compaction changes record coverage, the cutoff frontier, partial-tail certifiability, and readability."
+        }
+      ],
+      "uncertainty": "The causal mechanism behind any CSV effect is unresolved.",
+      "why_it_matters": "Packing changes several properties together, so the current comparison cannot reliably guide format engineering."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00039-40cc0f4ac8",
+          "quote": "These conditions are sufficient rather than necessary; a partial field can sometimes establish more than our parser certifies."
+        }
+      ],
+      "uncertainty": "Unclassified inputs may include further sufficient or insufficient cases that the conservative certifier cannot resolve.",
+      "why_it_matters": "Representation-dependent certification changes the analysis population and limits interpretation of paired effects."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00106-a1a25d6d02",
+          "quote": "reader variability and model-family-wide failure rates are not estimated."
+        }
+      ],
+      "uncertainty": "Dependence on hosted-service drift and one-shot response sampling is unresolved.",
+      "why_it_matters": "The replication strengthens the diagnosis across configurations but does not estimate within-model variability or stable family-wide rates."
+    }
+  ]
+}

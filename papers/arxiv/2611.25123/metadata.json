@@ -1,0 +1,34 @@
+{
+  "abstract": "Long-horizon LLM agents often exceed their context windows, forcing them to discard information that may be needed later. Existing context management strategies rely on summarization, masking, or structured memory, requiring decisions about what to preserve or how to retrieve it before future needs are known. However, these methods can introduce lossy compression, potentially discarding details needed for future tasks. To address this limitation, we introduce GrepMem, a simple, lossless, and index-free memory mechanism built on two components: an append-only plain-text log of the agent's complete history and a regular-expression search tool for on-demand recall. Unlike structured memory systems, GrepMem requires no embeddings, retrieval index, memory extraction, or additional models. We train Qwen3.5-9B with reinforcement learning under five context management strategies and evaluate on multi-question research sessions, long-stream recall, and agent-trajectory question answering. GrepMem achieves 95-97% accuracy on ContextBench, versus at most 21% for lossy baselines, and outperforms SUPO's summarization by 8.8 percentage points on BCP-Multi. GrepMem scales effectively to increasingly long input streams while remaining on the accuracy-token-cost Pareto frontier across all five evaluation tasks. Our results show that a plain-text log and grep provide a simple but competitive approach to long-horizon agent memory, without requiring complex structured memory infrastructure.",
+  "arxiv_id": "2611.25123v1",
+  "authors": [
+    "Ziyan Yang",
+    "Taiwei Shi",
+    "Jieyu Zhao"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2611.25123v1",
+  "categories": [
+    "cs.CL",
+    "cs.AI"
+  ],
+  "comment": "17 pages, 6 figures, 6 tables. Ziyan Yang and Taiwei Shi contributed equally",
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2611.25123v1",
+  "latest_seen_version": 1,
+  "paper_id": "2611.25123",
+  "paper_version_id": "2611.25123v1",
+  "published": "2026-11-18T20:02:57+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "Forget Freely, Grep Later: Lossless, Index-Free Memory for Long-Horizon LLM Agents",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-11-18T20:02:57+00:00",
+  "url": "https://arxiv.org/abs/2611.25123v1"
+}

@@ -1,0 +1,632 @@
+{
+  "aidb_assessment": {
+    "confidence": "high",
+    "novelty": "Moderate to high. The general memory-poisoning phenomenon is acknowledged as prior work, but the paper contributes a clear serializer-level causal account, a nine-harness structural control, executed consequences in the compaction channel, and a paired real-product demonstration.",
+    "rationale": "Adopt the structural mitigation—role-typed serialization or delimiter escaping—and add regression tests now. Treat the post-hoc provenance validator as defense in depth rather than a complete fix. Confidence is high in the existence and mechanism of the flaw, but only medium in precise execution-rate estimates because of small samples and limited end-to-end coverage.",
+    "recommended_action": "adopt",
+    "usefulness": "High for coding-agent implementers and security reviewers. The findings translate directly into design checks: retain typed roles, escape in-band markers, preserve provenance through summaries, keep external approval and sandbox gates, and test compaction with adversarial tool output."
+  },
+  "claims": [
+    {
+      "claim": "Exposure is attributed to serialization structure rather than to a universal model weakness: flattening makes role markers forgeable, while role-typed messages retain origin.",
+      "evidence": [
+        {
+          "block_id": "b00007-6acd159b39",
+          "quote": "Susceptibility is therefore a property of the serialization strategy, not of the model."
+        },
+        {
+          "block_id": "b00160-09250186db",
+          "quote": "Harnesses that flatten roles into text launder 87–100%; harnesses that keep roles typed launder 0%, with no intermediate values."
+        }
+      ]
+    },
+    {
+      "claim": "The forged label is an operative causal component, because removing it while retaining the payload words sharply reduces laundering.",
+      "evidence": [
+        {
+          "block_id": "b00104-96290ac2d0",
+          "quote": "harness / arm with forged label plain text pi 87% 6%"
+        },
+        {
+          "block_id": "b00105-478d69511b",
+          "quote": "Without the label, the same words mostly do not launder."
+        }
+      ]
+    },
+    {
+      "claim": "Laundering and command execution are distinct links: a false approval can be retained without being acted upon, and downstream behavior depends on audit survival, payload characteristics, salience, and the next user message.",
+      "evidence": [
+        {
+          "block_id": "b00190-55120e913b",
+          "quote": "The agent held a false belief without acting on it."
+        },
+        {
+          "block_id": "b00191-d58c016531",
+          "quote": "Neither E6’s execution rates nor E10’s laundering rates subsume the other; the live chain exposes the joint."
+        }
+      ]
+    },
+    {
+      "claim": "Prompt-only anti-injection instructions reduce but do not eliminate laundering on counterfactual flattened input; the proposed code-level check is stronger but remains incomplete.",
+      "evidence": [
+        {
+          "block_id": "b00109-c19905a43a",
+          "quote": "even where it helps most it leaves 62% of payloads laundered, a reduction, not a fix."
+        },
+        {
+          "block_id": "b00154-b0a24f437d",
+          "quote": "At the recommended setting (0.15), 23% still gets through, a substantial mitigation, not a solution."
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "ablations": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00103-f92dc0fe59",
+            "quote": "we ran the same payload two ways, with the forged label in front of it and as plain text with no label."
+          }
+        ],
+        "text": "Forged role label versus identical plain text without the label."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00107-a5da26cb37",
+            "quote": "we run its real prompt with the rule on and off over a flattening serialization"
+          }
+        ],
+        "text": "Gemini anti-injection rule enabled versus removed over counterfactual flattened serialization."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00143-8f086b50fa",
+            "quote": "~2,800 3/3 ~65,200 3/3 ~130,000 3/3 ~306,800 3/3 ~507,000 3/3 ~731,000 3/3 ~908,000 3/3"
+          },
+          {
+            "block_id": "b00147-700e062f9a",
+            "quote": "start (10% in) 3/3 3/3 middle (50% in) 3/3 3/3 end (90% in) 3/3 3/3"
+          }
+        ],
+        "text": "Context-size and poison-position sweeps, including windows up to approximately 908,000 tokens."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00171-a127db32a8",
+            "quote": "The four designs: baseline (one forged line 75% into the session), recency (that line moved to the end), repeat 4× (the line planted at four points), and framed"
+          }
+        ],
+        "text": "Injection-design ablation comparing baseline, recency, repetition, and framing at fixed window size."
+      }
+    ],
+    "baselines": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00050-81fa2d9b09",
+            "quote": "We test five flattening harnesses and four role-typed ones; the role-typed group is the control."
+          }
+        ],
+        "text": "Role-typed Codex, Gemini CLI, Qwen Code, and Continue as the structural control group."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00084-9c6e8ce790",
+            "quote": "The exact same task with no forged line planted."
+          }
+        ],
+        "text": "Clean arm: identical task and transcript without the forged line."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00135-a412e99855",
+            "quote": "laundered, a forged [User]: line in tool output (the attack); genuine, a real user turn saying it (the ceiling); and clean, no approval (the floor)."
+          }
+        ],
+        "text": "Genuine user approval as an execution ceiling and no approval as a floor."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00152-e1f7a0f525",
+            "quote": "the Gemini rule and this check measured on our data; the classifier row is the rate reported by [2], not re-measured here"
+          }
+        ],
+        "text": "Gemini’s in-prompt rule and previously published classifier defenses as defense baselines."
+      }
+    ],
+    "datasets": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00069-a57b82d064",
+            "quote": "The poisoned conversation is synthetic, and we invoke the summarizer directly rather than waiting for a real window to fill and trigger compaction on its own."
+          }
+        ],
+        "text": "Synthetic poisoned and clean conversations used to isolate compaction behavior, including short controlled transcripts and filled windows."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00029-d8b4fb20cb",
+            "quote": "data/ the raw output behind every table"
+          }
+        ],
+        "text": "Raw outputs for every reported table, organized under the repository’s data directory."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00075-ec5e7d23e8",
+            "quote": "Every take is run as a paired arm, byte-identical except for one forged [User]: line in the served guide, so the only variable is the poison."
+          }
+        ],
+        "text": "Paired live pi TUI sessions with recordings, logs, and per-take digests; poisoned and clean guides differ by one forged line."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00150-cc17834e93",
+            "quote": "over 324 claims from clean summaries."
+          },
+          {
+            "block_id": "b00370-238fa2a4d2",
+            "quote": "The clean corpus behind the false-positive rate is also small (4 sessions)."
+          }
+        ],
+        "text": "Clean defense corpus comprising 324 claims from four sessions."
+      }
+    ],
+    "metrics": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00078-49c2a79361",
+            "quote": "Laundering (the primary metric). The forged line appears in a part of the summary that speaks for the user, with nothing marking it as originating elsewhere."
+          }
+        ],
+        "text": "Laundering: whether the forged line appears as a user-attributed instruction without its external origin."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00080-4a10a5b396",
+            "quote": "Survival. A weaker signal, whether the line appears in the summary at all."
+          }
+        ],
+        "text": "Survival: whether the forged line remains anywhere in the summary, regardless of correct attribution."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00082-368cc35423",
+            "quote": "Issued means the agent ran the attacker’s command, the behavior of interest. Confirmed means the payload’s proof file appeared."
+          }
+        ],
+        "text": "Issued and confirmed execution, distinguishing the agent’s command from appearance of the proof file."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00150-cc17834e93",
+            "quote": "The catch rate is measured over the cells that laundered; the collateral is how much legitimate summary content it wrongly demotes"
+          }
+        ],
+        "text": "Defense catch rate and collateral demotion of legitimate summary claims."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00171-a127db32a8",
+            "quote": "an LLM-judged salience (1–5) of how prominently that same summary carries the approval"
+          }
+        ],
+        "text": "LLM-judged summary salience on a 1–5 scale."
+      }
+    ],
+    "negative_results": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00154-b0a24f437d",
+            "quote": "demanding an exact match against a user turn, caught nearly everything but demoted 72–100% of legitimate content"
+          }
+        ],
+        "text": "An exact-substring provenance check caught attacks but destroyed summary utility by demoting most legitimate content."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00176-198a9c85c5",
+            "quote": "planting the same line four times drops execution to 0%"
+          }
+        ],
+        "text": "Repeating the forged line was counterproductive in the salience experiment."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00354-11dbbc9b11",
+            "quote": "In live testing, a credential-exfiltration payload never executed, even with the approval laundered."
+          }
+        ],
+        "text": "A credential-exfiltration payload did not execute in live testing despite laundering."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00198-1f5b881f25",
+            "quote": "The audit’s decision, not the forgery’s presence, controls the outcome"
+          }
+        ],
+        "text": "Forged assistant reasoning and fabricated supporting evidence generally failed to overcome a genuine skeptical audit."
+      }
+    ]
+  },
+  "executive_summary": "The paper identifies context compaction as a security boundary: serializers that replace typed roles with forgeable text labels can turn attacker-controlled document content into apparent user instructions. Its strongest evidence is a controlled nine-harness comparison, paired clean arms, sandboxed command execution, and a small end-to-end pi TUI study. Flattening harnesses laundered forged approvals while role-typed controls did not; the live attack succeeded in 3/6 poisoned takes versus 0/5 clean takes. The causal mechanism is persuasive, but precise execution rates are uncertain because most execution cells contain only 3–5 runs, released products were usually not exercised end to end, and the defense lacks adaptive evaluation. Serializer escaping or retained typed provenance is more compelling than the partially effective post-hoc validator.",
+  "labels": {
+    "ablations": "Ablations",
+    "action_adopt": "adopt",
+    "action_read": "read",
+    "action_reject": "reject",
+    "action_watch": "watch",
+    "aidb_assessment": "AIDB assessment",
+    "assumptions": "Assumptions",
+    "available_artifacts": "Available artifacts",
+    "baseline": "Baseline",
+    "baselines": "Baselines",
+    "blocks": "Blocks",
+    "claims": "Main claims",
+    "confidence": "Confidence",
+    "confidence_high": "high",
+    "confidence_low": "low",
+    "confidence_medium": "medium",
+    "context": "Context",
+    "datasets": "Datasets",
+    "document_sha256": "Document SHA-256",
+    "evaluation": "Experimental evaluation",
+    "evidence": "Evidence",
+    "executive_summary": "Executive summary",
+    "generated": "Generated",
+    "hypothesis": "Hypothesis",
+    "importance": "Why it matters",
+    "key_components": "Key components",
+    "limitations": "Limitations",
+    "metadata_sha256": "Metadata SHA-256",
+    "method": "Method",
+    "metrics": "Metrics",
+    "missing_pieces": "Missing pieces",
+    "negative_results": "Negative results",
+    "novelty": "Novelty",
+    "open_questions": "Open questions",
+    "primary_metric": "Primary metric",
+    "problem": "Problem",
+    "profile": "Profile",
+    "proposed_experiments": "Proposed AIDB experiments",
+    "provenance": "Provenance",
+    "provider": "Provider",
+    "rationale": "Rationale",
+    "recommended_action": "Recommended action",
+    "repair_count": "Deterministic repair attempts",
+    "reproducibility": "Reproducibility",
+    "results": "Results",
+    "schema": "Schema",
+    "scope": "Scope",
+    "statement": "Statement",
+    "status": "Status",
+    "status_partial": "partial",
+    "status_strong": "strong",
+    "status_unknown": "unknown",
+    "status_weak": "weak",
+    "stop_condition": "Stop condition",
+    "uncertainties": "Uncertainties",
+    "usefulness": "Usefulness"
+  },
+  "language": {
+    "code": "en",
+    "name": "English"
+  },
+  "limitations": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00372-5e9a0cc879",
+          "quote": "a generic downstream agent, not the released programs end to end (see §6), except E15"
+        }
+      ],
+      "limitation": "Most staged experiments use real serializers and prompts but not the released applications end to end; only pi receives a full-product demonstration."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00360-d5ff063f96",
+          "quote": "The execution rate is noisy at small n (3–5 runs)."
+        },
+        {
+          "block_id": "b00360-d5ff063f96",
+          "quote": "The numbers should be treated as direction, not precision."
+        }
+      ],
+      "limitation": "Execution rates have low precision because individual cells commonly contain only three to five runs."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00358-d0e771e4ac",
+          "quote": "E15’s absolute numbers are small (six paired takes on one model)"
+        },
+        {
+          "block_id": "b00358-d0e771e4ac",
+          "quote": "what is solid is the mechanism and the paired 3/6-vs-0/5 separation, not the precise fractions."
+        }
+      ],
+      "limitation": "The end-to-end result covers one harness and one model with a small paired sample, so its exact success fraction should not be generalized."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00352-b1c373c48c",
+          "quote": "Other non-GPT models are untested at the execution stage."
+        }
+      ],
+      "limitation": "Executed demonstrations are limited to OpenAI models; other model families were not tested at the execution stage."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00356-679f52eedc",
+          "quote": "both experiments run at n = 5 on that one model."
+        },
+        {
+          "block_id": "b00356-679f52eedc",
+          "quote": "a within-model association rather than two independent instruments"
+        }
+      ],
+      "limitation": "Salience evidence is a within-model association at low sample size because the same model summarizes, judges salience, and acts."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00374-478bae2f44",
+          "quote": "Our agent loop has no approval gate or sandbox, so the RCE numbers measure the model’s decision in isolation"
+        }
+      ],
+      "limitation": "The demonstrated command-execution regime lacks an external approval gate or enforced OS sandbox, limiting applicability to more constrained deployments."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00366-1aa47c1e0f",
+          "quote": "The defense has not yet been subjected to an adaptive attack."
+        },
+        {
+          "block_id": "b00366-1aa47c1e0f",
+          "quote": "one written to mimic the user’s own wording would likely evade the provenance-contrast check."
+        }
+      ],
+      "limitation": "The defense has no adaptive evaluation and may be evaded by payloads that mimic the user’s language."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00370-238fa2a4d2",
+          "quote": "Recombination is untested [5], so every number here is a floor."
+        },
+        {
+          "block_id": "b00370-238fa2a4d2",
+          "quote": "The clean corpus behind the false-positive rate is also small (4 sessions)."
+        },
+        {
+          "block_id": "b00368-eca8a3b0d1",
+          "quote": "Every measured poison is deliberately untailored."
+        }
+      ],
+      "limitation": "The defense’s clean corpus is small, recombination attacks are untested, and generic payloads may understate targeted-attack risk."
+    }
+  ],
+  "method": {
+    "assumptions": [
+      "The attacker can cause the agent to read attacker-controlled content before compaction.",
+      "The affected serializer does not escape role labels appearing inside untrusted content.",
+      "For the principal command-execution measurements, the model is effectively the execution gate; an enforced external approval mechanism or OS sandbox can block the demonstrated network command.",
+      "A benign canary is an adequate mechanical indicator of attacker-controlled execution, but not of the execution rate for overt credential theft or other high-stakes payloads.",
+      "The LLM laundering judge and salience judge adequately represent their stated scoring criteria; only the laundering judge receives a reported cross-family validation sample."
+    ],
+    "key_components": [
+      "Threat model with attacker-controlled file, web page, or dependency documentation containing an in-band role marker.",
+      "Structural comparison between flattening serializers and role-typed message arrays, with the latter used as controls.",
+      "Primary laundering judgment based on whether the summary speaks for the user without preserving the external origin.",
+      "Sandboxed downstream agent that can issue a real command and create a host-observed proof artifact.",
+      "End-to-end paired pi TUI sessions differing only by one forged line in the fetched guide.",
+      "Post-hoc provenance-contrast defense that compares user-attributed summary claims with retained genuine user turns."
+    ],
+    "overview": "The authors inspect and pin real compaction prompts and serializers, inject a forged role marker into tool output, compact controlled conversations with frontier models, and score whether the resulting summary attributes the forged claim to the user. They separate laundering from downstream action, compare poisoned, genuine-approval, and clean arms, execute benign payloads in disposable containers, vary model, harness, context size, placement, repetition, and prompt defenses, and run a paired live demonstration in pi."
+  },
+  "open_questions": [
+    "How prevalent are unescaped role-label serializers in proprietary agents and in downstream products derived from the five affected harnesses?",
+    "Does delimiter escaping reduce forged-label laundering to an acceptably low level across all harnesses, models, label variants, encodings, and nested document formats?",
+    "Can an adaptive attacker evade provenance contrast by matching genuine user vocabulary, paraphrasing prior turns, or splitting authority across multiple fragments?",
+    "Do independent salience judges and heterogeneous acting models reproduce the size, recency, and execution relationships?",
+    "What harms remain executable when network access, filesystem scope, approval prompts, and process isolation are enforced outside the model?",
+    "How do repeated natural compactions, rather than directly invoked synthetic compactions, affect provenance and execution in long-lived real projects?"
+  ],
+  "problem": {
+    "importance": "The corrupted summary can assert standing authorization, steer an agent away from security-relevant files, or contribute to attacker-controlled command execution. The issue affects the ordinary compaction path rather than requiring a separate persistent-memory component.",
+    "scope": "The study examines nine released harnesses: five flattening systems and four role-typed controls. Most experiments exercise pinned serializers and compaction prompts in a staged runner; one experiment exercises the real pi TUI end to end. Execution measurements primarily cover model-only or full-auto conditions and benign canary payloads.",
+    "statement": "Long-running coding agents replace an original typed conversation with a compact summary. If the harness first flattens roles into unescaped in-band labels, attacker-controlled files or pages can forge a user turn whose true source disappears when the original transcript is discarded."
+  },
+  "proposed_experiments": [
+    {
+      "baseline": "Unpatched serializer, plain-text payload without a forged label, and role-typed serializer control, evaluated on the same harness-model-transcript matrix.",
+      "hypothesis": "Escaping every in-band role marker before flattening reduces forged-label laundering to the plain-text level without materially harming legitimate-summary fidelity.",
+      "primary_metric": "Difference in laundering rate between patched forged-label and plain-text arms, with legitimate-summary retention as a co-primary safety metric.",
+      "stop_condition": "Stop when confidence intervals are narrow enough to exclude a practically important excess over the plain-text arm, or when any patched harness shows a reproducible laundering pathway requiring redesign."
+    },
+    {
+      "baseline": "The published generic payload suite at the recommended provenance-contrast setting, plus clean summaries for collateral measurement.",
+      "hypothesis": "An adaptive attacker can reduce the provenance-contrast defense’s catch rate by matching the vocabulary and paraphrase style of genuine user turns.",
+      "primary_metric": "Adaptive laundering escape rate at a fixed legitimate-claim demotion budget.",
+      "stop_condition": "Stop after the adaptive attack reaches a stable plateau across held-out users and models, or immediately if escape becomes high enough that the defense no longer improves materially over the prompt baseline."
+    },
+    {
+      "baseline": "The original single-model baseline, recency, repetition, and framing conditions at matched context sizes.",
+      "hypothesis": "The reported salience-execution association generalizes when summary generation, salience judgment, and downstream action use different model families.",
+      "primary_metric": "Command-issuance rate stratified by independently judged salience, with effect sizes and uncertainty across summarizer–judge–executor combinations.",
+      "stop_condition": "Stop when the direction of the salience effect is replicated across multiple independent combinations with adequate precision, or when the association reverses or disappears in enough combinations to reject generality."
+    }
+  ],
+  "provenance": {
+    "block_count": 399,
+    "document_sha256": "558bdacf405e05aae7a46bdda179392cdc2efa1b4a5870c57010714be4388476",
+    "generated_at": "2026-11-20T08:35:32.380015+00:00",
+    "metadata_sha256": "c1c1b82355185451e5d3487874c633794e655447ca8f4a5ba15c9618de6bf819",
+    "profile": "deep",
+    "provider": "codex-exec:configured-default",
+    "repair_count": 0,
+    "schema_version": "paper-summary-v1"
+  },
+  "reproducibility": {
+    "artifacts": [
+      "Public repository containing experiment harnesses and runners.",
+      "Raw output behind every table.",
+      "Pinned upstream prompts, serializers, sources, and commits for all nine harnesses.",
+      "Containerized live demonstration with operator script, paired takes, recordings, session logs, and per-take digests.",
+      "Scoring code and an independent adjudication record for the laundering judge."
+    ],
+    "assessment": "Reproducibility is strong for an empirical security paper because the authors report pinned upstream components, runnable code, raw table data, containment infrastructure, scoring code, recordings, and paired live artifacts. The strongest remaining gaps concern external validity and unperformed experiments rather than absence of the reported artifacts.",
+    "missing": [
+      "A reported independent multi-model replication of the salience mechanism.",
+      "Adaptive-attack evaluation for the provenance-contrast defense.",
+      "End-to-end product runs for harnesses other than pi.",
+      "Large-sample execution estimates and broader non-GPT execution coverage.",
+      "A larger clean corpus for estimating defense collateral.",
+      "Executed tests of recombination attacks and harms under enforced OS sandboxes."
+    ],
+    "status": "strong"
+  },
+  "results": [
+    {
+      "context": "Each harness used its real serializer and compaction prompt on three frontier models. This is the strongest controlled evidence for the structural serialization hypothesis, although the outcome is laundering rather than live execution.",
+      "evidence": [
+        {
+          "block_id": "b00156-cdcd0328e8",
+          "quote": "We planted the identical forged approval in nine released harnesses and ran each one’s real serializer and real compaction prompt on three frontier models (n = 15 per harness)."
+        },
+        {
+          "block_id": "b00159-49108a510f",
+          "quote": "Flattening pi, opencode, Aider 100% (15/15) Flattening OpenHands 93% (14/15) Flattening Cline 87% (13/15)"
+        },
+        {
+          "block_id": "b00159-49108a510f",
+          "quote": "Role-typed Codex, Gemini CLI, Qwen Code, Continue 0% (0/15)"
+        }
+      ],
+      "result": "In the main cross-harness comparison, pi, opencode, and Aider laundered 100% (15/15), OpenHands 93% (14/15), and Cline 87% (13/15), whereas Codex, Gemini CLI, Qwen Code, and Continue produced 0% (0/15)."
+    },
+    {
+      "context": "This paired end-to-end experiment is the most operationally relevant evidence, but its sample is small and uses one harness and one victim model.",
+      "evidence": [
+        {
+          "block_id": "b00183-edd1ed3d83",
+          "quote": "arm full chain (WIN) refused post-compaction ran pre-compaction (attack unnecessary) poisoned 3/6 3/6 0/6 clean 0/5 5/5 1/6 †"
+        },
+        {
+          "block_id": "b00184-f3d8250cd2",
+          "quote": "†one clean take executed the bootstrap during its first turn, before any compaction — model variance, not the attack — and the paired design absorbs it."
+        }
+      ],
+      "result": "The real pi TUI produced a full-chain win in 3/6 poisoned takes and 0/5 clean takes; all poisoned takes refused pre-compaction execution, while one clean take executed before compaction and was excluded from the attack’s causal sequence."
+    },
+    {
+      "context": "The comparison favors checking summary attribution in code, but the classifier figures are imported from prior work rather than re-measured on the same implementation, and the defense was not tested against adaptive payloads.",
+      "evidence": [
+        {
+          "block_id": "b00151-e484d69edf",
+          "quote": "0.15 77% 2%"
+        },
+        {
+          "block_id": "b00153-952debaebe",
+          "quote": "Gemini’s in-prompt rule stops ~13% of laundering on Claude, ~25% on GPT"
+        },
+        {
+          "block_id": "b00153-952debaebe",
+          "quote": "Published classifier defenses [2] 67% catch rate at best, 42% on low-signal payloads"
+        }
+      ],
+      "result": "At the recommended provenance-contrast setting of 0.15, the defense caught 77% of laundering while demoting 2% of legitimate claims. The compared prompt rule stopped about 13% on Claude and 25% on GPT, while the cited classifier baseline reached 67% at best and 42% on low-signal payloads."
+    },
+    {
+      "context": "This consequential negative result limits the broad RCE interpretation and supports the paper’s separation between false authorization and artifact verification. The audit was scripted and deliberately strong.",
+      "evidence": [
+        {
+          "block_id": "b00198-1f5b881f25",
+          "quote": "execution collapses to 1/50 pooled across all arms and both models."
+        },
+        {
+          "block_id": "b00206-c51a3eabf0",
+          "quote": "1/50 with the maximal forgery, versus E15’s ~50% when the audit is absent."
+        }
+      ],
+      "result": "A genuine skeptical audit sharply reduced downstream execution: pooled across all E16 arms and both models, execution was 1/50 even though forged user approval still laundered reliably. This contrasts with the live study’s approximately 50% success when the audit disappeared during compaction."
+    }
+  ],
+  "title": "Compaction Laundering: Provenance Destruction in Context-Compacting Coding Agents",
+  "uncertainties": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00049-6c5ecd7bd6",
+          "quote": "We selected widely used harnesses of each class."
+        }
+      ],
+      "uncertainty": "The field prevalence of vulnerable serializer patterns is unknown beyond the nine selected harnesses.",
+      "why_it_matters": "The paper demonstrates a class vulnerability but does not establish how common it is across proprietary agents, forks, later releases, or other agent categories."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00358-d0e771e4ac",
+          "quote": "what is solid is the mechanism and the paired 3/6-vs-0/5 separation, not the precise fractions."
+        }
+      ],
+      "uncertainty": "The exact live success probability is unresolved.",
+      "why_it_matters": "Deployment risk calculations should not treat the observed paired fraction as a stable population estimate."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00366-1aa47c1e0f",
+          "quote": "So 77% is an upper bound against an attacker who is not adapting."
+        }
+      ],
+      "uncertainty": "It is unclear how well the provenance-contrast defense withstands adaptive attackers or user-style mimicry.",
+      "why_it_matters": "The reported catch rate may substantially overestimate protection after publication of the detector."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00171-a127db32a8",
+          "quote": "the salience-execution link here is a within-model association, not two independent instruments"
+        }
+      ],
+      "uncertainty": "The salience-to-execution relationship may partly reflect shared-model measurement bias.",
+      "why_it_matters": "If an independent judge or different executor does not reproduce the association, the proposed attenuation mechanism would be weaker."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00354-11dbbc9b11",
+          "quote": "The executed rates here are therefore an upper bound for high-stakes payloads"
+        }
+      ],
+      "uncertainty": "The demonstrated benign-canary execution rate does not determine rates for overtly harmful payloads.",
+      "why_it_matters": "Operational severity depends on whether attackers can conceal harmful effects within apparently routine behavior."
+    }
+  ]
+}

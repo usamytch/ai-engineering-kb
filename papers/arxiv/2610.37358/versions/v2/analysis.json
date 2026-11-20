@@ -1,0 +1,598 @@
+{
+  "aidb_assessment": {
+    "confidence": "medium",
+    "novelty": "Moderate empirical novelty, low algorithmic novelty. The paper openly disclaims novelty in its retrieval algorithms and ridge model. Its distinctive value is the frozen, prediction-first evaluation of marginal evidence-gain routing together with a separate downstream reliability analysis.",
+    "rationale": "The controlled retrieval comparison and explicit separation of retrieval from generation are decision-relevant, and the authors report consequential negative results rather than overstating success. Confidence remains medium because the retrieval events are sparse, utility intervals cross zero, downstream labels are model-assisted, and the public artifacts do not permit complete reproduction.",
+    "recommended_action": "read",
+    "usefulness": "Useful as a cautionary and methodological case study. It demonstrates that selective hybrid calls can preserve an observed evidence-hit rate, while showing that this result does not establish answer reliability or real efficiency. It is not yet sufficient evidence for production adoption because human validation, independent benchmarks, and measured costs are missing."
+  },
+  "claims": [
+    {
+      "claim": "The paper’s methodological contribution is an operational two-action router that predicts incremental evidence benefit using only features observable from baseline retrieval.",
+      "evidence": [
+        {
+          "block_id": "b00013-073a982c98",
+          "quote": "We develop an operational two-action, cost-aware adaptive retrieval policy that predicts the incremental evidence benefit of hybrid retrieval using only baseline-observable runtime features."
+        }
+      ]
+    },
+    {
+      "claim": "The evaluation was designed to be document-disjoint and prediction-first, with the fitted router frozen before held-out gold evidence was examined.",
+      "evidence": [
+        {
+          "block_id": "b00015-dc11370434",
+          "quote": "We conduct a document-disjoint, prediction-first held-out evaluation"
+        },
+        {
+          "block_id": "b00046-98a0892862",
+          "quote": "The fitted model and threshold were frozen before held-out gold evidence was opened."
+        }
+      ]
+    },
+    {
+      "claim": "The training objective and downstream reliability evaluation are deliberately different: the policy optimizes evidence retrieval, while usefulness is assessed at both retrieval and answer levels.",
+      "evidence": [
+        {
+          "block_id": "b00011-a644824806",
+          "quote": "The policy is trained to predict improvements in evidence Hit@10, whereas its practical usefulness is assessed through both retrieval-level outcomes and generation-level reliability."
+        }
+      ]
+    },
+    {
+      "claim": "The authors do not claim novelty for the underlying retrievers or regression algorithm; the intended contribution is the empirical examination of marginal retrieval, routing, and answer reliability.",
+      "evidence": [
+        {
+          "block_id": "b00031-eabf112e63",
+          "quote": "We do not claim novelty in the underlying retrieval algorithms or regression model; instead, we empirically examine the relationship between marginal retrieval benefit, adaptive routing, and downstream answer reliability."
+        }
+      ]
+    },
+    {
+      "claim": "The paper’s central interpretation is that selective evidence retrieval can be efficient in this setting, but improved retrieval metrics cannot be presumed to improve answer reliability.",
+      "evidence": [
+        {
+          "block_id": "b00083-61030705a0",
+          "quote": "efficient evidence selection is possible in this setting, but better retrieval metrics cannot be assumed to imply more reliable generated answers."
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "ablations": [],
+    "baselines": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00034-8fd049620d",
+            "quote": "The Keep arm embeds the question and evidence with all-MiniLM-L6-v2, ranks candidates by cosine similarity, and reranks the top 30 with ms-marco-MiniLM-L6-v2 cross-encoder"
+          }
+        ],
+        "text": "Always Keep: dense retrieval with all-MiniLM-L6-v2, cosine ranking, and cross-encoder reranking of the leading candidate pool."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00034-8fd049620d",
+            "quote": "The Hybrid arm combines dense ranking with BM25 lexical ranking via reciprocal rank fusion (RRF), uses a candidate pool of 30, and applies the same cross-encoder reranker"
+          }
+        ],
+        "text": "Always Hybrid: dense and BM25 lexical rankings combined by reciprocal rank fusion, followed by the same cross-encoder reranker."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00045-afbfffaac9",
+            "quote": "At inference time, the policy uses features extracted solely from the baseline retrieval results."
+          },
+          {
+            "block_id": "b00045-afbfffaac9",
+            "quote": "Hybrid retrieval is executed only when the predicted incremental benefit meets or exceeds the selected decision threshold."
+          }
+        ],
+        "text": "Frozen adaptive: the learned router chooses Keep or Hybrid from baseline-only features and the previously frozen decision threshold."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00070-493a362e7f",
+            "quote": "The local FastAPI implementation compares dense retrieval without reranking (Dense Raw), Always Keep, Always Hybrid, and the frozen adaptive router"
+          }
+        ],
+        "text": "Dense Raw appears only in the separate pilot and performs dense retrieval without reranking."
+      }
+    ],
+    "datasets": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00050-982dd3b3b1",
+            "quote": "Our development partition comprises 240 articles (690 questions, 599 with evidence suitable for structural retrieval evaluation)."
+          },
+          {
+            "block_id": "b00050-982dd3b3b1",
+            "quote": "A separate 60-article partition (188 questions, 169 evidence-evaluable) was held out from policy training."
+          },
+          {
+            "block_id": "b00050-982dd3b3b1",
+            "quote": "Both partitions were sampled from the official QASPER training split; the official test split was not used."
+          }
+        ],
+        "text": "QASPER research-paper question answering. Development contains 240 articles and 690 questions, including 599 suitable for structural evidence evaluation. Held-out evaluation contains 60 articles and 188 questions, including 169 evidence-evaluable questions. Both partitions were sampled from the official training split; the official test split was unused."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00070-493a362e7f",
+            "quote": "we additionally conducted a separate, small engineering pilot using ten selected questions about one research PDF."
+          },
+          {
+            "block_id": "b00070-493a362e7f",
+            "quote": "This pilot is not part of the held-out QASPER evaluation above"
+          }
+        ],
+        "text": "A separate engineering pilot used ten selected questions about one research PDF. It is explicitly separated from the held-out benchmark and serves implementation diagnosis rather than general performance estimation."
+      }
+    ],
+    "metrics": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00066-53c18a0b4f",
+            "quote": "Retrieval Hit@10 only asks whether at least one aligned reference evidence unit appears within the top 10."
+          }
+        ],
+        "text": "Evidence Hit@10: whether the retrieved top ten contains at least one structurally aligned gold evidence unit."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00043-9c4d5ef849",
+            "quote": "A unitized extra-hybrid penalty λ=0.02 defines offline retrieval utility ui=hiπ−λ𝕀[π(xi)=H]."
+          },
+          {
+            "block_id": "b00046-98a0892862",
+            "quote": "The penalty is an abstract unit cost; it is not an observed time, token, energy, or monetary cost."
+          }
+        ],
+        "text": "Unitized retrieval utility: evidence success minus a fixed penalty whenever Hybrid is selected. It is a proxy, not measured end-to-end efficiency."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00054-fdb53bca71",
+            "quote": "Correctness is a 0–2 assessment against QASPER reference answers: wrong/unsupported answer or unjustified abstention (0), partly correct or materially incomplete (1), and correct (2)."
+          }
+        ],
+        "text": "Correctness: an ordinal assessment against QASPER references, distinguishing wrong or unsupported answers, partly correct or incomplete answers, and correct answers."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00054-fdb53bca71",
+            "quote": "Faithfulness independently scores factual claims against the evidence actually displayed to the generator, using 0 (unsupported), 1 (partially supported), and 2 (supported)."
+          },
+          {
+            "block_id": "b00054-fdb53bca71",
+            "quote": "Pure abstentions have no faithfulness score and are instead analyzed by abstention appropriateness."
+          }
+        ],
+        "text": "Faithfulness: an ordinal assessment of generated factual claims against the evidence shown to the generator; pure abstentions are excluded and assessed separately."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00056-c483318e40",
+            "quote": "Confidence intervals for differences use 10,000 paired bootstrap resamples at the article level."
+          },
+          {
+            "block_id": "b00056-c483318e40",
+            "quote": "they do not quantify the error of the language-model judge."
+          }
+        ],
+        "text": "Uncertainty: paired bootstrap confidence intervals based on article-level resampling, conditional on assigned labels and not incorporating judge error."
+      }
+    ],
+    "negative_results": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00061-2c02f43a69",
+            "quote": "both include zero. Accordingly the observed result supports a reduction in hybrid-call frequency at comparable evidence hit rate, but not a statistically conclusive utility advantage."
+          }
+        ],
+        "text": "Neither retrieval-utility comparison yielded a conclusive adaptive advantage because both clustered intervals included zero."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00065-abe84919d4",
+            "quote": "the adaptive and keep correctness means coincide."
+          },
+          {
+            "block_id": "b00065-abe84919d4",
+            "quote": "Faithfulness does not exhibit a consistent adaptive improvement over keep; in the provisional common subset, it is slightly lower."
+          }
+        ],
+        "text": "After partial assisted review, adaptive and Keep had identical mean correctness, and faithfulness showed no consistent adaptive improvement."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00073-35579ead1a",
+            "quote": "The pilot did not show a correctness advantage for adaptive routing."
+          },
+          {
+            "block_id": "b00073-35579ead1a",
+            "quote": "Context truncation and output-length truncation also occurred."
+          }
+        ],
+        "text": "The diagnostic pilot did not show an adaptive correctness advantage and exposed truncation failures."
+      }
+    ]
+  },
+  "executive_summary": "The paper tests a frozen, cost-aware router that chooses between dense retrieval with reranking and hybrid lexical–dense retrieval. On held-out QASPER training-split articles, adaptive routing matches always-hybrid evidence Hit@10 while invoking hybrid retrieval far less often. Neither bootstrap intervals nor provisional answer assessments establish a utility, correctness, or faithfulness advantage. The central validity threat is that answer labels come from a same-family LLM judge with only partial assisted review. Costs are proxies rather than measured latency, energy, or money, and the public repository cannot reproduce all QASPER results end to end. The study supports selective retrieval feasibility and a retrieval–answer-quality disconnect, not improved RAG reliability.",
+  "labels": {
+    "ablations": "Ablations",
+    "action_adopt": "adopt",
+    "action_read": "read",
+    "action_reject": "reject",
+    "action_watch": "watch",
+    "aidb_assessment": "AIDB assessment",
+    "assumptions": "Assumptions",
+    "available_artifacts": "Available artifacts",
+    "baseline": "Baseline",
+    "baselines": "Baselines",
+    "blocks": "Blocks",
+    "claims": "Main claims",
+    "confidence": "Confidence",
+    "confidence_high": "high",
+    "confidence_low": "low",
+    "confidence_medium": "medium",
+    "context": "Context",
+    "datasets": "Datasets",
+    "document_sha256": "Document SHA-256",
+    "evaluation": "Experimental evaluation",
+    "evidence": "Evidence",
+    "executive_summary": "Executive summary",
+    "generated": "Generated",
+    "hypothesis": "Hypothesis",
+    "importance": "Why it matters",
+    "key_components": "Key components",
+    "limitations": "Limitations",
+    "metadata_sha256": "Metadata SHA-256",
+    "method": "Method",
+    "metrics": "Metrics",
+    "missing_pieces": "Missing pieces",
+    "negative_results": "Negative results",
+    "novelty": "Novelty",
+    "open_questions": "Open questions",
+    "primary_metric": "Primary metric",
+    "problem": "Problem",
+    "profile": "Profile",
+    "proposed_experiments": "Proposed AIDB experiments",
+    "provenance": "Provenance",
+    "provider": "Provider",
+    "rationale": "Rationale",
+    "recommended_action": "Recommended action",
+    "repair_count": "Deterministic repair attempts",
+    "reproducibility": "Reproducibility",
+    "results": "Results",
+    "schema": "Schema",
+    "scope": "Scope",
+    "statement": "Statement",
+    "status": "Status",
+    "status_partial": "partial",
+    "status_strong": "strong",
+    "status_unknown": "unknown",
+    "status_weak": "weak",
+    "stop_condition": "Stop condition",
+    "uncertainties": "Uncertainties",
+    "usefulness": "Usefulness"
+  },
+  "language": {
+    "code": "en",
+    "name": "English"
+  },
+  "limitations": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00078-ddf82b0c58",
+          "quote": "Generation labels were obtained with an LLM judge using the same model family as the generator."
+        },
+        {
+          "block_id": "b00078-ddf82b0c58",
+          "quote": "Only a targeted subset underwent assistant-assisted review; this is not an independent blinded human-annotator study."
+        }
+      ],
+      "limitation": "Answer-quality labels are not independent human judgments: the judge belongs to the generator’s model family, and only a targeted subset received assisted review. This creates correlated-model and adjudication risks."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00078-ddf82b0c58",
+          "quote": "The faithfulness mean excludes pure abstentions; it cannot be interpreted as unconditional system-level grounding performance."
+        }
+      ],
+      "limitation": "Faithfulness is selective rather than system-wide because pure abstentions are excluded from its mean."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00050-982dd3b3b1",
+          "quote": "In development, 16 questions were potential hybrid rescues and seven were harms, making the target highly imbalanced."
+        },
+        {
+          "block_id": "b00076-0f46730761",
+          "quote": "its predictions may be weakly identified when almost all training differences are zero."
+        }
+      ],
+      "limitation": "The development target is severely imbalanced, with few rescues and harms, so the learned regression relationship may be weakly identified."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00051-60492fa2ac",
+          "quote": "caption matches do not certify that the numerical contents of figures or tables are visible."
+        }
+      ],
+      "limitation": "Structural caption matches can overstate usable evidence because captions may omit required figure or table values."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00078-ddf82b0c58",
+          "quote": "The official test set and any independent second benchmark are untested."
+        },
+        {
+          "block_id": "b00051-60492fa2ac",
+          "quote": "The subsequent generation analysis on these articles is therefore an exploratory follow-up, not another untouched test."
+        }
+      ],
+      "limitation": "External validity is narrow: the held-out sample is drawn from QASPER’s training split, later inspected for generation analysis, and no official test set or second benchmark was evaluated."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00068-ae3df6258c",
+          "quote": "Without consistently measured incremental retrieval latency, hardware-resource consumption, and per-policy generation timing, a time-based cost–quality Pareto curve remains an open measurement rather than a demonstrated result."
+        }
+      ],
+      "limitation": "Efficiency is represented by a chosen proxy penalty and hybrid-call counts, without consistently measured incremental retrieval latency, hardware use, energy, or per-policy generation timing."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00073-35579ead1a",
+          "quote": "The original research PDF and local document index are not included in the public engineering repository"
+        }
+      ],
+      "limitation": "The single-document pilot cannot be independently regenerated from the public engineering repository because its source PDF and index are absent."
+    }
+  ],
+  "method": {
+    "assumptions": [
+      "The presence of at least one structurally aligned gold evidence unit in the retrieved evidence is an adequate training proxy for marginal retrieval value.",
+      "A linear ridge model over six baseline-observable signals can generalize from the sparse rescue and harm examples in development.",
+      "The selected unitized hybrid penalty represents a useful routing preference even though it is not calibrated to observed latency, energy, tokens, or money.",
+      "Caption text is treated as a retrievable evidence unit even though it may omit the numerical or visual content required by a question.",
+      "Provisional model-assisted answer labels are informative enough for exploratory comparison, but not definitive ground truth."
+    ],
+    "key_components": [
+      "Keep embeds questions and evidence with all-MiniLM-L6-v2, reranks the leading candidates with ms-marco-MiniLM-L6-v2, and returns the selected evidence units.",
+      "Hybrid combines dense and BM25 rankings through reciprocal rank fusion, uses the same candidate-pool size and cross-encoder reranker, and returns the alternative evidence set.",
+      "The policy target is the difference between Hybrid and Keep binary evidence-hit labels, allowing rescue, tie, and harm outcomes rather than a simple baseline-success classification.",
+      "Six baseline-only features describe dense-score strength and margin, ranking overlap, movement under reranking, and the share of caption units.",
+      "Median imputation, standardization, and ridge regression form the prediction pipeline; a frozen threshold converts predicted incremental benefit into Keep or Hybrid.",
+      "Evaluation separates evidence retrieval and proxy utility from generated-answer correctness and faithfulness, with paired article-cluster bootstrap intervals."
+    ],
+    "overview": "The authors define Keep as dense retrieval followed by cross-encoder reranking and Hybrid as dense plus BM25 retrieval fused by reciprocal rank fusion and reranked by the same cross-encoder. A ridge-regression pipeline predicts the realized change in binary evidence Hit@10 from six features computed only from Keep. A threshold, selected with article-grouped development predictions under a unitized hybrid penalty, routes each query. Model and threshold are frozen before held-out gold evaluation. Retrieval policies are then compared on evidence success and proxy utility; outputs from a fixed 4-bit Qwen generator are assessed separately for correctness, faithfulness, and abstention behavior."
+  },
+  "open_questions": [
+    "Would the frozen router retain its evidence-hit and call-rate behavior on the untouched QASPER test set and on an independent scientific-document benchmark?",
+    "Would independent blinded human annotators, using a prespecified disagreement protocol, confirm the absence or presence of correctness and faithfulness effects?",
+    "How does adaptive routing compare with fixed policies when costs are measured as end-to-end latency, accelerator utilization, energy, and monetary expense?",
+    "Would training on evidence completeness, multi-evidence recall, or answer-level utility align routing decisions more closely with generated-answer reliability?",
+    "How robust are the policy threshold and coefficients across retrievers, rerankers, generators, context limits, and domains?",
+    "What proportion of retrieval and generation errors specifically arises from unavailable figure or table bodies rather than routing quality?"
+  ],
+  "problem": {
+    "importance": "Fixed retrieval can waste computation, while extra candidates may either recover missing evidence or displace useful passages. More importantly, an evidence-retrieval gain may fail to improve the generated answer, so retrieval efficiency and answer reliability require separate evaluation.",
+    "scope": "The main evaluation is confined to questions about individual scientific articles: both retrieval arms search only units from the question’s source article. The held-out articles come from the official QASPER training split, and generation uses one fixed quantized Qwen model. A separate single-document engineering pilot is diagnostic rather than population-level evidence.",
+    "statement": "The study asks whether a policy can predict the question-specific marginal evidence benefit of hybrid retrieval from signals available after baseline retrieval, while accounting for the extra action’s cost, and whether such routing improves generated-answer correctness and faithfulness relative to fixed retrieval."
+  },
+  "proposed_experiments": [
+    {
+      "baseline": "Compare the frozen adaptive policy with always Keep and always Hybrid, without threshold refitting, on the official QASPER test set and one independent scientific-document benchmark.",
+      "hypothesis": "The frozen baseline-feature router preserves always-Hybrid evidence performance while reducing measured retrieval cost on genuinely untouched and independently sourced documents.",
+      "primary_metric": "Paired difference in evidence Hit@10 together with measured per-question end-to-end retrieval latency; report article-cluster intervals and hybrid-call rate.",
+      "stop_condition": "Stop the superiority claim if either benchmark’s interval does not exclude a prespecified unacceptable Hit@10 loss or if measured latency savings fail to exceed the prespecified operational threshold."
+    },
+    {
+      "baseline": "Use the published binary-Hit@10 ridge router as the primary baseline, with always Keep and always Hybrid as fixed-policy controls.",
+      "hypothesis": "Optimizing routing for evidence completeness or answer-level value produces more reliable answers than optimizing binary evidence Hit@10.",
+      "primary_metric": "Independent blinded-human mean correctness on all paired questions, with unconditional system-level faithfulness that incorporates abstentions.",
+      "stop_condition": "Stop if the article-cluster interval for the new router’s correctness gain over the published router includes zero, or if adjudicator agreement falls below a prespecified acceptable level."
+    },
+    {
+      "baseline": "Compare caption-only evidence units with a pipeline that exposes extracted table cells and figure content under the same retrieval and generation settings.",
+      "hypothesis": "Providing actual figure and table content reduces the mismatch between structural retrieval success and answer correctness for visually dependent questions.",
+      "primary_metric": "Human-scored correctness on a prespecified subset of figure- or table-dependent questions, accompanied by complete-evidence recall.",
+      "stop_condition": "Stop if the enhanced representation does not improve both complete-evidence recall and correctness beyond prespecified minimum effects, or if extraction failures make the paired sample insufficient."
+    }
+  ],
+  "provenance": {
+    "block_count": 97,
+    "document_sha256": "695c67e82c484d8d66b730c355b4637f4d16778420e4d72924554fb02703714a",
+    "generated_at": "2026-11-20T08:52:52.616685+00:00",
+    "metadata_sha256": "e824bf365947d09e36512b7fc3cc055d81d88a3df4a52231d21aa0527664d42a",
+    "profile": "deep",
+    "provider": "codex-exec:configured-default",
+    "repair_count": 1,
+    "schema_version": "paper-summary-v1"
+  },
+  "reproducibility": {
+    "artifacts": [
+      "Engineering-oriented implementation",
+      "Frozen Ridge policy artifact",
+      "Tests",
+      "Saved pilot-generation results",
+      "Review and verification artifacts",
+      "Development and held-out question/document identifiers",
+      "Input and model hashes",
+      "Frozen feature order and threshold",
+      "Per-arm evidence rankings",
+      "Immutable generated prompts and generator outputs",
+      "Provisional answer labels",
+      "Article-level paired bootstrap tables"
+    ],
+    "assessment": "Reproducibility is partial. The retained artifacts support policy and implementation inspection, audit of many outputs, and some verification. However, the public release is explicitly curated rather than a complete experimental archive, so the main QASPER statistics and the diagnostic pilot cannot be regenerated end to end from that repository alone.",
+    "missing": [
+      "Original held-out QASPER corpus in the public repository",
+      "All frozen historical model inputs and outputs",
+      "Single-document pilot PDF and local index",
+      "Complete artifact versions required to reproduce every reported result",
+      "Fully specified runtime environment for independent end-to-end reproduction"
+    ],
+    "status": "partial"
+  },
+  "results": [
+    {
+      "context": "This is the strongest controlled retrieval result. The evidence metric is evaluated on 169 questions, while hybrid-call counts cover all 188 routed questions. Equality on Hit@10 does not mean equivalence has been statistically established.",
+      "evidence": [
+        {
+          "block_id": "b00059-577380a5ef",
+          "quote": "Table 1: Held-out evidence retrieval on 169 evaluable questions (60 articles total). Hybrid call counts are over all 188 routed questions."
+        },
+        {
+          "block_id": "b00059-577380a5ef",
+          "quote": "Utility is unitized Hit@10 minus 0.02 times the hybrid-trigger indicator."
+        },
+        {
+          "block_id": "b00060-f2e0e5630e",
+          "quote": "Always Keep 76.92 0 / 188 0.7692 Always Hybrid 78.70 188 / 188 0.7670 Frozen adaptive 78.70 46 / 188 0.7819"
+        }
+      ],
+      "result": "Frozen adaptive routing achieved the same held-out evidence Hit@10 as always Hybrid: 78.70%, compared with 76.92% for always Keep. It used 46 / 188 hybrid calls, versus 188 / 188 for always Hybrid, and its unitized utility was 0.7819."
+    },
+    {
+      "context": "The adaptive policy retained the same net increase in successful evidence-hit questions while making substantially fewer hybrid invocations. These counts describe retrieval actions, not total runtime reduction.",
+      "evidence": [
+        {
+          "block_id": "b00061-2c02f43a69",
+          "quote": "Always-hybrid retrieval yields five potential rescues and two harms relative to keep; the frozen policy realizes four rescues and one harm, giving the same net gain in successful questions."
+        },
+        {
+          "block_id": "b00061-2c02f43a69",
+          "quote": "It selects hybrid on 24.47% of all questions (43/169 among evidence-evaluable questions), thereby avoiding 142 extra hybrid calls relative to always hybrid."
+        }
+      ],
+      "result": "Always Hybrid produced five potential rescues and two harms relative to Keep; the adaptive policy captured four rescues and one harm. It selected Hybrid on 24.47% of all questions and avoided 142 extra hybrid calls relative to always Hybrid."
+    },
+    {
+      "context": "The observed proxy-utility ranking favors adaptive routing, but clustered uncertainty prevents a reliable superiority claim. The intervals also remain conditional on the chosen proxy penalty.",
+      "evidence": [
+        {
+          "block_id": "b00061-2c02f43a69",
+          "quote": "The paper-level 95% bootstrap interval for adaptive minus keep in retrieval utility is approximately [−0.0114,0.0385]"
+        },
+        {
+          "block_id": "b00061-2c02f43a69",
+          "quote": "adaptive minus always hybrid is approximately [−0.0021,0.0328]; both include zero."
+        }
+      ],
+      "result": "The retrieval-utility advantage was not statistically conclusive: the 95% interval was approximately [−0.0114,0.0385] against Keep and [−0.0021,0.0328] against always Hybrid; both included zero."
+    },
+    {
+      "context": "Correctness used 181 paired questions and faithfulness 128 jointly scorable questions. These exploratory labels were not independently human validated, so the small differences should not be treated as definitive model-quality estimates.",
+      "evidence": [
+        {
+          "block_id": "b00063-58e3fd66dc",
+          "quote": "Correctness is compared on 181 paired questions; faithfulness on 128 jointly scorable questions."
+        },
+        {
+          "block_id": "b00064-2ba6949c87",
+          "quote": "Always Keep 1.127 1.844 0 Always Hybrid 1.133 1.813 188 Frozen adaptive 1.127 1.820 46"
+        },
+        {
+          "block_id": "b00063-58e3fd66dc",
+          "quote": "Values are exploratory and not independently human validated."
+        }
+      ],
+      "result": "Provisional answer evaluation found no adaptive correctness gain: adaptive and Keep both scored 1.127, while always Hybrid scored 1.133. Faithfulness was 1.844 for Keep, 1.813 for Hybrid, and 1.820 for adaptive."
+    },
+    {
+      "context": "This was a selected 10-question, single-document diagnostic pilot, not part of the held-out QASPER analysis and not a statistical population estimate. It also lacked comparable end-to-end cost measurement.",
+      "evidence": [
+        {
+          "block_id": "b00071-8e80915a51",
+          "quote": "Table 3: Descriptive results from the separate 10-question, single-document engineering pilot; these are not QASPER held-out results or statistical estimates of population performance."
+        },
+        {
+          "block_id": "b00072-847d7e21dc",
+          "quote": "Dense Raw 7 2 1 1,912 Always Keep 7 2 1 1,672 Always Hybrid 6 3 1 1,752 Frozen adaptive 6 3 1 1,755"
+        }
+      ],
+      "result": "In the separate engineering pilot, adaptive routing showed no correctness advantage: Dense Raw and always Keep each had 7 passes, 2 failures, and 1 uncertain case, whereas always Hybrid and adaptive each had 6 passes, 3 failures, and 1 uncertain case."
+    }
+  ],
+  "title": "When Is Additional Retrieval Worthwhile? A Cost-Aware Study of Evidence Gain and Answer Reliability in RAG",
+  "uncertainties": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00076-0f46730761",
+          "quote": "The small number of rescue and harm instances limits policy learning."
+        },
+        {
+          "block_id": "b00061-2c02f43a69",
+          "quote": "both include zero."
+        }
+      ],
+      "uncertainty": "Whether the observed equality with always Hybrid reflects stable generalization or chance variation from a small number of rescue and harm cases.",
+      "why_it_matters": "The headline retrieval result depends on very few outcome-changing questions; a different document sample could alter both the hit-rate match and the routing advantage."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00065-abe84919d4",
+          "quote": "demonstrating the sensitivity of small policy differences to adjudication."
+        },
+        {
+          "block_id": "b00078-ddf82b0c58",
+          "quote": "A defensible final answer-quality claim requires independent assessment, a clear disagreement protocol, and explicit analysis of judge agreement/error."
+        }
+      ],
+      "uncertainty": "Whether independent blinded human assessment would preserve the reported correctness and faithfulness ordering.",
+      "why_it_matters": "Small policy differences changed after review, while the frozen labels still contain unquantified same-family judge error."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00061-2c02f43a69",
+          "quote": "A reduction in triggered hybrid calls should not be conflated with a 75% reduction in total runtime."
+        },
+        {
+          "block_id": "b00068-ae3df6258c",
+          "quote": "This is a workload total, not a per-policy end-to-end latency comparison."
+        }
+      ],
+      "uncertainty": "Whether fewer hybrid calls translate into meaningful wall-clock, energy, hardware, or monetary savings in an operational system.",
+      "why_it_matters": "Routing overhead, shared retrieval work, reranking, and generation may dominate or change the actual cost–quality trade-off."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00066-53c18a0b4f",
+          "quote": "A generator can still omit required facts, answer incorrectly despite sufficient evidence, or abstain."
+        },
+        {
+          "block_id": "b00066-53c18a0b4f",
+          "quote": "Figure/table captions may create another mismatch when gold answers require numeric values that are not present in the caption text."
+        }
+      ],
+      "uncertainty": "Whether Hit@10 is sufficiently aligned with the complete evidence needs of questions involving multiple facts, figures, or tables.",
+      "why_it_matters": "The router may optimize retrieval success without improving the evidence completeness that the generator needs for correct answers."
+    }
+  ]
+}

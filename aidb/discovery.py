@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import gzip
 import hashlib
 import json
 from pathlib import Path
@@ -44,6 +45,9 @@ class DiscoveryClient:
                 with urlopen(request, timeout=self.timeout) as response:
                     body = response.read()
                     headers = {key.lower(): value for key, value in response.headers.items()}
+                if headers.get("content-encoding", "").lower() == "gzip":
+                    body = gzip.decompress(body)
+                    headers.pop("content-encoding", None)
                 if cache:
                     cache.parent.mkdir(parents=True, exist_ok=True)
                     cache.write_text(json.dumps({
@@ -68,10 +72,27 @@ def feed_entries(feed, client, cutoff, until, page_size, coverage):
         yield from _arxiv_entries(feed, client, cutoff, page_size, coverage)
     elif parsed.hostname == "github.com" and parsed.path.endswith("/releases.atom"):
         yield from _github_entries(feed, client, coverage)
+    elif feed.get("format") == "anthropic-engineering-index":
+        from aidb.discovery_web import anthropic_engineering
+        yield from anthropic_engineering(feed, client, cutoff, until, coverage)
     else:
         body, _ = client.get(str(feed["url"]))
         coverage["pages"] = 1
-        yield from parse_feed(body, feed)
+        entries = parse_feed(body, feed)
+        yield from entries
+        if feed.get("coverage") == "dated-feed-snapshot":
+            dates = [entry.published for entry in entries]
+            coverage["scope"] = "publisher feed snapshot by publication date, not the full archive or revision history"
+            coverage["records_in_snapshot"] = len(entries)
+            if not dates or any(date is None for date in dates):
+                raise ValueError("dated feed snapshot contains missing publication dates")
+            coverage["oldest_scanned"] = min(dates).isoformat()
+            coverage["window_boundary_reached"] = min(dates) <= cutoff
+            if not coverage["window_boundary_reached"]:
+                raise ValueError("feed snapshot does not reach the requested window boundary")
+            coverage["complete"] = True
+            coverage["stop_reason"] = "entire dated feed snapshot scanned; archive completeness not guaranteed"
+            return
         coverage["stop_reason"] = "unpaginated feed; historical completeness unknown"
         return
     coverage["complete"] = True

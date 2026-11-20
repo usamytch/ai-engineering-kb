@@ -1,0 +1,499 @@
+{
+  "aidb_assessment": {
+    "confidence": "medium",
+    "novelty": "The main contribution is not a new memory algorithm but an integrated cost–accuracy comparison that places precomputed memory, retrieval, full context, and tool-using coding agents under multiple reader strengths. The writer–reader cross-over and explicit build-cost amortization are particularly useful diagnostic framings.",
+    "rationale": "The controlled comparisons reveal actionable failure modes: memory construction can dominate cost, lossy stores constrain later readers, and harness choice materially changes outcomes. Nevertheless, the headline agent advantage is partly attributable to unequal evidence, while single-run results and accepted-trial selection leave both accuracy and cost uncertainty unquantified. AIDB should treat the conclusions as strong experimental hypotheses, not settled general laws.",
+    "recommended_action": "read",
+    "usefulness": "High as a hypothesis-generating systems study and as a warning against adopting extracted memory without measuring build amortization, information loss, and model strength. Low-to-moderate as direct deployment evidence because the benchmark, run count, input parity, tuning coverage, and retry accounting are too narrow for universal architectural guidance."
+  },
+  "claims": [
+    {
+      "claim": "The paper claims that designed agent memory mainly compensates for a weak model: Mem0 improves on full context under GPT-4o-mini but ceases to help under the stronger tested models.",
+      "evidence": [
+        {
+          "block_id": "b00028-e5712a4c20",
+          "quote": "With GPT-4o-mini, Mem0 scores highest. It scores 78%, against 74% for both full context and BM25; Zep scores 43%."
+        },
+        {
+          "block_id": "b00029-fcd0247b5c",
+          "quote": "With the two stronger models, the patch stops helping."
+        }
+      ]
+    },
+    {
+      "claim": "The paper claims that lossy memory construction imposes a writer-defined ceiling that cannot be removed merely by substituting a stronger reader.",
+      "evidence": [
+        {
+          "block_id": "b00033-aae4b5aaed",
+          "quote": "The model that writes the store limits every reader."
+        },
+        {
+          "block_id": "b00035-c3a88861e1",
+          "quote": "A stronger reader does not recover what the writer left out."
+        }
+      ]
+    },
+    {
+      "claim": "The paper claims that, for the strongest model, Pi occupies the best observed cost–accuracy position, while acknowledging that unequal photo-caption access explains most of its accuracy advantage over full context.",
+      "evidence": [
+        {
+          "block_id": "b00037-079d71c4db",
+          "quote": "Pi with Claude Opus 5.5 is the top of the frontier in Figure 1."
+        },
+        {
+          "block_id": "b00039-9cb16b66dd",
+          "quote": "Photo captions account for most of Pi’s lead over full context."
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "ablations": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00033-aae4b5aaed",
+            "quote": "each model answers from the retrievals of the others’ stores"
+          }
+        ],
+        "text": "Writer–reader cross-over: each model answers using retrievals from stores written by each other model, testing whether reader strength can compensate for memory construction."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00080-7e01c503b0",
+            "quote": "the 64 questions with evidence in a turn that shares a photo, whose caption only the agents could read, and on the other 88."
+          }
+        ],
+        "text": "Photo-evidence stratification: performance is split between questions whose evidence occurs in photo-sharing turns and all remaining questions."
+      }
+    ],
+    "baselines": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00020-139e4d6bd6",
+            "quote": "Full context raw history all of it"
+          }
+        ],
+        "text": "Full context: the model receives all raw history."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00020-139e4d6bd6",
+            "quote": "BM25 raw turns top-8 turns, ±2"
+          }
+        ],
+        "text": "BM25: raw turns are stored and the model sees the top-8 turns with a ±2-turn neighborhood."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00020-139e4d6bd6",
+            "quote": "Mem0 extracted facts top-200 facts Zep temporal graph top-20 edges"
+          },
+          {
+            "block_id": "b00021-a55e071894",
+            "quote": "both with default extraction and retrieval [1, 2]."
+          }
+        ],
+        "text": "Mem0 and Zep: extracted-fact and temporal-graph memory baselines, respectively, using default extraction and retrieval."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00020-139e4d6bd6",
+            "quote": "Pi, Codex, Claude Code raw history, one JSON file what its tools read"
+          }
+        ],
+        "text": "Coding-agent harnesses: Pi, Codex, and Claude Code search a raw-history JSON file using their available tools."
+      }
+    ],
+    "datasets": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00018-5420c025d1",
+            "quote": "LoCoMo conv-26 [9]: 419 turns in 19 sessions and 152 single-hop, multi-hop, temporal and open-domain questions."
+          },
+          {
+            "block_id": "b00018-5420c025d1",
+            "quote": "LoCoMo’s adversarial questions are left out, as in Mem0’s evaluation [1]."
+          }
+        ],
+        "text": "LoCoMo conv-26: one conversation with 419 turns in 19 sessions and 152 single-hop, multi-hop, temporal, and open-domain questions. Adversarial questions are excluded."
+      }
+    ],
+    "metrics": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00026-5048be7104",
+            "quote": "GPT-4o-mini grades every answer with Mem0’s 2025 judge rubric [1]; empty answers count as wrong."
+          }
+        ],
+        "text": "Correct-answer rate, assigned by GPT-4o-mini using Mem0’s judge rubric; empty answers are incorrect."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00026-5048be7104",
+            "quote": "Cost is the list price of every model call, LLM and embedding (text-embedding-3-small), with the judge excluded."
+          }
+        ],
+        "text": "Rollout cost: list price of all language-model and embedding calls, excluding the judge."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00026-5048be7104",
+            "quote": "Tokens are those calls’ input and output tokens, cached input included; embeddings are not counted."
+          }
+        ],
+        "text": "Operational consumption: language-model calls and input/output tokens, including cached input but excluding embeddings from token counts."
+      }
+    ],
+    "negative_results": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00029-fcd0247b5c",
+            "quote": "With GPT-6 Luna, full context scores 92%, BM25 82%, Mem0 80% and Zep 51%"
+          },
+          {
+            "block_id": "b00029-fcd0247b5c",
+            "quote": "With Claude Opus 5.5, Mem0 and full context both score 95% and Zep 87%"
+          }
+        ],
+        "text": "With GPT-6 Luna, Mem0 trails full context rather than improving it; with Claude Opus 5.5, it only ties full context."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00031-337bdecc4c",
+            "quote": "Mem0 and Zep are never on the frontier of Figure 1"
+          }
+        ],
+        "text": "Neither Mem0 nor Zep appears on the reported cost–accuracy frontier."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00028-e5712a4c20",
+            "quote": "Codex opens the conversation file for three questions in four and Claude Code almost never"
+          }
+        ],
+        "text": "Weak models do not reliably operate coding-agent tools: Codex opens the conversation for only three questions in four, and Claude Code almost never does."
+      }
+    ]
+  },
+  "executive_summary": "MemoryTax tests whether prebuilt agent memory remains useful when capable models can search raw conversation history. Across seven methods and three models on one LoCoMo conversation, Mem0 improves over full context only for the weakest model, while its build costs exceed a complete full-context rollout. Writer–reader swaps show that stronger readers cannot fully repair information omitted by weaker memory writers. Pi with Claude Opus 5.5 reaches the reported cost–accuracy frontier, but most of its apparent accuracy lead over full context comes from unequal access to photo captions. The paper is decision-relevant but exploratory: one conversation, one accepted run per cell, a model judge, one erroneous key, defaults-only memory settings, and retry selection prevent broad or variance-aware conclusions.",
+  "labels": {
+    "ablations": "Ablations",
+    "action_adopt": "adopt",
+    "action_read": "read",
+    "action_reject": "reject",
+    "action_watch": "watch",
+    "aidb_assessment": "AIDB assessment",
+    "assumptions": "Assumptions",
+    "available_artifacts": "Available artifacts",
+    "baseline": "Baseline",
+    "baselines": "Baselines",
+    "blocks": "Blocks",
+    "claims": "Main claims",
+    "confidence": "Confidence",
+    "confidence_high": "high",
+    "confidence_low": "low",
+    "confidence_medium": "medium",
+    "context": "Context",
+    "datasets": "Datasets",
+    "document_sha256": "Document SHA-256",
+    "evaluation": "Experimental evaluation",
+    "evidence": "Evidence",
+    "executive_summary": "Executive summary",
+    "generated": "Generated",
+    "hypothesis": "Hypothesis",
+    "importance": "Why it matters",
+    "key_components": "Key components",
+    "limitations": "Limitations",
+    "metadata_sha256": "Metadata SHA-256",
+    "method": "Method",
+    "metrics": "Metrics",
+    "missing_pieces": "Missing pieces",
+    "negative_results": "Negative results",
+    "novelty": "Novelty",
+    "open_questions": "Open questions",
+    "primary_metric": "Primary metric",
+    "problem": "Problem",
+    "profile": "Profile",
+    "proposed_experiments": "Proposed AIDB experiments",
+    "provenance": "Provenance",
+    "provider": "Provider",
+    "rationale": "Rationale",
+    "recommended_action": "Recommended action",
+    "repair_count": "Deterministic repair attempts",
+    "reproducibility": "Reproducibility",
+    "results": "Results",
+    "schema": "Schema",
+    "scope": "Scope",
+    "statement": "Statement",
+    "status": "Status",
+    "status_partial": "partial",
+    "status_strong": "strong",
+    "status_unknown": "unknown",
+    "status_weak": "weak",
+    "stop_condition": "Stop condition",
+    "uncertainties": "Uncertainties",
+    "usefulness": "Usefulness"
+  },
+  "language": {
+    "code": "en",
+    "name": "English"
+  },
+  "limitations": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00043-cdc532bf1f",
+          "quote": "One conversation of LoCoMo’s ten, and one run per cell. Differences of a few questions may not hold in a second run."
+        }
+      ],
+      "limitation": "The experiment uses one of LoCoMo’s conversations and one run per cell, so small differences have unknown variance and may reverse under replication."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00045-c1a61e0a28",
+          "quote": "A GPT-4o-mini judge with a lenient rubric, and at least one wrong answer key."
+        }
+      ],
+      "limitation": "Grading depends on a lenient GPT-4o-mini judge, and the benchmark contains at least one incorrect answer key."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00047-690e14098a",
+          "quote": "The agents could read photo captions that the memory methods were not given (Section 5)."
+        }
+      ],
+      "limitation": "Agents and memory methods receive unequal evidence because only agents can read photo captions, confounding their aggregate comparison."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00049-32c7d00630",
+          "quote": "The history fits in every model’s context window, so full context is always an option."
+        },
+        {
+          "block_id": "b00049-32c7d00630",
+          "quote": "Results may differ on other benchmarks such as LongMemEval [14] and on histories that do not fit."
+        }
+      ],
+      "limitation": "Every evaluated history fits the model context windows, leaving behavior on genuinely overlength histories unresolved."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00051-8f71434005",
+          "quote": "Mem0 and Zep run with their default extraction and retrieval, and other settings may do better."
+        },
+        {
+          "block_id": "b00051-8f71434005",
+          "quote": "Costs are list prices and depend on each provider’s caching."
+        }
+      ],
+      "limitation": "Mem0 and Zep use defaults rather than tuned configurations, and cost conclusions depend on list prices and provider caching."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00085-3ee3c68d69",
+          "quote": "A trial that fails or ends without an answer is run again, and only the accepted trial is counted."
+        }
+      ],
+      "limitation": "Failed or answerless agent trials are rerun and only accepted trials are counted, but retry incidence and rejected-trial costs are not reported; this may bias reliability and cost estimates."
+    }
+  ],
+  "method": {
+    "assumptions": [
+      "The GPT-4o-mini judge and its lenient rubric are sufficiently aligned with substantive correctness for comparisons to be meaningful.",
+      "Provider list prices and caching behavior are an appropriate proxy for deployer cost.",
+      "A single accepted rollout represents each method–model cell despite stochasticity and permitted retries.",
+      "Conv-26 is informative about the broader task because its per-method accuracies reportedly track the full LoCoMo set, although that supporting comparison is not shown in the supplied blocks.",
+      "Default Mem0 and Zep configurations are representative enough to evaluate the designed-memory approach, rather than only those configurations."
+    ],
+    "key_components": [
+      "Evaluation input: LoCoMo conv-26, containing conversational sessions and several question types; adversarial questions are excluded.",
+      "Memory representations: unmodified history, lexical retrieval over turns, extracted facts, a temporal graph, and agent-directed inspection of the raw file.",
+      "Model conditions: GPT-4o-mini, GPT-6 Luna, and Claude Opus 5.5; the latter two use high reasoning effort.",
+      "Agent isolation: each question starts in a fresh container and fresh session, with network access restricted to the model endpoint.",
+      "Accounting: a rollout includes store construction and all questions; judge cost is excluded, cached input is included in token accounting, and embeddings affect cost but not token totals.",
+      "Validity probes: cross-model writer–reader swaps test extraction ceilings, while the photo-evidence split partially diagnoses unequal input access."
+    ],
+    "overview": "The study forms a factorial comparison of seven methods and three models. Full context exposes the entire raw history; BM25 retrieves nearby raw turns; Mem0 retrieves extracted facts; Zep retrieves temporal-graph edges; and three coding-agent harnesses receive one JSON conversation file and decide what to inspect with their tools. Each cell builds any required store and answers the question set. A GPT-4o-mini judge scores answers, while model-call list prices, calls, and tokens characterize resource use. Additional analyses exchange memory writers and readers and stratify questions by whether their evidence appears in a photo-sharing turn."
+  },
+  "open_questions": [
+    "Do Pi and full context retain their ranking when both receive exactly the same text, including all photo captions?",
+    "How large are accuracy, cost, call-count, and latency variances across repeated runs for every cell?",
+    "How do the methods behave when histories exceed the model context window and full context is no longer feasible?",
+    "Does tuning extraction, retrieval depth, reranking, or memory-writing models move Mem0 or Zep onto the cost–accuracy frontier?",
+    "How frequently were agent trials rerun, why did they fail, and what are reliability and cost when all attempts are counted?",
+    "Does the writer ceiling persist for verbatim chunk stores or hybrid stores that retain links back to raw evidence?",
+    "How sensitive are conclusions to human adjudication, alternative model judges, and correction of erroneous answer keys?"
+  ],
+  "problem": {
+    "importance": "Designed memory introduces extraction loss, retrieval choices, build cost, and operational complexity. Establishing when those costs buy accuracy—and when raw-record search is preferable—directly affects architecture and model-selection decisions for long-lived agents.",
+    "scope": "The empirical scope is one LoCoMo conversation whose history fits every tested context window. It compares full context, BM25, Mem0, Zep, Pi, Codex, and Claude Code under three models; it does not establish behavior across conversations, repeated stochastic runs, histories exceeding context windows, or tuned memory systems.",
+    "statement": "The paper asks whether systems that extract facts or graphs before questions arrive still help when a sufficiently capable model can instead inspect and search the uncompressed raw history."
+  },
+  "proposed_experiments": [
+    {
+      "baseline": "Full context and Pi using the identical official conversation file, including captions, identical answer rules, and corrected answer keys; run both repeatedly on the full question set.",
+      "hypothesis": "When evidence access is exactly matched, Pi with the strongest tested model remains cheaper than full context but has no practically meaningful correctness advantage.",
+      "primary_metric": "Paired difference in human-adjudicated correctness, reported with a confidence interval, alongside total cost including every failed and retried attempt.",
+      "stop_condition": "Stop when the confidence interval is narrow enough to determine whether the correctness difference crosses a prespecified one-answer equivalence margin and the cost ranking is stable across repetitions."
+    },
+    {
+      "baseline": "Mem0 and Zep defaults versus BM25 and a verbatim semantic-retrieval store, crossed over weak and strong writers and readers on all available benchmark conversations.",
+      "hypothesis": "Precomputed extracted memory loses its advantage as reader capability rises because writer omissions dominate, whereas verbatim retrieval degrades less under writer–reader mismatch.",
+      "primary_metric": "Correctness loss relative to full context for each writer–reader pair, with omitted supporting evidence manually classified for errors.",
+      "stop_condition": "Stop after repeated runs show either a consistent interaction between writer strength and representation type or a confidence interval excluding a practically meaningful interaction."
+    },
+    {
+      "baseline": "Full context, BM25, tuned Mem0, tuned Zep, and Pi on histories both within and beyond context limits, with identical evidence and all build, query, failure, and retry costs included.",
+      "hypothesis": "Designed memory becomes cost-effective only beyond a workload-dependent query threshold, and that threshold changes under tuned retrieval and full retry accounting.",
+      "primary_metric": "Expected total cost at matched human-adjudicated correctness as a function of cumulative questions per history.",
+      "stop_condition": "Stop once each method’s break-even region is bounded tightly enough to support an architecture choice, or once a method is dominated in both cost and correctness throughout the tested workload range."
+    }
+  ],
+  "provenance": {
+    "block_count": 91,
+    "document_sha256": "a6078401254157bb907ee7066eb404f56479a8ff3a05a138036abb594ab7b945",
+    "generated_at": "2026-11-20T08:53:04.044240+00:00",
+    "metadata_sha256": "73c81e873540ed7ae1c73c574ef61162d97fee0d4af7ba0676e262bf6b62beca",
+    "profile": "deep",
+    "provider": "reviewed-candidate",
+    "repair_count": 0,
+    "schema_version": "paper-summary-v1"
+  },
+  "reproducibility": {
+    "artifacts": [
+      "A named interactive version is identified in the paper.",
+      "Method and software versions are reported for Mem0, Zep, Pi, Codex, Claude Code, and Harbor.",
+      "The supplied blocks describe retrieval sizes, agent isolation, reasoning effort, time and turn limits, judging, and cost accounting.",
+      "Full aggregate result tables and the writer–reader and photo-evidence splits are supplied."
+    ],
+    "assessment": "The protocols are unusually concrete for a short study and the aggregate tables permit consistency checks, but independent reproduction remains incomplete without code, full prompts, raw outputs, retry records, and immutable environment and pricing specifications. The one-run design also prevents reproduction from distinguishing implementation mismatch from ordinary sampling variation.",
+    "missing": [
+      "Executable experiment code or an archived repository is not identified in the supplied blocks.",
+      "The actual prompt bodies are absent from the supplied document blocks; only prompt section labels are present.",
+      "Per-question predictions, judge decisions, model-call logs, and raw cost traces are not supplied.",
+      "Randomness controls, seeds, run-to-run variance, retry counts, rejected trials, and their resource consumption are not reported.",
+      "Exact container images, dependency lockfiles, proxy configuration, and provider price snapshot are not supplied.",
+      "A machine-readable manifest connecting each result to the precise input, model endpoint, and accepted trial is not supplied."
+    ],
+    "status": "partial"
+  },
+  "results": [
+    {
+      "context": "This is the paper’s strongest direct evidence that precomputed memory can help a weaker model, but the study reports no replication or uncertainty interval.",
+      "evidence": [
+        {
+          "block_id": "b00028-e5712a4c20",
+          "quote": "It scores 78%, against 74% for both full context and BM25; Zep scores 43%."
+        }
+      ],
+      "result": "Under GPT-4o-mini, Mem0 achieves 78% correctness, compared with 74% for both full context and BM25 and 43% for Zep. The observed advantage over full context is therefore confined to four percentage points in this single rollout."
+    },
+    {
+      "context": "This controlled accounting is the clearest support for the proposed “memory tax.” It applies to the stated list prices, caching assumptions, dataset, and implementation defaults rather than proving a universal cost relationship.",
+      "evidence": [
+        {
+          "block_id": "b00031-337bdecc4c",
+          "quote": "$0.56 against $0.43 with GPT-4o-mini, $0.45 against $0.29 with GPT-6 Luna and $25.88 against $17.84 with Claude Opus 5.5"
+        },
+        {
+          "block_id": "b00031-337bdecc4c",
+          "quote": "the build would pay for itself after 372, 545 and 596 questions on the same history; LoCoMo asks 152."
+        }
+      ],
+      "result": "Mem0’s construction cost alone exceeds a complete full-context rollout for every model tested: $0.56 versus $0.43, $0.45 versus $0.29, and $25.88 versus $17.84. The estimated break-even points are 372, 545, and 596 questions, while the evaluated history receives 152 questions."
+    },
+    {
+      "context": "Because retrieval invokes no language model, swapping readers isolates some effect of store construction. It supports a writer ceiling within these two systems, though it does not separate omitted information from other writer-dependent representation or retrieval effects.",
+      "evidence": [
+        {
+          "block_id": "b00035-c3a88861e1",
+          "quote": "On Zep’s GPT-4o-mini graph, GPT-4o-mini, GPT-6 Luna and Claude Opus 5.5 score 43%, 43% and 45%; on the graph Claude Opus 5.5 wrote, 66%, 71% and 87%."
+        },
+        {
+          "block_id": "b00035-c3a88861e1",
+          "quote": "78%, 83% and 84% from GPT-4o-mini’s store, 89%, 91% and 95% from Claude Opus 5.5’s."
+        }
+      ],
+      "result": "The writer–reader experiment reveals substantial extraction dependence. On Zep’s GPT-4o-mini graph, the three readers score 43%, 43%, and 45%; on the Claude Opus 5.5 graph they score 66%, 71%, and 87%. Mem0 shows the same ordering with narrower gaps: 78%, 83%, and 84% from the weaker writer’s store versus 89%, 91%, and 95% from the stronger writer’s store."
+    },
+    {
+      "context": "Pi is the strongest observed operating point, but the headline accuracy comparison is confounded because agents can read captions withheld from memory methods. The restricted split is more diagnostic of search versus full-context reading, yet it remains post-stratified and small.",
+      "evidence": [
+        {
+          "block_id": "b00037-079d71c4db",
+          "quote": "Pi with Claude Opus 5.5 is the top of the frontier in Figure 1. No other cell scores higher: Pi scores 99% for $6.95 a rollout, while full context with the same model scores 95% for $17.84."
+        },
+        {
+          "block_id": "b00039-9cb16b66dd",
+          "quote": "On the 88 questions without photo evidence, Pi scores 100%, and full context, Mem0, Codex and Claude Code 99% each (Table 4)."
+        },
+        {
+          "block_id": "b00013-63201f86f3",
+          "quote": "Where the two read the same text they differ by one answer;"
+        }
+      ],
+      "result": "With Claude Opus 5.5, Pi scores 99% at $6.95 per rollout, while full context scores 95% at $17.84. However, after restricting evaluation to the 88 questions without photo evidence, Pi scores 100% and full context scores 99%, reducing the matched-evidence difference to one answer."
+    }
+  ],
+  "title": "MemoryTax: The Bitter Lesson of Agent Memory",
+  "uncertainties": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00039-9cb16b66dd",
+          "quote": "Whether searching the record answers more than reading all of it, this study does not settle."
+        }
+      ],
+      "uncertainty": "It is unresolved whether model-directed search is intrinsically more accurate than reading the same complete record.",
+      "why_it_matters": "This is central to choosing an agent harness over full context. The aggregate comparison cannot answer it because the agent receives photo captions that full context does not."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00043-cdc532bf1f",
+          "quote": "Differences of a few questions may not hold in a second run."
+        }
+      ],
+      "uncertainty": "The stability of small accuracy differences is unknown because each cell has only one run.",
+      "why_it_matters": "Several conclusions depend on only a few questions, so stochastic variation could change rankings or frontier membership."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00051-8f71434005",
+          "quote": "other settings may do better."
+        }
+      ],
+      "uncertainty": "The generality of the claimed memory ceiling beyond Mem0 and Zep defaults is untested.",
+      "why_it_matters": "Alternative extraction, chunking, reranking, or query-time reconstruction might preserve more evidence and reduce writer dependence."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00085-3ee3c68d69",
+          "quote": "only the accepted trial is counted."
+        }
+      ],
+      "uncertainty": "Reported agent economics exclude failed or answerless attempts that were replaced by accepted trials.",
+      "why_it_matters": "A production system pays for failures as well as successful retries; omitting them can overstate reliability and understate expected cost."
+    }
+  ]
+}

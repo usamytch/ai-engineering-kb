@@ -1,0 +1,38 @@
+{
+  "abstract": "LLM agents run long, multi-turn programs whose contexts grow at every step, and serving them is limited by KV cache capacity. To alleviate this limitation, systems use context compression techniques, which typically wait until the KV cache crosses a large threshold and then summarize large spans of history at once, either in the background while the agent progresses or on the critical path. These summarizations can be done using the same model running on the same engine, or using the same or a different model running on extra hardware. When running on the same engine, summarization competes with the requests being served for both compute and memory capacity. To maximize the cost-effectiveness of summarization, this paper presents a new serving system called {\\em Aggron}. Aggron summarizes agentic requests at every turn and selectively summarizes only certain parts of the KV cache. As a result, Aggron retains accuracy and keeps summarization requests lightweight. Moreover, Aggron launches summarization requests from a separate {\\em Summarization Queue} while the corresponding agentic request whose KV cache we want to compress is stalled in the main request queue due to head-of-line stalls. The Summarization queue utilizes compute and memory capacity left over by the head-of-line stalls in the main queue. Further, to maximize efficiency, the server issues summarizations only when it predicts that they can complete before the corresponding agentic request will finally execute. In our evaluation, we compare Aggron to state-of-the-art asynchronous summarization. At high load, Aggron reduces P99 program latency by $27$--$31\\%$, and raises throughput by $1.34$--$1.40\\times$.",
+  "arxiv_id": "2611.26435v1",
+  "authors": [
+    "Rishabh Ravi",
+    "Tony Hong",
+    "Chen Wang",
+    "Yue Zhu",
+    "Mengmei Ye",
+    "Hubertus Franke",
+    "Fan Lai",
+    "Josep Torrellas"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2611.26435v1",
+  "categories": [
+    "cs.DC",
+    "cs.AR"
+  ],
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2611.26435v1",
+  "latest_seen_version": 1,
+  "paper_id": "2611.26435",
+  "paper_version_id": "2611.26435v1",
+  "published": "2026-11-19T17:09:37+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "Aggron: Aggressive Compression of Agentic KV Caches during Head-of-Line Stalls in the Request Queue",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-11-19T17:09:37+00:00",
+  "url": "https://arxiv.org/abs/2611.26435v1"
+}

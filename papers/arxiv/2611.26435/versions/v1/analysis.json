@@ -1,0 +1,675 @@
+{
+  "aidb_assessment": {
+    "confidence": "medium",
+    "novelty": "High systems novelty in treating admission delay as a scheduling resource: selective prose compression is combined with queue-position-dependent triggering, frozen summaries, hideability prediction, and a separate queue that runs only when the blocked agent head cannot use available capacity. The individual ingredients are familiar, but their coupling to server admission state appears distinctive within the paper’s comparison set.",
+    "rationale": "The controlled simulator comparisons, queue ablation, explicit negative results, multi-model accuracy study, and trajectory analysis make the work worth close attention. Adoption is premature because headline performance is simulated, live validation is incomplete for Aggron, accuracy uncertainty is broad, and the default method regresses outside its KV-bound operating regime. A live shadow deployment with calibrated safeguards would be the appropriate next step.",
+    "recommended_action": "watch",
+    "usefulness": "Potentially high for multi-tenant, long-horizon agent serving that is demonstrably KV-bound. The strongest practical value is reduced tail latency without purchasing a dedicated summarizer. Applicability is conditional: compute-bound models, light load, inaccurate hideability prediction, unfamiliar tools, and very long sessions that trigger full resets may erase or reverse the gain."
+  },
+  "claims": [
+    {
+      "claim": "Aggron’s central systems contribution is to compress waiting agent requests opportunistically at the server in online, multi-tenant serving.",
+      "evidence": [
+        {
+          "block_id": "b00017-ab44705a0b",
+          "quote": "Aggron, the first system to compress agentic requests opportunistically at the server in online, multi-tenant serving."
+        }
+      ]
+    },
+    {
+      "claim": "The design protects structured tool outputs and summarizes only the prose tail following the latest protected observation.",
+      "evidence": [
+        {
+          "block_id": "b00062-cc69b00677",
+          "quote": "Aggron classifies as non-prose the output of three families of tools"
+        },
+        {
+          "block_id": "b00063-6acf94d288",
+          "quote": "Compressible prose is therefore exactly the prose that follows the most recent non-prose observation."
+        }
+      ]
+    },
+    {
+      "claim": "The separate summary queue is intended to use KV and batch capacity unavailable to the blocked agentic head.",
+      "evidence": [
+        {
+          "block_id": "b00081-14e63f4b5f",
+          "quote": "Aggron therefore maintains a separate summarization queue."
+        },
+        {
+          "block_id": "b00081-14e63f4b5f",
+          "quote": "admitting summarization work into the KV and batch slots the blocked head cannot use, instead of leaving them idle."
+        }
+      ]
+    },
+    {
+      "claim": "Freezing summaries is meant to avoid repeated information loss and preserve cached prefixes.",
+      "evidence": [
+        {
+          "block_id": "b00072-c171bc2fa4",
+          "quote": "It does not feed the standing summary back into the next compressor’s input."
+        },
+        {
+          "block_id": "b00072-c171bc2fa4",
+          "quote": "Freezing has a second, systems-side benefit by keeping the KV prefix valid for the whole episode."
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "ablations": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00114-83437da4dc",
+            "quote": "Both fire the same tail-only summaries, so only the summary waits differ."
+          }
+        ],
+        "text": "Separate versus shared summary queue while holding tail-only summaries constant."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00120-6e9c4cf89e",
+            "quote": "Figure 9(c) masks the controller and moves the 4K cap’s own summarizations, with no early summaries, from the main queue into the separate one."
+          }
+        ],
+        "text": "Moving otherwise synchronous 4K-cap summaries into the separate queue without early summaries, to expose the cost of summaries that cannot be hidden."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00121-9e1346ee08",
+            "quote": "Figure 9(d) sweeps both, normalized to the default setting (α=2.5, 1056-token blocks)."
+          }
+        ],
+        "text": "Sweeps of the compression-worth gate and KV-block-release gate around their default settings."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00128-a2da2cdb36",
+            "quote": "Moving every summary to a 35B side model frees the serving GPU but cannot reuse its KV."
+          },
+          {
+            "block_id": "b00127-3f5176ddb4",
+            "quote": "If each summary reuses the cached KV of the prose it compresses and recomputes 15% of it"
+          }
+        ],
+        "text": "Cached-tail reuse and a separate 35B summarizer in frontier-model scaling experiments."
+      }
+    ],
+    "baselines": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00085-75bdbaaaf4",
+            "quote": "Vanilla runs without compaction in the full context window."
+          }
+        ],
+        "text": "Vanilla execution without compaction in the full context window."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00085-75bdbaaaf4",
+            "quote": "Slipstream and APEC compact the whole context at 60K, past the point where accuracy saturates (Table 1)."
+          }
+        ],
+        "text": "Slipstream and APEC asynchronous whole-context compaction, configured to compact at 60K."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00085-75bdbaaaf4",
+            "quote": "The grow-4k and grow-1k arms fix that point at its two ends."
+          }
+        ],
+        "text": "grow-1k and grow-4k fixed-threshold prose-tail compression arms, used to bound Aggron’s dynamic threshold behavior."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00043-2aaddad6cb",
+            "quote": "Synchronous and asynchronous summarization at the 4K prose cap on our benchmark traces"
+          }
+        ],
+        "text": "Synchronous and asynchronous summarization at a 4K prose cap."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00099-97e60c94f1",
+            "quote": "the baselines cap each program’s context at 120K tokens"
+          },
+          {
+            "block_id": "b00099-97e60c94f1",
+            "quote": "and at 24K, within the budgets of Belcak et al. (Belcak et al., 2026), summarizing in-band and restarting at the cap."
+          }
+        ],
+        "text": "Fixed 120K and 24K in-band summarization-and-restart caps for frontier-model scaling."
+      }
+    ],
+    "datasets": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00088-8c307fd04c",
+            "quote": "SWE-bench Verified (Jimenez et al., 2024) (100 stratified instances) covers repository-level bug fixing."
+          }
+        ],
+        "text": "SWE-bench Verified: repository-level bug fixing, using 100 stratified instances and official patch-resolution scoring."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00088-8c307fd04c",
+            "quote": "Terminal-Bench (Merrill et al., 2026) (49 tasks) covers open-ended terminal work driven by the benchmark’s own terminus agent"
+          }
+        ],
+        "text": "Terminal-Bench: open-ended terminal work, using 49 tasks and task-specific tests."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00088-8c307fd04c",
+            "quote": "DeepResearch Bench (Du et al., 2026) (50 English queries) covers long-horizon web research against a self-hosted SearXNG instance"
+          }
+        ],
+        "text": "DeepResearch Bench: 50 English web-research queries against a self-hosted SearXNG instance, graded with the RACE rubric judge."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00088-8c307fd04c",
+            "quote": "MCPMark (Wu et al., 2026) (66 tasks) covers tool use over the Model Context Protocol across filesystem and PostgreSQL services"
+          }
+        ],
+        "text": "MCPMark: 66 filesystem and PostgreSQL tool-use tasks scored by per-task verifiers."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00099-97e60c94f1",
+            "quote": "Each serving run replays 1,000 programs drawn from all four benchmarks, arriving as a Poisson process at rate λ programs per second with a fixed seed"
+          }
+        ],
+        "text": "Serving simulations replay 1,000 programs drawn from all four benchmarks with fixed-seed Poisson arrivals."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00099-97e60c94f1",
+            "quote": "Every model replays the same mix of long-horizon traces, from T1 on LH-TB"
+          },
+          {
+            "block_id": "b00099-97e60c94f1",
+            "quote": "DSV4 on Terminal-Bench 2.1 (Merrill et al., 2026), and GLM-5.3 and K3 on Terminal-Bench Science"
+          }
+        ],
+        "text": "Scaling experiments use long-horizon traces from LH-TB, Terminal-Bench 2.1, and Terminal-Bench Science."
+      }
+    ],
+    "metrics": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00089-3f90cd821e",
+            "quote": "Error (%) is (sim − live)/live against the mean of two live runs at the same λ."
+          },
+          {
+            "block_id": "b00119-916470dc3c",
+            "quote": "Throughput and P99 of the separate vs. shared summary queue."
+          },
+          {
+            "block_id": "b00043-2aaddad6cb",
+            "quote": "Throughput and mean program latency over vanilla."
+          }
+        ],
+        "text": "Serving: throughput, mean latency, P50 latency, P99 latency, batch occupancy, queue-time share, HBM use, and summary latency."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00088-8c307fd04c",
+            "quote": "scored by the official harness on whether its patch resolves the issue."
+          },
+          {
+            "block_id": "b00088-8c307fd04c",
+            "quote": "with reports graded by the RACE rubric judge."
+          }
+        ],
+        "text": "Task accuracy through each benchmark’s official, task-specific, verifier, or judge-based scoring."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00087-fc1c45320f",
+            "quote": "using Levenshtein distance d normalized by the longer sequence, from 0 (identical) to 1 (nothing shared)."
+          },
+          {
+            "block_id": "b00087-fc1c45320f",
+            "quote": "We complement it with Jaccard overlap of the sets of tools used, which ignores order."
+          }
+        ],
+        "text": "Trajectory divergence through normalized Levenshtein distance and Jaccard overlap of tool sets."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00100-b67df63a0d",
+            "quote": "the simulator predicts decode step time within 7.9% and prefill latency within 9.4% mean absolute error."
+          }
+        ],
+        "text": "Simulator fidelity through mean absolute error and simulated-versus-live error."
+      }
+    ],
+    "negative_results": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00046-ffe2410eb3",
+            "quote": "Asynchronous summarization matches it in throughput and gains little in latency."
+          }
+        ],
+        "text": "Asynchronous summarization matched synchronous throughput and gained little latency in the studied shared-GPU workload."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00120-6e9c4cf89e",
+            "quote": "the separate queue loses 0.2-3.8% throughput and adds 1.3-47% to P99 relative to keeping the cap synchronous."
+          },
+          {
+            "block_id": "b00120-6e9c4cf89e",
+            "quote": "The loss peaks at light load (λ=0.05), where the queue is too short to hide a summary."
+          }
+        ],
+        "text": "Unhideable separate-queue summaries degraded performance, especially at light load."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00127-3f5176ddb4",
+            "quote": "freed memory buys nothing while summary prefill takes 8% of serving-GPU time (1.6-3.2% elsewhere), and it loses 1.7%."
+          }
+        ],
+        "text": "The ordinary frontier-model configuration regressed on DSV4 because memory was not saturated and summary prefill consumed serving time."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00128-a2da2cdb36",
+            "quote": "a third of DSV4’s, where it loses 26% as requests wait on their own summary for 81% of the run."
+          }
+        ],
+        "text": "A side summarizer regressed sharply on DSV4 under the smaller cap because requests waited on their summaries."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00112-d5e5fe4be1",
+            "quote": "The two exceptions are SWE grow-1k on Qwen (Δ​d=+0.11) and GLM (+0.07)."
+          },
+          {
+            "block_id": "b00112-d5e5fe4be1",
+            "quote": "These agents make 1.3-1.7× as many tool calls as vanilla because they re-check their state after each summary."
+          }
+        ],
+        "text": "Two compressed SWE configurations significantly changed trajectories and increased tool-call counts."
+      }
+    ]
+  },
+  "executive_summary": "Aggron is a serving design for memory-bound, multi-tenant LLM agents. It selectively summarizes prose tails, freezes summaries, and schedules compression in otherwise unusable capacity during admission stalls. Against asynchronous APEC and Slipstream on simulated Qwen serving, the paper reports materially lower tail latency and higher throughput, while compressed accuracy remains within a broad rerun-noise estimate. The design is well motivated and ablated, but headline serving gains are simulation-based; accuracy uses limited benchmark subsets; some trajectory changes are significant; and frontier-model results expose regressions when memory is not the bottleneck or summaries miss their hiding window. The work is promising for loaded, KV-constrained deployments, but needs live multi-tenant and stronger statistical replication before adoption.",
+  "labels": {
+    "ablations": "Ablations",
+    "action_adopt": "adopt",
+    "action_read": "read",
+    "action_reject": "reject",
+    "action_watch": "watch",
+    "aidb_assessment": "AIDB assessment",
+    "assumptions": "Assumptions",
+    "available_artifacts": "Available artifacts",
+    "baseline": "Baseline",
+    "baselines": "Baselines",
+    "blocks": "Blocks",
+    "claims": "Main claims",
+    "confidence": "Confidence",
+    "confidence_high": "high",
+    "confidence_low": "low",
+    "confidence_medium": "medium",
+    "context": "Context",
+    "datasets": "Datasets",
+    "document_sha256": "Document SHA-256",
+    "evaluation": "Experimental evaluation",
+    "evidence": "Evidence",
+    "executive_summary": "Executive summary",
+    "generated": "Generated",
+    "hypothesis": "Hypothesis",
+    "importance": "Why it matters",
+    "key_components": "Key components",
+    "limitations": "Limitations",
+    "metadata_sha256": "Metadata SHA-256",
+    "method": "Method",
+    "metrics": "Metrics",
+    "missing_pieces": "Missing pieces",
+    "negative_results": "Negative results",
+    "novelty": "Novelty",
+    "open_questions": "Open questions",
+    "primary_metric": "Primary metric",
+    "problem": "Problem",
+    "profile": "Profile",
+    "proposed_experiments": "Proposed AIDB experiments",
+    "provenance": "Provenance",
+    "provider": "Provider",
+    "rationale": "Rationale",
+    "recommended_action": "Recommended action",
+    "repair_count": "Deterministic repair attempts",
+    "reproducibility": "Reproducibility",
+    "results": "Results",
+    "schema": "Schema",
+    "scope": "Scope",
+    "statement": "Statement",
+    "status": "Status",
+    "status_partial": "partial",
+    "status_strong": "strong",
+    "status_unknown": "unknown",
+    "status_weak": "weak",
+    "stop_condition": "Stop condition",
+    "uncertainties": "Uncertainties",
+    "usefulness": "Usefulness"
+  },
+  "language": {
+    "code": "en",
+    "name": "English"
+  },
+  "limitations": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00091-90ed5fc570",
+          "quote": "We therefore evaluate the system in a trace-driven discrete-event simulator that replays recorded agentic trajectories under a synthetic arrival process."
+        },
+        {
+          "block_id": "b00100-b67df63a0d",
+          "quote": "We validate the simulator end-to-end on vanilla"
+        },
+        {
+          "block_id": "b00100-b67df63a0d",
+          "quote": "Aggron extends this validated engine with its controller"
+        }
+      ],
+      "limitation": "The headline concurrent-serving evaluation is trace-driven simulation rather than a live multi-tenant experiment; live validation is reported for vanilla, while Aggron extends the validated simulator and controller."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00100-b67df63a0d",
+          "quote": "the median and mean miss by up to 16%, as host speed varied by 21% between the two live runs."
+        }
+      ],
+      "limitation": "Simulator error is nontrivial in a lightly loaded regime: reported median and mean errors reach double digits, partly attributed to host-speed variation."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00111-5fed5adfec",
+          "quote": "The noise band varies widely across benchmarks, and is widest on Terminal-Bench (±12-20 pp, against ±7-9 pp on SWE-bench)."
+        },
+        {
+          "block_id": "b00111-5fed5adfec",
+          "quote": "It has the fewest tasks (30-40 scored)"
+        }
+      ],
+      "limitation": "Accuracy conclusions rely on broad rerun-noise bands, especially for Terminal-Bench, where few tasks were scored and outcomes were unstable."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00062-cc69b00677",
+          "quote": "Aggron classifies as non-prose the output of three families of tools"
+        }
+      ],
+      "limitation": "The selective-compression taxonomy is hand-defined around particular tool families; evidence does not establish safety for unseen tools, mixed-format observations, or adversarially structured prose."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00063-6acf94d288",
+          "quote": "The price is that prose written before a file read or a test run is never summarized."
+        }
+      ],
+      "limitation": "The contiguous protected prefix leaves some compressible prose untouched, reducing achievable memory savings for workloads with frequent structured observations."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00073-b6db12f902",
+          "quote": "the reset is the one point at which Aggron does compress non-prose"
+        }
+      ],
+      "limitation": "The method eventually summarizes protected non-prose at the reset ceiling, weakening the claimed verbatim-preservation property for sufficiently long programs."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00120-6e9c4cf89e",
+          "quote": "The loss peaks at light load (λ=0.05), where the queue is too short to hide a summary."
+        },
+        {
+          "block_id": "b00127-3f5176ddb4",
+          "quote": "DSV4 (3.4 KiB) fills only 68% of HBM uncompressed, so freed memory buys nothing"
+        }
+      ],
+      "limitation": "Benefits depend on memory pressure and enough queueing time to hide summaries; the paper demonstrates regressions when either condition fails."
+    }
+  ],
+  "method": {
+    "assumptions": [
+      "Tool families provide a reliable proxy for whether an observation can be summarized safely.",
+      "Recent admission rates and recent summary completion times predict whether a new summary can be hidden.",
+      "FCFS head-of-line stalls leave useful compute and memory capacity for small summary calls.",
+      "Recorded trajectories remain representative when replayed under concurrent synthetic arrivals because compression-induced accuracy and trajectory changes are limited.",
+      "The workload is sufficiently KV-constrained and queued; the mechanism has less opportunity when memory does not saturate or admission waits are short."
+    ],
+    "key_components": [
+      "Observation-level classification using tool identity and arguments; filesystem, database, and execution outputs are protected, while reasoning and web material remain compressible.",
+      "A contiguous protected prefix prevents separation of a tool call from its structured result; only prose following the latest protected observation is eligible.",
+      "Queue-depth-, age-, and context-size-dependent triggering prioritizes large requests with sufficient waiting time.",
+      "Frozen append-only summaries avoid repeated semantic distillation and preserve prefix-cache validity; a reset ceiling handles eventual context-window exhaustion.",
+      "A separate summarization queue consumes capacity only when the agentic head cannot fit.",
+      "Hideability, compression-worth, and KV-block-release gates limit speculative summary work."
+    ],
+    "overview": "Aggron classifies each observation as compressible prose or protected non-prose. It tracks only the compressible tail, triggers more aggressively for requests deeper in the admission queue, freezes each generated summary instead of recursively rewriting it, and retains a critical-path backstop plus a rare full-context reset. A controller admits summary work through a separate queue only when three gates predict that it will finish before the agent reaches the head, produce worthwhile shrinkage, and release a KV block. Agent requests retain their queue positions while summaries execute."
+  },
+  "open_questions": [
+    "What are the live, loaded Aggron results against Slipstream, APEC, and synchronous prose compression on identical hardware and arrivals?",
+    "How sensitive are throughput and tail latency to prediction-window length, percentile choice, cold-start modeling, and abrupt workload shifts?",
+    "Can a learned or schema-aware classifier improve compression coverage without increasing semantic failures on mixed-format tool outputs?",
+    "What are accuracy, trajectory, and serving-cost effects after repeated full resets in sessions that exceed the model window many times?",
+    "How do fairness and starvation behave when deep, large requests receive more aggressive compression while FCFS order is retained?",
+    "Does summary generation introduce privacy or cross-tenant isolation concerns when performed inside a shared serving engine?",
+    "Can dynamic routing between the serving engine and a side summarizer avoid the documented side-model regressions without doubling cost?"
+  ],
+  "problem": {
+    "importance": "Agentic sessions can involve many model calls and very large contexts, so a few resident programs can saturate accelerator memory, freeze batch growth, and leave compute underused while queued programs incur high latency.",
+    "scope": "The paper addresses online, shared-server serving of long-horizon agents through context summarization. It studies selective prose compression, queue-aware timing, summary scheduling, accuracy and trajectory effects, and trace-driven performance on several models and task families.",
+    "statement": "Long-running agents accumulate large KV caches across tool-using turns. Under concurrent load, memory capacity restricts admission and creates head-of-line stalls; conventional synchronous summaries add critical-path work, while asynchronous summaries compete with agent calls for compute and memory."
+  },
+  "proposed_experiments": [
+    {
+      "baseline": "Uncompressed serving, synchronous prose-tail compression, Slipstream, and APEC, all using identical models, hardware, task traces, and arrivals.",
+      "hypothesis": "On a live shared server under KV-saturating load, Aggron reduces P99 program latency without reducing task success beyond a prespecified non-inferiority margin.",
+      "primary_metric": "Paired P99 program latency, with throughput and task success as co-reported safeguards.",
+      "stop_condition": "Stop after enough independent arrival seeds produce a stable confidence interval; reject deployment if the latency interval includes no benefit or the task-success interval crosses the chosen non-inferiority margin."
+    },
+    {
+      "baseline": "The published tool-name-and-argument classifier.",
+      "hypothesis": "A schema-aware observation classifier safely compresses more context than the paper’s tool-family heuristic on unseen and mixed-format tools.",
+      "primary_metric": "KV tokens removed at matched task success, with semantic retention failures audited per observation type.",
+      "stop_condition": "Stop if any protected identifier, assertion, traceback, query result, or executable fragment is lost in the candidate arm, or if memory reduction fails to improve at matched accuracy."
+    },
+    {
+      "baseline": "Default Aggron with its published gates, plus vanilla serving.",
+      "hypothesis": "Adaptive disabling based on measured HBM pressure and predicted hiding probability prevents regressions in compute-bound and light-load regimes.",
+      "primary_metric": "Worst-case throughput change relative to vanilla across a load-by-model matrix.",
+      "stop_condition": "Stop when the adaptive policy either eliminates all statistically resolved throughput regressions or fails its preset maximum-regression bound on any tested regime."
+    }
+  ],
+  "provenance": {
+    "block_count": 223,
+    "document_sha256": "8ed9d72aebbb2b8d45fb07a6f21e30914304b9e702d6946b6865c628c9cab84b",
+    "generated_at": "2026-11-20T08:46:18.965831+00:00",
+    "metadata_sha256": "3f3ff1ce2768a1d77f25b7467e4b51284539c98e51cd096598f02f71bb5dbf92",
+    "profile": "deep",
+    "provider": "codex-exec:configured-default",
+    "repair_count": 1,
+    "schema_version": "paper-summary-v1"
+  },
+  "reproducibility": {
+    "artifacts": [
+      "Detailed architecture, trigger equations, gate definitions, thresholds, hardware configuration, model versions, benchmark task counts, arrival process, and simulator calibration are described.",
+      "The implementation is stated to use unmodified vLLM 0.24 with Aggron as a scheduler subclass, and the same controller code in live and simulated execution.",
+      "A fixed arrival seed and identical arrivals across arms are stated; several underlying trace sources are named."
+    ],
+    "assessment": "Reproduction is plausible in outline but not turnkey. The paper gives unusually concrete scheduler logic and parameters, yet the supplied material lacks the implementation and full experimental artifacts needed to recreate the headline results exactly. Simulator validation helps, but it validates vanilla more directly than Aggron under loaded execution.",
+    "missing": [
+      "No Aggron source-code or simulator repository is supplied in the provided metadata or document blocks.",
+      "No exact fixed seed, complete configuration files, prompts, classifier rule implementation, summary prompt, or task-instance lists are supplied.",
+      "No raw run outputs, per-task outcomes, confidence intervals for serving metrics, or complete live Aggron-versus-baseline measurements are supplied.",
+      "One referenced trajectory dataset is stated to be no longer publicly accessible."
+    ],
+    "status": "partial"
+  },
+  "results": [
+    {
+      "context": "This is the headline Qwen serving comparison under Poisson arrivals at λ=1. The paper attributes the gain to smaller KV footprints and higher batch occupancy, but these values come from the calibrated simulator rather than a live loaded deployment.",
+      "evidence": [
+        {
+          "block_id": "b00103-715b205b3c",
+          "quote": "At high loads (λ=1), Aggron sustains 1.44× the throughput of vanilla, 1.40× APEC, and 1.34× Slipstream, and cuts P99 latency by 33%, 31% and 27% respectively."
+        }
+      ],
+      "result": "At high load, Aggron sustained 1.44× vanilla throughput, 1.40× APEC throughput, and 1.34× Slipstream throughput; it reduced P99 latency by 33%, 31%, and 27%, respectively."
+    },
+    {
+      "context": "The comparison spans three models and four benchmarks, with grow-1k and grow-4k used as the endpoints of Aggron’s dynamic threshold. This supports non-inferiority only relative to the paper’s noise construction, whose bands can be wide.",
+      "evidence": [
+        {
+          "block_id": "b00110-f9b816d18c",
+          "quote": "every difference lies within the run-to-run noise band, so both compressed arms are as accurate as vanilla."
+        },
+        {
+          "block_id": "b00108-821ae48655",
+          "quote": "Gemma-4-26B-A4B SWE 62.7 62.7 65.3 −2.7 −2.7 7.4 0.00 0.00"
+        }
+      ],
+      "result": "Across the reported accuracy table, every compressed-versus-vanilla difference fell within the paper’s run-to-run noise band; the largest stated accuracy loss was 2.7 percentage points."
+    },
+    {
+      "context": "Accuracy parity therefore does not imply identical execution cost or behavior. The authors interpret the extra calls as state re-check insertions with unchanged tool order.",
+      "evidence": [
+        {
+          "block_id": "b00112-d5e5fe4be1",
+          "quote": "Summarization also leaves trajectories within run-to-run variation in 22 of 24 arm-benchmark pairs."
+        },
+        {
+          "block_id": "b00112-d5e5fe4be1",
+          "quote": "The two exceptions are SWE grow-1k on Qwen (Δ​d=+0.11) and GLM (+0.07)."
+        },
+        {
+          "block_id": "b00112-d5e5fe4be1",
+          "quote": "These agents make 1.3-1.7× as many tool calls as vanilla because they re-check their state after each summary."
+        }
+      ],
+      "result": "Trajectory behavior stayed within rerun variation in 22 of 24 arm–benchmark pairs, but Qwen and GLM SWE grow-1k were significant exceptions with excess normalized edit distances of +0.11 and +0.07; those runs made 1.3-1.7× as many tool calls."
+    },
+    {
+      "context": "This ablation holds the tail-only summaries fixed and changes their queue placement, directly supporting the scheduling contribution. Effects were smaller on the other evaluated models.",
+      "evidence": [
+        {
+          "block_id": "b00114-83437da4dc",
+          "quote": "the separate queue raises throughput by 1.9-8.0% and lowers P99 by 3.8-8.1% on Qwen"
+        },
+        {
+          "block_id": "b00114-83437da4dc",
+          "quote": "Aggron admits its summaries almost immediately, so they land in 7-33 s and 93-100% arrive in time."
+        }
+      ],
+      "result": "The separate summary queue improved Qwen throughput by 1.9-8.0% and lowered P99 by 3.8-8.1% relative to a shared queue; 93-100% of Aggron summaries arrived in time."
+    },
+    {
+      "context": "This consequential negative result bounds applicability: compression can hurt when KV memory is not the limiting resource. The improved case depends on a tail-reuse optimization rather than the default mechanism.",
+      "evidence": [
+        {
+          "block_id": "b00127-3f5176ddb4",
+          "quote": "DSV4 (3.4 KiB) fills only 68% of HBM uncompressed, so freed memory buys nothing while summary prefill takes 8% of serving-GPU time (1.6-3.2% elsewhere), and it loses 1.7%."
+        },
+        {
+          "block_id": "b00127-3f5176ddb4",
+          "quote": "throughput rises on all four models by 5-16%, with DSV4 at +5.3%, and P99 falls by 5-14%."
+        }
+      ],
+      "result": "On frontier-model simulations, ordinary Aggron lost 1.7% on DSV4 when uncompressed serving used only 68% of HBM and summary prefill consumed 8% of serving-GPU time; with cached-tail reuse, DSV4 instead reached +5.3% throughput."
+    }
+  ],
+  "title": "Aggron: Aggressive Compression of Agentic KV Caches during Head-of-Line Stalls in the Request Queue",
+  "uncertainties": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00091-90ed5fc570",
+          "quote": "We therefore evaluate the system in a trace-driven discrete-event simulator"
+        },
+        {
+          "block_id": "b00100-b67df63a0d",
+          "quote": "the median and mean miss by up to 16%"
+        }
+      ],
+      "uncertainty": "Whether the reported tail-latency and throughput gains survive live concurrent serving with real arrival correlations, tool-time variability, host contention, and scheduler overhead.",
+      "why_it_matters": "The main deployment claim rests on simulation, and light-load live-versus-simulated latency errors are materially larger than the strongest ablation effects."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00111-5fed5adfec",
+          "quote": "Terminal-Bench (±12-20 pp, against ±7-9 pp on SWE-bench)."
+        },
+        {
+          "block_id": "b00086-7c532c6bdf",
+          "quote": "We therefore run vanilla twice, report the mean"
+        }
+      ],
+      "uncertainty": "Whether accuracy equivalence would hold under more repetitions and tighter statistical intervals.",
+      "why_it_matters": "Broad noise bands can conceal practically meaningful degradation, especially on the smallest and most unstable benchmark."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00062-cc69b00677",
+          "quote": "Aggron classifies at the granularity of an observation"
+        },
+        {
+          "block_id": "b00062-cc69b00677",
+          "quote": "inspects the tool name and arguments."
+        }
+      ],
+      "uncertainty": "Whether tool-name heuristics generalize to novel or composite tools whose outputs mix code, identifiers, prose, and structured data.",
+      "why_it_matters": "Misclassification could either destroy necessary semantics or protect too much context to yield useful memory savings."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00073-b6db12f902",
+          "quote": "When the assembled context exceeds R, Aggron summarizes everything, including the frozen segments"
+        },
+        {
+          "block_id": "b00073-b6db12f902",
+          "quote": "the reset is the one point at which Aggron does compress non-prose"
+        }
+      ],
+      "uncertainty": "How often full reset compression occurs in truly unbounded production sessions and how much it damages structured information.",
+      "why_it_matters": "At reset, the system violates its normal rule of retaining non-prose verbatim, but no reset-specific accuracy evaluation is supplied."
+    }
+  ]
+}

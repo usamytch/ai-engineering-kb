@@ -1,0 +1,39 @@
+{
+  "abstract": "An answer can match the reference for a complete agent history even when the reader's visible history does not determine it. We study this distinction using executable device logs. Our protocol separates reference agreement, certified evidence sufficiency, and context-appropriate behavior. Insufficiency requires two legal histories yielding byte-identical visible contexts but different answers; public chronology and query cutoffs certify sufficient prefixes. On 80 confirmation histories, Qwen3-32B matches 87 hidden references among 203 insufficient raw-prefix instances, with only seven appropriate abstentions. A fixed-input DeepSeek-V4-Flash replication matches 85 and abstains on 21 of the same 203 instances. Each reader makes 1,600 requests. Compact CSV's estimated appropriateness effects remain inconclusive: +3.16 percentage points, clustered 95% interval [0.00,6.57], for Qwen and +2.46, [-1.84,6.94], for DeepSeek. A separate held-out judge study achieves 99.38% correctness but retains support errors and truncations; a deterministic baseline solves all constructed cases. These results support an evaluation diagnosis across two hosted reader configurations, not gains for a general memory system or natural-language evidence assessment.",
+  "arxiv_id": "2611.11840v1",
+  "authors": [
+    "Quan Xue",
+    "Zerui Yang",
+    "Chaorui Zhang",
+    "Haolin Ruan",
+    "Xueyan Niu",
+    "Xuanyu Zheng",
+    "Xiyuan Wang",
+    "Weixi Zhang",
+    "Wei Han",
+    "Bo Bai"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2611.11840v1",
+  "categories": [
+    "cs.AI"
+  ],
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2611.11840v1",
+  "latest_seen_version": 1,
+  "paper_id": "2611.11840",
+  "paper_version_id": "2611.11840v1",
+  "published": "2026-11-09T03:54:25+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "Correct Answers from Insufficient Histories: A Controlled Study of Agent Memory Evaluation",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-11-09T03:54:25+00:00",
+  "url": "https://arxiv.org/abs/2611.11840v1"
+}

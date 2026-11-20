@@ -1,0 +1,30 @@
+{
+  "abstract": "Retrieval-augmented generation (RAG) can benefit from more sophisticated retrieval, but extra retrieval may be unnecessary for many questions and gains in evidence retrieval may not translate into faithful or correct answers. We study a cost-aware, two-action retrieval policy that chooses between a dense-retrieval-plus-reranking baseline and a hybrid lexical--dense retriever. Rather than classifying baseline retrieval as simply successful or unsuccessful, we estimate the question-specific incremental evidence-retrieval benefit of hybrid retrieval using features available before the routing decision. A regularized linear model and decision threshold are selected using document-grouped cross-validation and frozen prior to held-out evaluation. On 60 previously unseen QASPER training-split articles (188 questions, 169 evidence-evaluable), the policy triggers hybrid retrieval on 46 questions (24.5\\%) and obtains the same evidence Hit@10 as always-hybrid retrieval (78.70\\%, versus 76.92\\% for always-keep). Paired, paper-cluster bootstrap intervals do not establish a reliable utility advantage. We further compare generated answers from a 4-bit Qwen3-4B model under the three retrieval policies. Provisional answer-level assessments show no clear correctness or faithfulness improvement after partial review, despite the evidence-retrieval result. The generation assessments remain model-assisted and lack independent human validation. These results expose an important distinction between retrieving relevant evidence efficiently and improving the reliability of the generated answer. The work is presented as a reproducible empirical study, not a claim of statistically established answer-quality superiority.",
+  "arxiv_id": "2610.37358v2",
+  "authors": [
+    "Zhouting Zhao"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2610.37358v2",
+  "categories": [
+    "cs.IR"
+  ],
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2610.37358v2",
+  "latest_seen_version": 2,
+  "paper_id": "2610.37358",
+  "paper_version_id": "2610.37358v2",
+  "published": "2026-10-27T14:55:58+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "When Is Additional Retrieval Worthwhile? A Cost-Aware Study of Evidence Gain and Answer Reliability in RAG",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-11-19T14:40:09+00:00",
+  "url": "https://arxiv.org/abs/2610.37358v2"
+}

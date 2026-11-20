@@ -1,0 +1,644 @@
+{
+  "aidb_assessment": {
+    "confidence": "medium",
+    "novelty": "The main conceptual contribution is not a new memory architecture but an evaluation lens: measure constructed memory’s marginal value against direct retrieval and decompose per-query differences into benefit and tax. The faithfulness–accessibility–robustness diagnosis makes that lens more actionable.",
+    "rationale": "The central controlled comparisons are broad and practically consequential, and the paper includes useful baseline and configuration checks. Confidence stops short of high because benchmark subsampling, English offline tasks, configuration modifications, reference dependence, missing variance estimates, and incomplete released artifacts limit generalization and exact verification.",
+    "recommended_action": "read",
+    "usefulness": "High for reviewers and system builders. It supplies a strong warning against reporting memory performance without a well-specified RAG control, encourages cost-aware evaluation, and identifies concrete failure channels. Adoption should be as an evaluation protocol and design heuristic, not as proof that memory construction is generally undesirable."
+  },
+  "claims": [
+    {
+      "claim": "The paper defines the net value of constructed memory relative to naive RAG and decomposes it into query-level gains and losses called memory benefit and memory tax.",
+      "evidence": [
+        {
+          "block_id": "b00033-e795bf84a9",
+          "quote": "Memory does solve some queries RAG misses, benefiting from additional organization or processing, while losing others that RAG already solves"
+        },
+        {
+          "block_id": "b00033-e795bf84a9",
+          "quote": "These quantities are reference-dependent, and throughout this work are defined relative to the naive RAG."
+        }
+      ]
+    },
+    {
+      "claim": "Memory tax can arise during construction because restructuring and compression may remove or distort evidence, and after construction because preserved evidence can become harder to retrieve.",
+      "evidence": [
+        {
+          "block_id": "b00038-65c93477cf",
+          "quote": "Memory operations like restructuring and compression may discard or distort evidence before retrieval begins"
+        },
+        {
+          "block_id": "b00042-e8b50baa00",
+          "quote": "Some systems (MAGMA, LightMem) achieve gold-mem scores close to gold-raw-turn scores, yet far above their original, suggesting the preserved evidence may become harder to access."
+        }
+      ]
+    },
+    {
+      "claim": "Many evaluated memory mechanisms add fragility when the construction or QA backbone changes.",
+      "evidence": [
+        {
+          "block_id": "b00049-47f0c3abec",
+          "quote": "changing the QA backbone causes larger performance variation than naive RAG for many systems"
+        },
+        {
+          "block_id": "b00049-47f0c3abec",
+          "quote": "many memory mechanisms can introduce additional fragility beyond the raw-history retrieval"
+        }
+      ]
+    },
+    {
+      "claim": "The benefit–tax pattern is not confined to conversational memory; the authors report analogous mixed outcomes in experiential and world-model settings.",
+      "evidence": [
+        {
+          "block_id": "b00061-b835ed74b4",
+          "quote": "memory tax also emerges in experiential memory, but its magnitude depends strongly on the task settings."
+        },
+        {
+          "block_id": "b00064-3e5ceb7e38",
+          "quote": "latent- or cache-based memories do not consistently outperform this simpler alternative."
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "ablations": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00227-f7b3b3ac0e",
+            "quote": "Ablations of the RAG baseline on chunking method, retrieval method, embedding model and reranker."
+          },
+          {
+            "block_id": "b00229-2347a495f4",
+            "quote": "We vary one component at a time while keeping the rest at the default"
+          }
+        ],
+        "text": "RAG component ablations vary chunking, lexical versus dense versus hybrid retrieval, embedding model, and reranker while holding other settings fixed."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00266-4d38099aef",
+            "quote": "In most cases, we increase top-k beyond the repository defaults, which generally improves performance."
+          },
+          {
+            "block_id": "b00268-7549a217a7",
+            "quote": "Beyond the shared settings and the retrieval scope, a few systems need individual changes:"
+          }
+        ],
+        "text": "Configuration-offset checks compare adjusted and repository-default retrieval depth and examine system-specific modifications for selected memories."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00041-85c0c4d021",
+            "quote": "Gold memory units remove retrieval failures, so the remaining memory tax reflects the losses introduced in memory construction"
+          }
+        ],
+        "text": "Oracle-memory versus oracle-raw replay removes retrieval failure to separate construction loss from accessibility loss."
+      }
+    ],
+    "baselines": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00023-998cec78cb",
+            "quote": "We use RAG over the raw corpus as the main memory-free baseline, with both single-round (1rd) and two-round (2rd) variants."
+          },
+          {
+            "block_id": "b00023-998cec78cb",
+            "quote": "We also include several vanilla references, including No Context, Gold Context, etc."
+          }
+        ],
+        "text": "Main memory systems: A-Mem, SimpleMem, MemOS, MemoryOS, LightMem, OpenViking, HippoRAG2, PlugMem, MAGMA, Mem-T, and Memory-R2; controls include No Context, Full Context, Gold Context, and one- and two-round RAG."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00060-7360836ecf",
+            "quote": "We compare Memp (Fang et al., 2026b), ReasoningBank (Ouyang et al., 2026), G-Memory (Zhang et al., 2025a) and SkillPro (Mi et al., 2026)"
+          },
+          {
+            "block_id": "b00060-7360836ecf",
+            "quote": "against a ReAct agent without memory and a naive RAG baseline"
+          }
+        ],
+        "text": "Experiential-memory controls are a ReAct agent without memory and naive RAG over similar prior task trajectories; memory methods are Memp, ReasoningBank, G-Memory, and SkillPro."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00360-e34cf055d5",
+            "quote": "I3DM (Li et al., 2026) retrieves the past frames most relevant to the current viewpoint"
+          },
+          {
+            "block_id": "b00360-e34cf055d5",
+            "quote": "HyDRA (Chen et al., 2026d) summarizes the history into a small set of memory tokens"
+          }
+        ],
+        "text": "World-model baselines compare naive frames, raw or learned key-value caches, visual latents, and memory tokens."
+      }
+    ],
+    "datasets": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00022-763c147d34",
+            "quote": "We evaluate on LongMemEval-s (Wu et al., 2025), PersonaMem-v2 (Jiang et al., 2025b), and MINT-Eval (Lee et al., 2026)."
+          },
+          {
+            "block_id": "b00084-32e5c0a418",
+            "quote": "20% of PersonaMem-v2, 10% of MINT-Eval, and 20% LongMemEval-s questions for GPT-5.6 Luna"
+          }
+        ],
+        "text": "Main conversational-memory benchmarks: LongMemEval-s, PersonaMem-v2, and MINT-Eval. PersonaMem-v2 uses a stratified subset, as does MINT-Eval; the Luna evaluation also subsets LongMemEval-s."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00060-7360836ecf",
+            "quote": "covering embodied tasks (ALFWorld), web (WebShop, Mind2Web), coding (BigCodeBench) and tool use (AppWorld, τ2-Bench)"
+          }
+        ],
+        "text": "Experiential-memory benchmarks span embodied tasks, web navigation, coding, and tool use: ALFWorld, WebShop, Mind2Web, BigCodeBench, AppWorld, and τ2-Bench."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00356-252538e279",
+            "quote": "We use 60 samples from it."
+          },
+          {
+            "block_id": "b00357-9c5e12a085",
+            "quote": "We test 25% of it, i.e., 90 samples."
+          }
+        ],
+        "text": "World-model evaluation uses Context-as-Memory and MemoBench; the supplied appendix states that only a subset of MemoBench is tested."
+      }
+    ],
+    "metrics": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00201-02bad39f6c",
+            "quote": "We score answers with an LLM-as-Judge backed by Qwen3.6-27B"
+          },
+          {
+            "block_id": "b00201-02bad39f6c",
+            "quote": "For MCQ, we match the parsed option exactly and send unparsable responses to the judge."
+          }
+        ],
+        "text": "Main performance metric: judge accuracy from a Qwen3.6-27B LLM judge; MCQ outputs are exactly parsed where possible."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00024-59507577c7",
+            "quote": "Alongside accuracy we report several cost metrics including token cost, end-to-end wall-clock time, number of LLM calls, and memory storage size."
+          }
+        ],
+        "text": "Reported system costs include total LLM tokens, normalized end-to-end time, number of LLM calls, and memory-store size."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00352-8606c5faca",
+            "quote": "We follow each benchmark’s official metric: success rate for ALFWorld, task score for WebShop, step success rate for Mind2Web, pass@1 for BigCodeBench"
+          },
+          {
+            "block_id": "b00356-252538e279",
+            "quote": "report PSNR, SSIM and 1 − LPIPS, all higher is better."
+          }
+        ],
+        "text": "Experiential tasks use each benchmark’s official metric; world models use PSNR, SSIM, and one minus LPIPS, with higher values preferred."
+      }
+    ],
+    "negative_results": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00029-49cb9cdd22",
+            "quote": "Overall, many memory systems fail to beat RAG in many cases"
+          }
+        ],
+        "text": "Most dedicated memories do not consistently beat the strong RAG reference in the main evaluation."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00251-70ac739753",
+            "quote": "naive RAG remains strong under a range of configurations"
+          },
+          {
+            "block_id": "b00251-70ac739753",
+            "quote": "Most variants stay within a few points of the default across settings."
+          }
+        ],
+        "text": "Simple retrieval remains competitive across RAG design variations, weakening the explanation that one lucky configuration created the result."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00061-b835ed74b4",
+            "quote": "for tool-use, several memory methods fall behind it"
+          },
+          {
+            "block_id": "b00064-3e5ceb7e38",
+            "quote": "latent- or cache-based memories do not consistently outperform this simpler alternative."
+          }
+        ],
+        "text": "Additional memory processing does not consistently improve experiential tool-use tasks or video consistency."
+      }
+    ]
+  },
+  "executive_summary": "The paper asks whether constructed agent memory adds value beyond retrieval from raw history. Across three conversational-memory benchmarks and three backbones, its controlled tables show that most tested memory systems lose to a two-round hybrid RAG reference, although isolated gains remain. It frames these gains and losses as “memory benefit” and “memory tax,” then diagnoses construction loss, reduced accessibility, and cross-backbone fragility. The central warning is persuasive and practically useful, but generality is constrained by sampled, mostly static English benchmarks, modified baseline configurations, incomplete numerical support for several diagnostic figures, and code/results that are promised rather than supplied.",
+  "labels": {
+    "ablations": "Ablations",
+    "action_adopt": "adopt",
+    "action_read": "read",
+    "action_reject": "reject",
+    "action_watch": "watch",
+    "aidb_assessment": "AIDB assessment",
+    "assumptions": "Assumptions",
+    "available_artifacts": "Available artifacts",
+    "baseline": "Baseline",
+    "baselines": "Baselines",
+    "blocks": "Blocks",
+    "claims": "Main claims",
+    "confidence": "Confidence",
+    "confidence_high": "high",
+    "confidence_low": "low",
+    "confidence_medium": "medium",
+    "context": "Context",
+    "datasets": "Datasets",
+    "document_sha256": "Document SHA-256",
+    "evaluation": "Experimental evaluation",
+    "evidence": "Evidence",
+    "executive_summary": "Executive summary",
+    "generated": "Generated",
+    "hypothesis": "Hypothesis",
+    "importance": "Why it matters",
+    "key_components": "Key components",
+    "limitations": "Limitations",
+    "metadata_sha256": "Metadata SHA-256",
+    "method": "Method",
+    "metrics": "Metrics",
+    "missing_pieces": "Missing pieces",
+    "negative_results": "Negative results",
+    "novelty": "Novelty",
+    "open_questions": "Open questions",
+    "primary_metric": "Primary metric",
+    "problem": "Problem",
+    "profile": "Profile",
+    "proposed_experiments": "Proposed AIDB experiments",
+    "provenance": "Provenance",
+    "provider": "Provider",
+    "rationale": "Rationale",
+    "recommended_action": "Recommended action",
+    "repair_count": "Deterministic repair attempts",
+    "reproducibility": "Reproducibility",
+    "results": "Results",
+    "schema": "Schema",
+    "scope": "Scope",
+    "statement": "Statement",
+    "status": "Status",
+    "status_partial": "partial",
+    "status_strong": "strong",
+    "status_unknown": "unknown",
+    "status_weak": "weak",
+    "stop_condition": "Stop condition",
+    "uncertainties": "Uncertainties",
+    "usefulness": "Usefulness"
+  },
+  "language": {
+    "code": "en",
+    "name": "English"
+  },
+  "limitations": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00084-32e5c0a418",
+          "quote": "our baseline selection is representative rather than exhaustive."
+        },
+        {
+          "block_id": "b00084-32e5c0a418",
+          "quote": "further system-specific tuning may yield better performance."
+        }
+      ],
+      "limitation": "The evaluated memory methods are representative rather than exhaustive, and stronger system-specific tuning could change rankings."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00084-32e5c0a418",
+          "quote": "Our benchmarks are primarily static, offline, and English-language"
+        },
+        {
+          "block_id": "b00084-32e5c0a418",
+          "quote": "leaving long-lived deployments with interleaved queries and multilingual interactions underexplored."
+        }
+      ],
+      "limitation": "The main evidence is dominated by static, offline, English-language benchmarks, leaving multilingual and continuously updated deployments underexplored."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00084-32e5c0a418",
+          "quote": "Our evaluation is limited by computational and API-calling cost."
+        },
+        {
+          "block_id": "b00084-32e5c0a418",
+          "quote": "We do not include stronger frontier models beyond GPT-5.6 Luna (low)"
+        }
+      ],
+      "limitation": "Cost constraints cause benchmark subsampling and exclude stronger frontier models, reducing precision and external validity."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00265-4e8426793c",
+          "quote": "RS is not intended to equalize exact inference token budgets across systems"
+        },
+        {
+          "block_id": "b00216-1a55b2e9c1",
+          "quote": "The RS requirement has some exceptions."
+        }
+      ],
+      "limitation": "Retrieval Scope is a useful normalization but does not equalize exact token budgets, and some systems receive exceptions because their stores contain few large units."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00295-f287ae7898",
+          "quote": "the remaining systems require this LLM-based filtering."
+        },
+        {
+          "block_id": "b00298-0e8f4076c4",
+          "quote": "Human spot check of LLM-selected gold memory units (%), labeled as correct, extraneous (irrelevant units are selected), or missing"
+        }
+      ],
+      "limitation": "Gold-memory mapping partly depends on model selection and is imperfect in spot checks, introducing measurement error into faithfulness and accessibility analyses."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00360-e34cf055d5",
+          "quote": "WorldKV (Yi et al., 2026) keeps the key-value cache of past frames as world memory, and retrieves and compresses the cached entries"
+        },
+        {
+          "block_id": "b00360-e34cf055d5",
+          "quote": "FramePack (Zhang et al., 2026e) packs the history into a fixed-length context of visual latents"
+        }
+      ],
+      "limitation": "The supplied world-model comparison changes whole systems, not only memory carriers, so causal attribution specifically to representation is limited."
+    }
+  ],
+  "method": {
+    "assumptions": [
+      "Naive hybrid RAG is an appropriate operational reference for the net value of constructed memory, not a memory-free lower bound in an absolute conceptual sense.",
+      "Judge accuracy is an adequate proxy for task correctness; the reported human-agreement check supports but does not eliminate judge bias.",
+      "Retrieval Scope makes access opportunities more comparable, although it does not equalize exact inference-token budgets.",
+      "Changes made to official memory configurations do not materially disadvantage those systems; the authors provide selected validations, but not a full factorial retuning of every method.",
+      "Per-query correctness differences against RAG meaningfully operationalize benefit and tax, even though both quantities depend on the chosen RAG implementation."
+    ],
+    "key_components": [
+      "Evaluate flat-store, hierarchical/lifecycle, graph-based, and trained-policy memories against one-round and two-round hybrid RAG.",
+      "Run main systems with Qwen3.5-4B, Qwen3.6-27B, and GPT-5.6 Luna (low), sharing Qwen3-Embedding-0.6B and generally a common reranker.",
+      "Align heterogeneous retrieval configurations using Retrieval Scope: the fraction of retrievable-store tokens exposed from retrieval through answering.",
+      "Measure answer quality with a Qwen3.6-27B LLM judge and separately track token cost, wall-clock time, LLM calls, and memory-store size.",
+      "Trace benchmark gold turns into memory units, compare oracle raw evidence with oracle memory evidence, annotate information loss, replay iterative retrieval, and inspect similarity drift.",
+      "Construct memories and answer them with different backbones to assess sensitivity beyond raw-history RAG.",
+      "Test transfer of the framing on agent-task experience libraries and video world-model memory carriers."
+    ],
+    "overview": "The authors treat chunk-based RAG over raw history as the reference and compare each memory system with it at aggregate and per-query levels. A query solved only by memory contributes to memory benefit; a query solved by RAG but lost by memory contributes to memory tax. Main experiments standardize QA models, judge, embedding model, and retrieval exposure where possible. Diagnostic analyses separate construction faithfulness, retrieval accessibility, and robustness to construction/QA backbone changes. Additional experiments cover benchmark headroom, experiential memory, and video world-model memory."
+  },
+  "open_questions": [
+    "Do memory systems retain a net advantage under live, interleaved write–query workloads where raw-history indexing and retrieval must also be continuously maintained?",
+    "How do benefit and tax vary by question type after controlling jointly for retrieval exposure, online latency, total tokens, and offline construction cost?",
+    "Would system-specific tuning under a fixed compute budget reverse any of the principal rankings?",
+    "How stable are the findings across repeated runs, alternative judges, human evaluation, and independently sampled benchmark subsets?",
+    "Can a single controlled world-model architecture vary only the memory carrier while holding generator, training data, compute, and retrieval policy fixed?",
+    "Does preserving source pointers eliminate construction loss without erasing the compression, privacy, and forgetting advantages that motivate structured memory?"
+  ],
+  "problem": {
+    "importance": "Without a retrieval control, gains attributable merely to finding raw evidence can be mistaken for gains from constructing memory. This matters because memory construction and maintenance add computation and can discard, obscure, fragment, or distort evidence.",
+    "scope": "The main study covers personal-agent conversational memory, then tests whether the benefit–tax framing transfers to experiential memory and long-horizon world-model memory. It does not establish universal conclusions for all memory forms or live deployments.",
+    "statement": "Dedicated memory systems alter raw interaction history through extraction, compression, organization, or learned policies, but their marginal value is unclear when direct retrieval from that same history is not used as a strong control."
+  },
+  "proposed_experiments": [
+    {
+      "baseline": "Each memory system in its standard configuration, two-round raw-history RAG, and a token-budget-matched union that retrieves memory units and source chunks but does not jointly rerank them.",
+      "hypothesis": "A hybrid memory with source-history fallback reduces query-level memory tax without eliminating memory benefit.",
+      "primary_metric": "Paired per-query net value against two-round RAG, reported with memory-benefit rate, memory-tax rate, judge accuracy, total tokens, and online latency.",
+      "stop_condition": "Stop after prespecified paired confidence intervals show either a reduction in tax with no loss of net accuracy under the same online token budget, or no practically meaningful improvement for all tested systems."
+    },
+    {
+      "baseline": "Normal retrieval, oracle memory units, oracle raw turns, and source-linked memory units under identical QA prompts and backbones.",
+      "hypothesis": "Observed memory tax grows mainly from construction loss on some systems and retrieval accessibility loss on others.",
+      "primary_metric": "Accuracy gap from oracle raw turns to oracle memory units for construction loss, plus the gap from oracle memory units to normal retrieval for accessibility loss.",
+      "stop_condition": "Stop when repeated samples yield stable system-level gap estimates with prespecified confidence widths, or when annotation disagreement prevents reliable separation of the two channels."
+    },
+    {
+      "baseline": "Best main-table memory systems versus one- and two-round RAG, all with identical cumulative storage, online token, and latency budgets.",
+      "hypothesis": "The ranking between constructed memory and raw-history RAG changes under realistic interleaved queries and multilingual updates.",
+      "primary_metric": "Time-weighted task accuracy minus total operational cost, stratified by language, query type, history age, and update frequency.",
+      "stop_condition": "Stop after the preregistered deployment horizon if rankings stabilize across strata, or earlier if one approach is dominated on both accuracy and cost in every consecutive evaluation window."
+    }
+  ],
+  "provenance": {
+    "block_count": 418,
+    "document_sha256": "53f6ca08485f6f243cf82e93db22264aec8ad5323bdcfc142841893d71e72e8b",
+    "generated_at": "2026-11-20T08:53:05.103994+00:00",
+    "metadata_sha256": "05251324f371399f614ed3c4cc362b814c12cd5b7bdb6a54b39af5b30c04ccb0",
+    "profile": "deep",
+    "provider": "reviewed-candidate",
+    "repair_count": 0,
+    "schema_version": "paper-summary-v1"
+  },
+  "reproducibility": {
+    "artifacts": [
+      "Detailed benchmark composition and sampling descriptions.",
+      "Naive RAG chunking, hybrid retrieval, reranking, and second-round procedure.",
+      "Backbone, embedding, reranker, decoding, and hardware settings.",
+      "Definitions of accuracy, cost metrics, Retrieval Scope, oracle evidence, and iterative retrieval replay.",
+      "Tables of principal scores, selected costs, configuration checks, and prompt-template locations."
+    ],
+    "assessment": "The paper is unusually detailed about operational choices and baseline adjustments, making conceptual reproduction plausible. Exact reproduction remains incomplete because the promised code/results are not part of the supplied record, some decisive analyses are figure-only, and uncertainty across stochastic or sampling variation is not quantified.",
+    "missing": [
+      "The metadata promises future release of code and results, but no released artifact is supplied here.",
+      "Several central diagnostic conclusions depend on figures whose underlying numerical values are absent from the supplied text blocks.",
+      "The supplied prompt section names prompt tables but does not include the actual prompt contents.",
+      "No random seeds, run-to-run variance, confidence intervals, or significance tests are stated in the supplied blocks.",
+      "Complete executable environments, dependency versions, endpoint versions, and all processed evaluation subsets are not supplied."
+    ],
+    "status": "partial"
+  },
+  "results": [
+    {
+      "context": "This is the strongest controlled evidence for negative net value in the retrieval-friendly main benchmark. It does not imply that every memory method loses on every benchmark: the same table contains a few positive cells on PersonaMem-v2 and MINT-Eval.",
+      "evidence": [
+        {
+          "block_id": "b00017-48d0d2de18",
+          "quote": "RAG (2rd) 72.2 81.4 90.0 36.2 48.7 48.4 26.1 33.1 34.5"
+        },
+        {
+          "block_id": "b00017-48d0d2de18",
+          "quote": "OpenViking 31.8 (−40.4) 58.8 (−22.6) 63.0 (−27.0)"
+        },
+        {
+          "block_id": "b00017-48d0d2de18",
+          "quote": "Mem-T 71.0 (−1.2) 75.0 (−6.4) 78.0 (−12.0)"
+        }
+      ],
+      "result": "Across the main comparison, two-round RAG scored 72.2, 81.4, and 90.0 on LongMemEval-s across the three backbones. Every listed memory method was below it in those columns; deficits ranged from −1.2 to −40.4 points."
+    },
+    {
+      "context": "These exceptions support the paper’s dual-edged account: memory is not uniformly harmful, and aggregate comparisons conceal query- and task-dependent benefit.",
+      "evidence": [
+        {
+          "block_id": "b00017-48d0d2de18",
+          "quote": "MemOS 62.0 (−10.2) 76.6 (−4.8) 78.0 (−12.0) 37.2 (+1.0) 50.2 (+1.5)"
+        },
+        {
+          "block_id": "b00017-48d0d2de18",
+          "quote": "PlugMem 68.0 (−4.2) 75.8 (−5.6) 70.0 (−20.0) 35.0 (−1.2) 45.2 (−3.5) 39.8 (−8.6) 21.5 (−4.7) 33.3 (+0.1) 37.8 (+3.3)"
+        },
+        {
+          "block_id": "b00017-48d0d2de18",
+          "quote": "Mem-T 71.0 (−1.2) 75.0 (−6.4) 78.0 (−12.0) 32.1 (−4.1) 42.1 (−6.6) 41.0 (−7.4) 27.0 (+0.9) 30.4 (−2.7) 38.4 (+3.9)"
+        }
+      ],
+      "result": "The main table also shows consequential exceptions: MemOS exceeded two-round RAG on PersonaMem-v2 by +1.0 and +1.5 with two Qwen backbones, while PlugMem and Mem-T exceeded it on MINT-Eval with GPT-5.6 Luna by +3.3 and +3.9."
+    },
+    {
+      "context": "This supplies direct evidence that construction loss varies substantially by system. However, the annotation pools sampled facts across three benchmarks, and the supplied table does not expose uncertainty intervals or per-benchmark breakdowns.",
+      "evidence": [
+        {
+          "block_id": "b00035-313653a178",
+          "quote": "OpenViking 39.4 9.6 13.0 38.0"
+        },
+        {
+          "block_id": "b00035-313653a178",
+          "quote": "MAGMA 93.6 6.2 0.2 0.0"
+        },
+        {
+          "block_id": "b00303-e32ba8b7c0",
+          "quote": "we sample 500 raw turns from the corpus of three benchmarks and trace each to its corresponding memory unit(s)"
+        }
+      ],
+      "result": "Human annotation found sharply different preservation behavior: MAGMA had 93.6% no loss and 0.0% no memory unit, whereas OpenViking had 39.4% no loss and 38.0% no memory unit."
+    },
+    {
+      "context": "The transfer experiment supports task dependence rather than a universal ranking. Token use also differs greatly, so score-only conclusions should be paired with the table’s resource columns.",
+      "evidence": [
+        {
+          "block_id": "b00331-c0f8bf12f1",
+          "quote": "Naive RAG 73.1 234.8 22.7 38.4 36.8 8.8 45.3 9.6"
+        },
+        {
+          "block_id": "b00331-c0f8bf12f1",
+          "quote": "Memp 76.1 237.7 23.4 44.5 37.6 7.8 47.9 6.4"
+        },
+        {
+          "block_id": "b00331-c0f8bf12f1",
+          "quote": "Naive RAG 21.6 5.2 1† 22.6 339.6 20.0 69.0 394.5 14.3"
+        },
+        {
+          "block_id": "b00331-c0f8bf12f1",
+          "quote": "ReasoningBank 14.9 13.7 1† 14.3 383.7 22.1 51.0 381.8 15.0"
+        },
+        {
+          "block_id": "b00331-c0f8bf12f1",
+          "quote": "Memp 20.3 8.9 1† 14.3 317.1 20.9 62.0 396.2 14.6"
+        },
+        {
+          "block_id": "b00331-c0f8bf12f1",
+          "quote": "G-Memory 20.3 62.9 1† 22.6 388.7 21.0 78.0 424.3 13.8"
+        }
+      ],
+      "result": "In experiential memory, gains depended on domain: Memp scored 76.1 versus naive RAG’s 73.1 on ALFWorld, but on AppWorld naive RAG scored 22.6 while Memp and ReasoningBank each scored 14.3. G-Memory reached 78.0 versus 69.0 for naive RAG on τ2-Bench."
+    },
+    {
+      "context": "This supports the narrower claim that latent and cache memories do not consistently dominate direct past-frame retrieval. It is not a clean component ablation because the compared systems differ beyond memory carrier.",
+      "evidence": [
+        {
+          "block_id": "b00362-655ce32a35",
+          "quote": "Method Mem Carrier PSNR ↑ SSIM ↑ 1 - LPIPS ↑"
+        },
+        {
+          "block_id": "b00362-655ce32a35",
+          "quote": "C-as-M-eval I3DM naive frames 19.8 .560 .704"
+        },
+        {
+          "block_id": "b00362-655ce32a35",
+          "quote": "MemoBench I3DM naive frames 14.4 .430 .476"
+        },
+        {
+          "block_id": "b00362-655ce32a35",
+          "quote": "MagicWorld visual latents 13.9 .433 .412"
+        }
+      ],
+      "result": "For world-model memory, naive-frame I3DM led all listed methods on Context-as-Memory with PSNR 19.8, SSIM .560, and 1 − LPIPS .704. On MemoBench it led PSNR and 1 − LPIPS at 14.4 and .476, while MagicWorld had the highest SSIM at .433 versus I3DM’s .430."
+    }
+  ],
+  "title": "Memory Tax: Dissecting the Net Value of Agent Memory",
+  "uncertainties": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00033-e795bf84a9",
+          "quote": "These quantities are reference-dependent"
+        },
+        {
+          "block_id": "b00189-b3cf478859",
+          "quote": "BM25 and dense retrieval (Qwen3-Embedding-0.6B) independently return their top-k chunks."
+        }
+      ],
+      "uncertainty": "How much of the reported tax is specific to this relatively strong hybrid-and-reranked RAG reference?",
+      "why_it_matters": "Benefit and tax are explicitly reference-dependent. A different retrieval budget, latency constraint, index, or online update regime could change both their magnitude and sign."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00022-763c147d34",
+          "quote": "Due to cost constraints, we evaluate 20% of PersonaMem-v2 and 10% of MINT-Eval."
+        },
+        {
+          "block_id": "b00016-0eaf1192b9",
+          "quote": "Scores are judge accuracy (%)."
+        }
+      ],
+      "uncertainty": "Whether score differences are statistically reliable is unresolved because the supplied material reports point estimates without confidence intervals or repeated-run variance.",
+      "why_it_matters": "Several positive exceptions are small, and sampled benchmarks may amplify sampling noise. The absence of uncertainty estimates prevents a firm separation of stable effects from evaluation noise."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00263-d93c23a59d",
+          "quote": "we standardize several evaluation components across baselines"
+        },
+        {
+          "block_id": "b00268-7549a217a7",
+          "quote": "a few systems need individual changes:"
+        }
+      ],
+      "uncertainty": "The effect of baseline-specific modifications is only partly isolated.",
+      "why_it_matters": "Shared settings improve control but may remove capabilities tightly coupled to a system’s intended operation; selected offset checks do not establish optimality for every system."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00072-aaea8b93e3",
+          "quote": "Results in Table show consistent improvements and reduction of memory tax across several memory systems."
+        },
+        {
+          "block_id": "b00073-a9153b50fb",
+          "quote": "Results in Table also validate its effectiveness."
+        }
+      ],
+      "uncertainty": "The proposed recovery and recursive-memory design implications lack numerical evidence in the supplied blocks.",
+      "why_it_matters": "The text claims consistent improvements, but without the referenced table values their effect size, cost, and robustness cannot be independently assessed from this record."
+    }
+  ]
+}

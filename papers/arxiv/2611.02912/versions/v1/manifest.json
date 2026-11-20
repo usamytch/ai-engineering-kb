@@ -1,0 +1,61 @@
+{
+  "artifacts": {
+    "article.html": {
+      "available": true,
+      "bytes": 424546,
+      "cached": true,
+      "error": null,
+      "fetched_at": "2026-11-20T08:27:56.010354+00:00",
+      "mime_type": "text/html",
+      "name": "article.html",
+      "path": ".aidb/artifacts/arxiv/2611.02912/v1/article.html",
+      "sha256": "5e02c4d7eebf8cc102243f4902d6c135c368dcbe92084eabb847809a6f07a89a",
+      "status": "cached",
+      "url": "https://arxiv.org/html/2611.02912v1"
+    },
+    "paper.pdf": {
+      "available": true,
+      "bytes": 1757112,
+      "cached": true,
+      "error": null,
+      "fetched_at": "2026-11-20T08:27:57.189771+00:00",
+      "mime_type": "application/pdf",
+      "name": "paper.pdf",
+      "path": ".aidb/artifacts/arxiv/2611.02912/v1/paper.pdf",
+      "sha256": "96f8e76a675333902ffc5dfb6ce1f5c89c8c9bb7905aed41104067bb6696ffdb",
+      "status": "cached",
+      "url": "https://arxiv.org/pdf/2611.02912v1"
+    }
+  },
+  "base_id": "2611.02912",
+  "extraction": {
+    "block_count": 283,
+    "document_jsonl_sha256": "235e2130ed1b9cc406546ba65ffb846d638797f546d7899a14aa41635238083e",
+    "document_markdown_sha256": "9cd3a224d169bab0000b4a19191e2b77b6391a60e8a6278cbb35b1dcc9454d56",
+    "extracted_at": "2026-11-20T08:55:47.130328+00:00",
+    "extractor_version": 1,
+    "source_format": "html"
+  },
+  "html_usable": true,
+  "path_key": "2611.02912",
+  "pipeline_version": 1,
+  "policy": "normal",
+  "schema_version": 1,
+  "source": "arxiv",
+  "summary": {
+    "analysis_sha256": "7f9167f93d28ffb8c5e7a88f40fdbfed8a1f73d0a95566e2500a19b4293e598d",
+    "document_jsonl_sha256": "235e2130ed1b9cc406546ba65ffb846d638797f546d7899a14aa41635238083e",
+    "generated_at": "2026-11-20T08:59:25.373788+00:00",
+    "metadata_sha256": "2dc756c495251bf6211c027c6d6a0ebd6f344803774032641f0b9d5150a5938b",
+    "pipeline_version": 1,
+    "profile": "deep",
+    "prompt_sha256": "753fcae4b2a63db5542a73036bb295579dfa0096727f5dbedfc8c87462265258",
+    "provider": "codex-exec:configured-default",
+    "schema_sha256": "8c703ea226fda477d6522236d796e523af9dc6dc2110cbf27fa7b645a7487ecd",
+    "status": "ai-draft",
+    "summary_sha256": "11b0bfdcf349445a3b624e737fd5f929d503c8a1fda695eefc383176bbbee172"
+  },
+  "updated_at": "2026-11-20T08:59:25.380989+00:00",
+  "version_id": "2611.02912v1",
+  "version_tag": "v1"
+}

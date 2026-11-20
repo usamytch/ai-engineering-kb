@@ -44,6 +44,36 @@
       "name": "vLLM releases",
       "url": "https://github.com/vllm-project/vllm/releases.atom",
       "topics": ["inference", "production"]
+    },
+    {
+      "name": "Hugging Face and community engineering",
+      "url": "https://huggingface.co/blog/feed.xml",
+      "coverage": "dated-feed-snapshot",
+      "topics": ["engineering", "research"]
+    },
+    {
+      "name": "Google Research blog",
+      "url": "https://research.google/blog/rss/",
+      "coverage": "dated-feed-snapshot",
+      "topics": ["research"]
+    },
+    {
+      "name": "Google DeepMind blog",
+      "url": "https://deepmind.google/blog/rss.xml",
+      "coverage": "dated-feed-snapshot",
+      "topics": ["research", "agents"]
+    },
+    {
+      "name": "OpenAI research and engineering",
+      "url": "https://openai.com/news/rss.xml",
+      "coverage": "dated-feed-snapshot",
+      "topics": ["research", "engineering"]
+    },
+    {
+      "name": "Anthropic engineering",
+      "url": "https://www.anthropic.com/engineering",
+      "format": "anthropic-engineering-index",
+      "topics": ["agents", "memory", "engineering"]
     }
   ]
 }

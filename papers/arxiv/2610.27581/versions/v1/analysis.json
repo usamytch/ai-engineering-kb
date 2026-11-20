@@ -1,0 +1,584 @@
+{
+  "aidb_assessment": {
+    "confidence": "medium",
+    "novelty": "High at the evaluation-design level: the work combines adaptive full-duplex execution with transactional supervision, explicit memory states, forbidden evidence, and auditable traces. The individual ACT-Mem components are less novel than their integration.",
+    "rationale": "The benchmark design, denominator discipline, paired comparison, and traceability merit close reading and reproduction. Adoption is premature because final-state performance remains near the floor, interruption behavior worsens, external validity is narrow, and metadata access is insufficiently explicit.",
+    "recommended_action": "read",
+    "usefulness": "High for diagnosing admission, supersession, exclusion, retrieval, and answer-realization failures separately. Deployment value is limited because absolute memory performance remains low and the benchmark is synthetic and short."
+  },
+  "claims": [
+    {
+      "claim": "DuplexLedger jointly exposes adaptive interaction, event admission, revision, exclusion, explicit state transitions, and spoken memory QA.",
+      "evidence": [
+        {
+          "block_id": "b00008-fc41d0f0b9",
+          "quote": "We introduce DuplexLedger, a bilingual benchmark of 1,094 persistent sessions aligning pause handling, speech to others, backchannels, and interruptions with write, update, ignore, and retain operations"
+        },
+        {
+          "block_id": "b00029-e78c3958d6",
+          "quote": "Each question is aligned with supporting memory identifiers, forbidden superseded or distractor identifiers, and a reference answer."
+        }
+      ]
+    },
+    {
+      "claim": "Current full-duplex systems do not jointly achieve strong interaction behavior and coherent persistent memory.",
+      "evidence": [
+        {
+          "block_id": "b00046-a1d5258eba",
+          "quote": "No model jointly dominates full-duplex interaction and memory fidelity."
+        },
+        {
+          "block_id": "b00056-9c52d8e7d2",
+          "quote": "Current systems can coordinate speech, recover isolated revisions, or reject irrelevant content, yet none jointly supports event admission, supersession, exclusion, and state consolidation."
+        }
+      ]
+    },
+    {
+      "claim": "ACT-Mem makes memory transitions explicit and auditable while leaving speech-generation components frozen.",
+      "evidence": [
+        {
+          "block_id": "b00059-1ff3d27f73",
+          "quote": "The latter supplies transcripts and timing to a trainable event controller, which manages a transactional ledger implemented as versioned memory."
+        },
+        {
+          "block_id": "b00059-1ff3d27f73",
+          "quote": "Only these cards enter the backbone through QA-only text prefill; all speech-generation components remain frozen."
+        }
+      ]
+    },
+    {
+      "claim": "The controlled evidence supports improved local revision but not complete session-wide state reconstruction.",
+      "evidence": [
+        {
+          "block_id": "b00084-6f83dde195",
+          "quote": "The controlled evidence therefore supports improved local state revision, but not yet complete reconstruction of the session-wide memory state."
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "ablations": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00090-c0efd02b99",
+            "quote": "FIFO memory replaces the versioned ledger with a 32-slot queue and removes supersession and latest-only selection."
+          }
+        ],
+        "text": "FIFO memory removes versioned supersession and latest-only selection."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00090-c0efd02b99",
+            "quote": "Without addressee gating removes speaker/addressee rejection and the learned gate."
+          }
+        ],
+        "text": "Removing addressee gating disables speaker/addressee rejection and the learned gate."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00090-c0efd02b99",
+            "quote": "Untyped retrieval applies top-4 retrieval to every question type, including rejection questions."
+          }
+        ],
+        "text": "Untyped retrieval applies top-4 retrieval to every question type."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00104-3e6f89971d",
+            "quote": "Increasing the threshold from 0.35 to 0.75 reduces recall from 55.26% to 48.95% and F1 from 71.19% to 65.72%."
+          }
+        ],
+        "text": "Threshold sensitivity is assessed on calibration sessions; stricter admission reduces recall and F1."
+      }
+    ],
+    "baselines": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00353-38e71af68b",
+            "quote": "We evaluate five publicly available full-duplex speech models: MiniCPM-o 4.5 (Cui et al., 2026), Freeze-Omni (Wang et al., 2025c), Moshi (Défossez et al., 2024), Lychee-FD (Liu et al., 2026), and PersonaPlex-7B-v1"
+          }
+        ],
+        "text": "The descriptive benchmark evaluates MiniCPM-o 4.5, Freeze-Omni, Moshi, Lychee-FD, and PersonaPlex-7B-v1."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00081-fa9e195306",
+            "quote": "The controlled comparison retains the frozen MiniCPM-o 4.5 backbone"
+          }
+        ],
+        "text": "The controlled baseline is the frozen MiniCPM-o 4.5 backbone without ACT-Mem."
+      }
+    ],
+    "datasets": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00033-04f3c65dbc",
+            "quote": "Total 577 517 1,094 8,239 3,304 6,564"
+          },
+          {
+            "block_id": "b00149-cf40c53d50",
+            "quote": "All dialogue content is synthetic."
+          },
+          {
+            "block_id": "b00036-7852c2451d",
+            "quote": "method train/validation/calibration/held-out splits contain 660/175/40/219 sessions."
+          }
+        ],
+        "text": "DuplexLedger is a controlled synthetic Chinese–English corpus covering four full-duplex scenarios, with event operations, explicit memory states, and same-session spoken targets."
+      }
+    ],
+    "metrics": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00322-17fb7bbba0",
+            "quote": "challenge_realization_rate ↑ Distinct planned challenge identifiers. conditional_cfd ↑† Challenge instances eligible for conditional behavioral scoring."
+          },
+          {
+            "block_id": "b00323-aff4b5868b",
+            "quote": "† Conditional or auxiliary measures that must be interpreted with challenge realization, trigger timeout, and observability statistics."
+          }
+        ],
+        "text": "Interaction evaluation includes challenge realization, conditional full-duplex behavior, onset and overlap errors, intrusion, stopping success, and stopping latency; conditional measures require coverage variables."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00347-3fef40b34d",
+            "quote": "latest_value_accuracy ↑ All latest-value questions, including unanswered questions. superseded_value_error ↓ All latest-value questions."
+          },
+          {
+            "block_id": "b00347-3fef40b34d",
+            "quote": "distractor_adoption_rate ↓ All distractor-ignore questions. distractor_rejection_accuracy ↑ All distractor-ignore questions; rejection additionally requires a response."
+          },
+          {
+            "block_id": "b00347-3fef40b34d",
+            "quote": "summary_fact_coverage ↑ Atomic reference facts in final-summary questions."
+          }
+        ],
+        "text": "Memory evaluation includes response rate, latest-value accuracy, superseded-value error, distractor adoption/rejection, and summary fact coverage."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00473-a361a06654",
+            "quote": "We therefore use a paired percentile bootstrap at the session level."
+          },
+          {
+            "block_id": "b00476-92b184f2fe",
+            "quote": "We generate 20,000 bootstrap replicates using random seed 20260807."
+          }
+        ],
+        "text": "Primary uncertainty intervals use paired session-level bootstrap."
+      }
+    ],
+    "negative_results": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00084-6f83dde195",
+            "quote": "Final-state coverage, however, remains low and its interval crosses zero."
+          }
+        ],
+        "text": "Final-state reconstruction remains weak, and its controlled improvement is inconclusive."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00088-a681f71771",
+            "quote": "ACT-Mem improves most interaction-boundary metrics but slows interruption stopping."
+          }
+        ],
+        "text": "ACT-Mem slows interruption stopping."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00085-52ad514fca",
+            "quote": "Distractor rejection and response rate decline by 2.28 and 1.45 points"
+          },
+          {
+            "block_id": "b00085-52ad514fca",
+            "quote": "their joint decline means that ACT-Mem produces fewer explicit adoptions but also fewer credited rejections."
+          }
+        ],
+        "text": "Distractor rejection and response rate decline despite fewer explicit adoptions."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00097-b6813d87f4",
+            "quote": "Under user interruption, however, latest-value accuracy decreases from 3.85% to 2.88%"
+          }
+        ],
+        "text": "Interruption-time latest-value performance declines."
+      }
+    ]
+  },
+  "executive_summary": "DuplexLedger aligns adaptive speech events with explicit Write/Update/Ignore/Retain transitions and same-session QA. Five baseline systems reveal a severe interaction–memory gap: the best final-state coverage is only 2.01%. ACT-Mem adds an event controller, versioned ledger, and typed retriever to a frozen MiniCPM-o 4.5 backbone. In a paired held-out comparison, latest-value accuracy rises from 4.11% to 8.68%, but final-state evidence is inconclusive and interruption stopping worsens. The benchmark is diagnostically valuable, yet external validity is limited by synthetic short sessions, and interpretation depends on the auxiliary metadata supplied to ACT-Mem. Independent reproduction should precede adoption.",
+  "labels": {
+    "ablations": "Ablations",
+    "action_adopt": "adopt",
+    "action_read": "read",
+    "action_reject": "reject",
+    "action_watch": "watch",
+    "aidb_assessment": "AIDB assessment",
+    "assumptions": "Assumptions",
+    "available_artifacts": "Available artifacts",
+    "baseline": "Baseline",
+    "baselines": "Baselines",
+    "blocks": "Blocks",
+    "claims": "Main claims",
+    "confidence": "Confidence",
+    "confidence_high": "high",
+    "confidence_low": "low",
+    "confidence_medium": "medium",
+    "context": "Context",
+    "datasets": "Datasets",
+    "document_sha256": "Document SHA-256",
+    "evaluation": "Experimental evaluation",
+    "evidence": "Evidence",
+    "executive_summary": "Executive summary",
+    "generated": "Generated",
+    "hypothesis": "Hypothesis",
+    "importance": "Why it matters",
+    "key_components": "Key components",
+    "limitations": "Limitations",
+    "metadata_sha256": "Metadata SHA-256",
+    "method": "Method",
+    "metrics": "Metrics",
+    "missing_pieces": "Missing pieces",
+    "negative_results": "Negative results",
+    "novelty": "Novelty",
+    "open_questions": "Open questions",
+    "primary_metric": "Primary metric",
+    "problem": "Problem",
+    "profile": "Profile",
+    "proposed_experiments": "Proposed AIDB experiments",
+    "provenance": "Provenance",
+    "provider": "Provider",
+    "rationale": "Rationale",
+    "recommended_action": "Recommended action",
+    "repair_count": "Deterministic repair attempts",
+    "reproducibility": "Reproducibility",
+    "results": "Results",
+    "schema": "Schema",
+    "scope": "Scope",
+    "statement": "Statement",
+    "status": "Status",
+    "status_partial": "partial",
+    "status_strong": "strong",
+    "status_unknown": "unknown",
+    "status_weak": "weak",
+    "stop_condition": "Stop condition",
+    "uncertainties": "Uncertainties",
+    "usefulness": "Usefulness"
+  },
+  "language": {
+    "code": "en",
+    "name": "English"
+  },
+  "limitations": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00234-91e2eb5c0a",
+          "quote": "DuplexLedger is fully synthetic and therefore does not reproduce the complete distribution of spontaneous human speech."
+        },
+        {
+          "block_id": "b00234-91e2eb5c0a",
+          "quote": "The sessions last approximately one to three minutes and do not establish performance on hour-scale or cross-day memory."
+        }
+      ],
+      "limitation": "The fully synthetic, short sessions underrepresent spontaneous speech conditions and do not validate long-term memory."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00235-6c2397e808",
+          "quote": "it does not currently contain an explicit memory-deletion operation. It should therefore not be interpreted as a complete benchmark for privacy-aware memory management."
+        }
+      ],
+      "limitation": "The task lacks explicit deletion and is not a complete privacy-aware memory benchmark."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00264-4a9a615ca2",
+          "quote": "Fixed-denominator memory scores therefore measure end-to-end task completion and can reflect both missed evidence delivery and subsequent memory or response errors."
+        },
+        {
+          "block_id": "b00264-4a9a615ca2",
+          "quote": "They do not isolate retention conditional on receiving the supporting evidence."
+        }
+      ],
+      "limitation": "Fixed-denominator scores combine missed challenge delivery with downstream memory and response failures."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00480-fce19e81fe",
+          "quote": "they do not account for repeated-run generation variability, ASR errors, or scoring-rule validity."
+        }
+      ],
+      "limitation": "Bootstrap intervals omit repeated-generation variability, ASR errors, and scorer validity."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00220-7cce215b27",
+          "quote": "Of 7,687 speech events, 7,589 have forced-alignment boundaries."
+        },
+        {
+          "block_id": "b00220-7cce215b27",
+          "quote": "3,007 aligned events contain more than 0.5 s of trailing residual audio"
+        }
+      ],
+      "limitation": "Corpus quality-control issues include missing forced alignments and trailing residual audio."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00532-10a1426bba",
+          "quote": "The high-level Update decision was correct, but the correction did not supersede the provisional entries because the extracted entity representation was inconsistent."
+        },
+        {
+          "block_id": "b00533-32ec4c8570",
+          "quote": "The same trace also reveals a limitation of clause-level admission."
+        }
+      ],
+      "limitation": "Qualitative traces expose unresolved entity normalization, supersession, and clause-level admission failures."
+    }
+  ],
+  "method": {
+    "assumptions": [
+      "The deterministic bilingual lexical scorer adequately represents semantic answer correctness.",
+      "Frozen-ASR transcripts preserve the facts and boundaries needed by the controller and scorer.",
+      "Fixed question denominators appropriately combine missed delivery, silence, and downstream memory errors for end-to-end evaluation.",
+      "Controlled synthetic scenarios represent meaningful components of real full-duplex memory.",
+      "The controlled comparison is interpretable only when auxiliary metadata access and question-routing mode are declared."
+    ],
+    "key_components": [
+      "A synthetic bilingual benchmark with event-level operations, supersession links, oracle states, supporting and forbidden evidence, and persistent same-session QA.",
+      "A closed-loop protocol separating planned from realized challenges and retaining failures, timeouts, unanswered questions, decoded audio, and timing traces.",
+      "An event controller assigning proposals to Prepare, Commit, Abort, or Uncertain states.",
+      "A versioned ledger retaining provenance and supersession links while exposing active values to retrieval.",
+      "A typed retriever that varies evidence scope by question type and injects evidence cards through QA-only text prefill.",
+      "Session-level macro-aggregation and paired session bootstrap for the controlled comparison."
+    ],
+    "overview": "DuplexLedger represents persistent sessions as ordered event streams with item-level Write, Update, Ignore, or Retain targets and explicit states. Adaptive scheduling injects interruptions and backchannels only after decoded assistant speech satisfies a trigger; pauses and side-talk use observation windows. Six spoken targets per session test revision, recall, distractor rejection, consolidation, and behavior. ACT-Mem uses frozen ASR/VAD observations, predicts event operation, addressee, completeness, and confidence, commits admissible entity–value slots to a versioned ledger, and supplies typed active-state evidence to the frozen backbone at QA boundaries."
+  },
+  "open_questions": [
+    "Which question-routing mode and scheduler metadata fields were enabled for each reported ACT-Mem result?",
+    "How does ACT-Mem compare with an audio-only controller receiving neither evaluator addressee labels nor annotated question types?",
+    "Do gains persist with spontaneous speech, natural overlap, accents, noise, longer sessions, and cross-day state?",
+    "What fraction of held-out errors originates at ASR, operation classification, slot extraction, normalization, supersession, retrieval, and spoken realization?",
+    "Are differences stable across repeated generation runs and alternative semantic or human scoring?",
+    "Can the ledger support deletion, consent, and retention limits without weakening auditability?"
+  ],
+  "problem": {
+    "importance": "Persistent-memory errors can preserve obsolete values, admit irrelevant side speech, or answer from transient context. Joint event and state supervision is needed to distinguish admission, supersession, retrieval, and answer-generation failures.",
+    "scope": "The paper studies bilingual Chinese–English same-session memory under interruption, backchannel, within-turn pause, and speech addressed to another person. It does not establish natural-dialogue, hour-scale, cross-day, deletion, privacy-management, or broad multilingual performance.",
+    "statement": "Full-duplex agents must decide whether concurrent, incomplete, revised, backchannel, or non-addressed speech should alter persistent memory. Existing evaluations separate interaction timing from memory outcomes, obscuring the state transitions behind a correct answer."
+  },
+  "proposed_experiments": [
+    {
+      "baseline": "Reported ACT-Mem versus a strictly audio-derived variant using frozen-ASR transcripts, deterministic question routing, and learned addressee prediction.",
+      "hypothesis": "ACT-Mem’s latest-value advantage remains positive after removing evaluator-supplied addressee labels and annotated question types.",
+      "primary_metric": "Paired latest-value accuracy, accompanied by distractor adoption, explicit rejection, response rate, and final-state fact coverage.",
+      "stop_condition": "Reject the hypothesis if the paired latest-value interval includes zero or distractor adoption rises without improved explicit rejection."
+    },
+    {
+      "baseline": "Replay fixed transcripts and questions through FIFO memory, an unversioned active store, and the full versioned ledger while holding controller outputs, retrieval weights, and generation seeds fixed.",
+      "hypothesis": "The versioned ledger, rather than QA conditioning alone, reduces stale answers under identical interaction histories.",
+      "primary_metric": "Superseded-value error, with failed-supersession rate as the mechanistic secondary metric.",
+      "stop_condition": "Stop if the versioned ledger fails to reduce both superseded-value error and failed-supersession rate relative to every baseline."
+    },
+    {
+      "baseline": "Frozen MiniCPM-o 4.5 versus ACT-Mem on newly recorded bilingual sessions containing natural disfluency, accents, noise, unplanned overlap, and longer contexts.",
+      "hypothesis": "ACT-Mem’s revision advantage transfers to spontaneous, longer conversations without worsening interruption stopping.",
+      "primary_metric": "Paired latest-value accuracy, jointly gated by final-state fact coverage and interruption Stop@0.8.",
+      "stop_condition": "Stop deployment-oriented evaluation if the latest-value interval includes zero, final-state coverage remains near the benchmark floor, or interruption Stop@0.8 is materially lower than the backbone."
+    }
+  ],
+  "provenance": {
+    "block_count": 555,
+    "document_sha256": "187028f535eb0092c4659d8f3bc2ff191d166a97fe49cfa12f80006fb77984ed",
+    "generated_at": "2026-11-20T09:05:16.092883+00:00",
+    "metadata_sha256": "66082b7ce18c23e77c5af1e6525224b2101f7b7bcd71ec42f640a11b1f3d9a7d",
+    "profile": "deep",
+    "provider": "codex-exec:configured-default",
+    "repair_count": 1,
+    "schema_version": "paper-summary-v1"
+  },
+  "reproducibility": {
+    "artifacts": [
+      "The abstract reports a public code repository.",
+      "The paper specifies splits, optimization stages, hyperparameters, seeds, parameter counts, hardware, calibration, timing, metric denominators, and bootstrap procedures.",
+      "The artifact manifest describes inputs, manifests, memory supervision, runtime logs, outputs, scores, ACT-Mem traces, configurations, and scripts.",
+      "Stable identifiers connect sessions, questions, schedules, outputs, evidence, and scores."
+    ],
+    "assessment": "The documentation supports score reconstruction in principle, but reproducibility is partial from the supplied evidence. A code link and artifact specification do not verify release completeness. Reproduction must declare auxiliary metadata access, routing mode, model revisions, and recorded outputs.",
+    "missing": [
+      "The supplied document does not verify that the repository contains every promised artifact, checkpoint, waveform, output, license, prompt, checksum, and validation report.",
+      "The reported ACT-Mem question-routing mode is unresolved: the implementation permits annotation-assisted types or deterministic text routing.",
+      "The controller receives scheduler-provided speaker/addressee metadata, but its contribution relative to learned inference is not quantified.",
+      "No repeated-run variance or uncertainty from ASR and scorer validity is reported."
+    ],
+    "status": "partial"
+  },
+  "results": [
+    {
+      "context": "This supports the reported interaction–memory gap. Cross-model results remain descriptive because architectures, response tendencies, interfaces, and realized exposure differ.",
+      "evidence": [
+        {
+          "block_id": "b00056-9c52d8e7d2",
+          "quote": "Even the best final-state coverage is only 2.01%."
+        },
+        {
+          "block_id": "b00055-7ccabbffc2",
+          "quote": "Lychee-FD reaches 25.50% latest-value accuracy but covers only 1.06% of final-state facts and adopts 48.17% of distractors."
+        },
+        {
+          "block_id": "b00044-2a7a1b7237",
+          "quote": "Since model architectures and response tendencies differ, cross-model results are descriptive."
+        }
+      ],
+      "result": "Across the five baselines, the strongest final-state fact coverage is 2.01%; the system with the best latest-value accuracy reaches 25.50% but adopts 48.17% of distractors and covers 1.06% of final-state facts."
+    },
+    {
+      "context": "The paired comparison retains the frozen MiniCPM-o 4.5 backbone. It supports improved local revision, not comprehensive final-state reconstruction.",
+      "evidence": [
+        {
+          "block_id": "b00081-fa9e195306",
+          "quote": "We evaluate ACT-Mem on the same 219 held-out sessions used for the baseline study"
+        },
+        {
+          "block_id": "b00084-6f83dde195",
+          "quote": "Latest-value accuracy increases from 4.11% to 8.68% (+111.2%; +4.57 percentage points, 95% CI [1.60,7.53])"
+        },
+        {
+          "block_id": "b00084-6f83dde195",
+          "quote": "final-state coverage rises from 1.27% to 2.00% (+57.5%; +0.73 points, 95% CI [−0.49,1.99])."
+        }
+      ],
+      "result": "On 219 held-out sessions, ACT-Mem raises latest-value accuracy from 4.11% to 8.68%, with a 95% CI of [1.60,7.53]. Final-state coverage rises from 1.27% to 2.00%, but its 95% CI of [−0.49,1.99] crosses zero."
+    },
+    {
+      "context": "The interaction comparison is not cleanly causal: cFD is conditional, challenge realization changes, and evidence injection begins after preceding interaction events.",
+      "evidence": [
+        {
+          "block_id": "b00088-a681f71771",
+          "quote": "cFD increases by 10.8%, while early response, pre-end speech, and windowed intrusion decrease by 18.6%, 7.6%, and 5.1%, respectively."
+        },
+        {
+          "block_id": "b00088-a681f71771",
+          "quote": "Stop@0.8 falls from 51.06% to 45.00%, and median stopping latency increases from 1.123 to 1.340 seconds."
+        },
+        {
+          "block_id": "b00430-01066ab0e6",
+          "quote": "Cross-variant differences in pre-QA interaction metrics are therefore descriptive whole-run differences, rather than isolated causal effects of retrieval or ledger maintenance."
+        }
+      ],
+      "result": "ACT-Mem improves exposed-challenge boundary measures but worsens interruption recovery: cFD increases by 10.8%, Stop@0.8 declines from 51.06% to 45.00%, and median stopping latency rises from 1.123 to 1.340 seconds."
+    },
+    {
+      "context": "These inference-time ablations support a selectivity trade-off but do not isolate training-time contributions or repeated-run variability.",
+      "evidence": [
+        {
+          "block_id": "b00090-c0efd02b99",
+          "quote": "We evaluate three inference-time variants with fixed memory-model weights."
+        },
+        {
+          "block_id": "b00093-5e5f125a19",
+          "quote": "Untyped retrieval 40.33 29.98 44.61 9.59 1.60 19.63 1.82 ACT-Mem 41.19 16.03 41.82 8.68 0.46 11.42 2.00"
+        },
+        {
+          "block_id": "b00094-a94c8918f8",
+          "quote": "All values are percentages."
+        }
+      ],
+      "result": "Untyped retrieval obtains 9.59% latest-value accuracy versus 8.68% for ACT-Mem, while stale assertions and distractor adoption reach 1.60% and 19.63%, compared with 0.46% and 11.42% for ACT-Mem."
+    },
+    {
+      "context": "These subgroup results are exploratory, identifying interruption-time updating as a targeted weakness rather than establishing a general causal effect.",
+      "evidence": [
+        {
+          "block_id": "b00097-b6813d87f4",
+          "quote": "Under user interruption, however, latest-value accuracy decreases from 3.85% to 2.88%; backchannel final-state coverage also falls from 2.34% to 1.10%."
+        },
+        {
+          "block_id": "b00483-b9c62ba558",
+          "quote": "These stratified analyses are not treated as independent confirmatory tests"
+        }
+      ],
+      "result": "Latest-value accuracy decreases under user interruption from 3.85% to 2.88%, while backchannel final-state coverage falls from 2.34% to 1.10%."
+    }
+  ],
+  "title": "DuplexLedger: Benchmarking Transactional Memory in Full-Duplex Speech Agents",
+  "uncertainties": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00419-97a2a9b651",
+          "quote": "an annotated type is loaded from the configured QA metadata when available; otherwise, a deterministic rule routes the ASR-transcribed question."
+        },
+        {
+          "block_id": "b00419-97a2a9b651",
+          "quote": "These annotation-assisted and text-routed modes must be distinguished when interpreting results."
+        }
+      ],
+      "uncertainty": "The reported ACT-Mem question-routing mode is unclear.",
+      "why_it_matters": "Annotation-assisted routing may simplify retrieval and alter whether results represent end-to-end audio-only performance."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00399-5a2b316fbf",
+          "quote": "The scheduler supplies the event index and speaker/addressee metadata."
+        },
+        {
+          "block_id": "b00399-5a2b316fbf",
+          "quote": "a non-user or non-addressed event can veto admission through an explicit gate."
+        }
+      ],
+      "uncertainty": "Evaluator-side structural metadata is not cleanly separated from learned perception in the headline comparison.",
+      "why_it_matters": "Explicit addressee metadata can veto admission, potentially overstating performance relative to an audio-only controller."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00353-38e71af68b",
+          "quote": "the subset of challenge clips actually delivered can differ across models."
+        },
+        {
+          "block_id": "b00360-4c3a0106db",
+          "quote": "The native interfaces do not expose identical user-turn controls."
+        }
+      ],
+      "uncertainty": "Cross-model differences may partly reflect unequal challenge delivery and native interfaces.",
+      "why_it_matters": "The baseline table should not be treated as a controlled architectural ranking."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00330-13e7b2b43e",
+          "quote": "A value is considered present when its normalized form is an exact substring of the answer or when token F1 reaches 0.80 for values of at most two tokens and 0.60 for longer values."
+        },
+        {
+          "block_id": "b00480-fce19e81fe",
+          "quote": "they do not account for repeated-run generation variability, ASR errors, or scoring-rule validity."
+        }
+      ],
+      "uncertainty": "The lexical scorer’s validity for bilingual semantic correctness is not independently established.",
+      "why_it_matters": "Small improvements may be sensitive to transcription and lexical thresholds."
+    }
+  ]
+}

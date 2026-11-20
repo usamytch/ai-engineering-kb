@@ -1,0 +1,33 @@
+{
+  "abstract": "An agent that stores facts over time eventually stores several versions of the same fact. Asked a value-agnostic question - \"which team does X play for now?\" - a similarity retriever cannot prefer the current version, because every version matches the entity the query names. StaleBench isolates this stale-retrieval failure on 892 real updating facts, with currency labels from the source (Wikidata validity years via TempLAMA), never from a retrieval score. Our central result is that retrieval metrics can rank memory policies backwards: a retention policy and its retain-everything control return the identical statement at rank 1 for every test query, yet differ by 29.5 and 65.6 points in reader accuracy on two readers when no date is shown. Contamination@5, the metric we add, ranks them correctly where current@1 and current@5 do not. Withdrawing the lexical anchor that statements carry costs deployed keying mechanisms tens of points of freshness; entity resolution on both the write path and the query recovers most of the loss. Three deployed systems (Mem0, Graphiti, LangMem) and a reimplemented ERASE each handle supersession differently, and no single scoring convention describes all four. We release the data, a frozen evaluator, and reference baselines.",
+  "arxiv_id": "2611.19752v1",
+  "authors": [
+    "S M Mahbub Murshed"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2611.19752v1",
+  "categories": [
+    "cs.CL",
+    "cs.AI",
+    "cs.IR"
+  ],
+  "comment": "Accepted to Findings of EACL 2027. 39 pages, 3 figures. Code and data: https://github.com/thenexuslab/stalebench-release",
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2611.19752v1",
+  "latest_seen_version": 1,
+  "paper_id": "2611.19752",
+  "paper_version_id": "2611.19752v1",
+  "published": "2026-11-15T03:29:02+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "StaleBench: Isolating Stale Retrieval in Agent Memory, and Pricing the Fix",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-11-15T03:29:02+00:00",
+  "url": "https://arxiv.org/abs/2611.19752v1"
+}

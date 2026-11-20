@@ -1,0 +1,31 @@
+{
+  "abstract": "Coding agents that run long enough must compact their context, summarizing the conversation, discarding the original, and carrying the summary forward as memory. We show that in popular open-source coding agents this step is an exploitable trust boundary. Harnesses that flatten the typed conversation into a single plain string, marking each message with a text label such as [User]:, destroy message provenance in code, before the summarizer runs. An attacker who controls anything the agent reads can forge a user turn that survives compaction as a genuine instruction. Across five flattening harnesses (pi, opencode, Cline, Aider, OpenHands) the forged approval launders into the agent's memory 87-100% of the time, up to a ~908,000-token context window; across four role-typed harnesses (Codex, Gemini CLI, Qwen Code, Continue) the identical attack succeeds 0% of the time. We follow the attack to executed consequences. A laundered standing approval drives real tool-running agents to execute attacker-controlled curl | sh in a sandbox, and end to end in the live pi TUI at ~50% against a 0% paired clean arm. The same channel reliably steers an agent's plan away from a file an attacker designates off-limits, which can blind a code review to a planted backdoor. Because the provenance is destroyed deterministically in harness code, no prompt-level defense can restore it; we measure a code-level provenance check that catches 77% of laundering while demoting 2% of legitimate summary content. The defect also has a straightforward fix at the serializer, escaping the role labels before flattening; the role-typed harnesses avoid it entirely by keeping messages role-typed.",
+  "arxiv_id": "2610.29869v1",
+  "authors": [
+    "Arshan Dabirsiaghi"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2610.29869v1",
+  "categories": [
+    "cs.CR"
+  ],
+  "comment": "29 pages, 5 figures. Source code, raw data, and recorded live demonstrations at https://github.com/pixee/flat-compaction-attacks-oct-2027",
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2610.29869v1",
+  "latest_seen_version": 1,
+  "paper_id": "2610.29869",
+  "paper_version_id": "2610.29869v1",
+  "published": "2026-10-21T15:24:23+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "Compaction Laundering: Provenance Destruction in Context-Compacting Coding Agents",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-10-21T15:24:23+00:00",
+  "url": "https://arxiv.org/abs/2610.29869v1"
+}

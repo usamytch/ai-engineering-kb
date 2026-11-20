@@ -1,0 +1,37 @@
+{
+  "abstract": "Long-lived agents act on memory carried across sessions, and many of their actions are irreversible, so a stale memory can turn directly into harm. Existing work improves the memory itself --- retrieving, refreshing, or reconciling entries --- yet whether an entry must be re-checked before acting is not a property of the entry: the same remembered address can be used unchecked for a routine shipment but should be re-confirmed before a valuable one. We therefore study \\emph{action-conditioned memory verification}: given a candidate action, decide which of its memory premises to re-verify and when to proceed or abstain, balancing execution risk, abstention, and verification cost. We formulate this as a sequential stopping problem, in which a verification is worth its cost only if it can change what the agent does next; under suitable verifier reliability and cost conditions, increasing action consequence can move the same memory through proceed, verify, and direct-abstention regimes. Building on this formulation, \\textsc{AMV-Guard} is a practical verification gate that extracts the premises a candidate action rests on, calibrates beliefs about whether they are wrong, and selects checks by bounded value of information (VOI). On ToolSandbox, relative to a static policy given the same inputs, it lowers mean verification cost by 33.9\\% while keeping 100\\% safe-proceed recall and 0\\% Gate harmful, and raises Proceed coverage from 38.83\\% to 44.17\\%; in a gate-core transfer to AppWorld, which carries over the stopping/VOI core but not the full structured pipeline, it lowers verification cost by 21.3\\% at a small cost in safe-proceed recall and task success. These results suggest that verification effort should be set by what an agent is about to do, not only by how reliable a memory appears.",
+  "arxiv_id": "2610.31446v1",
+  "authors": [
+    "Yiqi Wang",
+    "Yifei Wang",
+    "Jiaqi Zhang",
+    "Zhangkai Wu",
+    "Yiqun Duan",
+    "Taotao Cai",
+    "Mingkai Zheng"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2610.31446v1",
+  "categories": [
+    "cs.MA"
+  ],
+  "comment": "22 Pages, 5 Figures, 12 Tables",
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2610.31446v1",
+  "latest_seen_version": 1,
+  "paper_id": "2610.31446",
+  "paper_version_id": "2610.31446v1",
+  "published": "2026-10-22T15:43:50+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "When Is a Memory Safe Enough to Act On? Action-Conditioned Verification for Long-Lived Agents",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-10-22T15:43:50+00:00",
+  "url": "https://arxiv.org/abs/2610.31446v1"
+}

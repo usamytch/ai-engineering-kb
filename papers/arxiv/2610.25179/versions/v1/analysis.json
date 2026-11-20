@@ -1,0 +1,554 @@
+{
+  "aidb_assessment": {
+    "confidence": "medium",
+    "novelty": "The main novelty is the explicit factorization of persistent-memory reliability into certified write-side state and authorized read-side influence, coupled with a factorial and paired-world evaluation that distinguishes state-mediated failures from causal leakage.",
+    "rationale": "The controlled comparisons strongly support the paper's mechanism within its constructed benchmark, especially the state-correct CSS-versus-PLACE leakage contrast. Confidence is moderated by one trajectory, finite probes, a single backend, one model family, and the absence of end-to-end semantic interpretation or independent replication.",
+    "recommended_action": "read",
+    "usefulness": "High conceptual and diagnostic usefulness for memory-agent evaluation: it warns against treating final-answer accuracy or retrieval relevance as sufficient and supplies separable endpoints. Immediate production adoption is premature because semantic inputs are trusted and external validation is narrow."
+  },
+  "claims": [
+    {
+      "claim": "The paper's central conceptual claim is that reliable persistent memory requires separate but complementary controls over maintained state and query-time influence.",
+      "evidence": [
+        {
+          "block_id": "b00008-62a38b357d",
+          "quote": "We argue that reliable persistent memory requires governance over two distinct but complementary problems."
+        },
+        {
+          "block_id": "b00062-3aa6971be6",
+          "quote": "state correctness and influence correctness are distinct but complementary requirements for reliable persistent memory"
+        }
+      ]
+    },
+    {
+      "claim": "CSS is intended to prevent stale or conflicting stored states by governing state transitions, realizing them in the backend, and verifying physical readback.",
+      "evidence": [
+        {
+          "block_id": "b00026-c85bdaa716",
+          "quote": "CSS prevents stale or conflicting states from persisting"
+        },
+        {
+          "block_id": "b00030-6ab3fbab1a",
+          "quote": "CSS then derives the required state change, realizes Gt through backend operations, and verifies resulting physical state through Eq. 1."
+        }
+      ]
+    },
+    {
+      "claim": "QASC authorizes memory before truncation and is unable to reconstruct information missing from physical storage.",
+      "evidence": [
+        {
+          "block_id": "b00032-bec2b971fc",
+          "quote": "Authorization precedes context-budget truncation, preventing an ineligible item from reaching the answer model merely because it ranks highly under retrieval."
+        },
+        {
+          "block_id": "b00022-eb90c44732",
+          "quote": "read-side governance can filter represented information but cannot reconstruct facts absent from physical memory."
+        }
+      ]
+    },
+    {
+      "claim": "The evaluation is designed to isolate write-side and read-side contributions by crossing two write policies with two read policies and sharing producer states between paired conditions.",
+      "evidence": [
+        {
+          "block_id": "b00036-c1ec5c0770",
+          "quote": "We cross Native and CSS writing with Native and QASC reading, yielding Native, CSS, QASC, and PLACE."
+        },
+        {
+          "block_id": "b00036-c1ec5c0770",
+          "quote": "Native and QASC share the same Native-produced state, while CSS and PLACE share the same CSS-produced state."
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "ablations": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00036-c1ec5c0770",
+            "quote": "We cross Native and CSS writing with Native and QASC reading, yielding Native, CSS, QASC, and PLACE."
+          }
+        ],
+        "text": "Two-by-two mechanism ablation comparing Native, CSS-only, QASC-only, and combined PLACE."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00038-6ee145a538",
+            "quote": "Closed Loop repeats the factorial setting while retaining prior assistant responses as non-authoritative dialogue context."
+          }
+        ],
+        "text": "Closed-loop diagnostic adds retained assistant responses while preserving the factorial setting."
+      }
+    ],
+    "baselines": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00035-f909453718",
+            "quote": "The same model drives Native memory updates and answer generation"
+          },
+          {
+            "block_id": "b00036-c1ec5c0770",
+            "quote": "yielding Native, CSS, QASC, and PLACE."
+          }
+        ],
+        "text": "Native Mem0 writing with Native reading, using the same model for memory updates and answer generation."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00036-c1ec5c0770",
+            "quote": "We cross Native and CSS writing with Native and QASC reading"
+          }
+        ],
+        "text": "CSS-only condition: governed writing with Native reading."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00036-c1ec5c0770",
+            "quote": "Native and QASC share the same Native-produced state"
+          }
+        ],
+        "text": "QASC-only condition: Native-produced state with governed reading."
+      }
+    ],
+    "datasets": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00037-bb15ffa1cc",
+            "quote": "Experiments use one prespecified 302-turn trajectory spanning four conversations, with persistent memory retained across session resets."
+          },
+          {
+            "block_id": "b00037-bb15ffa1cc",
+            "quote": "It contains 105 state checkpoints and 48 queries across six governance families."
+          }
+        ],
+        "text": "Primary constructed benchmark: one prespecified 302-turn trajectory across four conversations, retaining persistent memory over resets, with 105 state checkpoints and 48 queries from six governance families."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00037-bb15ffa1cc",
+            "quote": "48 causal pairs that hold the query and authorized state fixed while varying only irrelevant history."
+          }
+        ],
+        "text": "Read-side causal evaluation: 48 paired cases in which query and authorized state are fixed and only irrelevant history changes."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00038-6ee145a538",
+            "quote": "Utility evaluates needed support, inappropriate exposure, and conflicting evidence over 72 probes."
+          },
+          {
+            "block_id": "b00038-6ee145a538",
+            "quote": "Closed Loop repeats the factorial setting while retaining prior assistant responses as non-authoritative dialogue context."
+          }
+        ],
+        "text": "Utility diagnostic: 72 probes covering required support, inappropriate exposure, and conflicting evidence; Closed Loop retains prior assistant responses as non-authoritative context."
+      }
+    ],
+    "metrics": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00040-84575caf7e",
+            "quote": "Across the C=105 state checkpoints, we compute"
+          },
+          {
+            "block_id": "b00041-bbdb46207f",
+            "quote": "StateCorrectness=1C​∑c=1CF1​(Scphys,Sc⋆). (4)"
+          }
+        ],
+        "text": "StateCorrectness: semantic F1 between physical-state readback and the reference state across checkpoints."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00045-1fc1ef5bfa",
+            "quote": "LeakageRate=Pr⁡(Ω(a)≠Ω(b)∣Qeval(a)=Qeval(b)=Q⋆) (5)"
+          }
+        ],
+        "text": "LeakageRate: probability that semantic answer outcomes differ across paired worlds, conditional on both realizing the same reference-correct authorized state."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00047-79785441ff",
+            "quote": "AnswerCorrectness is deterministic semantic F1 over generated answers."
+          }
+        ],
+        "text": "AnswerCorrectness: deterministic semantic F1 over generated answers."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00047-79785441ff",
+            "quote": "JointSuccess is stricter and requires the persistent state and authorized support to be correct, required support to remain available, no governance violation to occur, and the final answer to be correct."
+          }
+        ],
+        "text": "JointSuccess: requires correct persistent state and authorized support, retained required support, no governance violation, and a correct final answer."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00048-456f4f11e1",
+            "quote": "NeededSupport measures whether query-required memory remains visible to the answer model, while ExposureRate measures whether ineligible memory is exposed."
+          },
+          {
+            "block_id": "b00048-456f4f11e1",
+            "quote": "ConflictHarm records whether injected conflicting evidence contributes to an incorrect answer."
+          }
+        ],
+        "text": "Utility metrics: NeededSupport, ExposureRate, and ConflictHarm."
+      }
+    ],
+    "negative_results": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00054-dbc729af82",
+            "quote": "QASC does not change these values because it shares the Native state producer and does not modify persistent memory."
+          }
+        ],
+        "text": "QASC alone does not improve the incorrect Native physical state because it is read-only."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00059-cbf54091cf",
+            "quote": "QASC alone cannot recover failures caused by an incorrect Native state."
+          }
+        ],
+        "text": "QASC alone cannot recover failures caused by incorrect stored state."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00056-a23903d55f",
+            "quote": "The smaller eligible sets for Native and QASC arise from write-side state errors and are therefore not used as the primary read-side contrast."
+          }
+        ],
+        "text": "Native-versus-QASC provides fewer leakage-eligible pairs because write-side errors make their authorized states unsuitable for the primary read-side contrast."
+      }
+    ]
+  },
+  "executive_summary": "PLACE separates persistent-memory governance into write-side state certification (CSS) and read-side query authorization (QASC). A controlled factorial study on Mem0 reports that CSS makes the evaluated stored state fully correct at both Qwen2.5 scales, while QASC removes measured leakage when paired with a correct state. The combination gives the best joint success and preserves all measured required support. The causal factorization is thoughtful, but evidence comes from one prespecified long trajectory, trusted semantic inputs, one backend, and two sizes of one model family. The paper therefore supports the mechanism under its constructed setting, not broad deployment reliability.",
+  "labels": {
+    "ablations": "Ablations",
+    "action_adopt": "adopt",
+    "action_read": "read",
+    "action_reject": "reject",
+    "action_watch": "watch",
+    "aidb_assessment": "AIDB assessment",
+    "assumptions": "Assumptions",
+    "available_artifacts": "Available artifacts",
+    "baseline": "Baseline",
+    "baselines": "Baselines",
+    "blocks": "Blocks",
+    "claims": "Main claims",
+    "confidence": "Confidence",
+    "confidence_high": "high",
+    "confidence_low": "low",
+    "confidence_medium": "medium",
+    "context": "Context",
+    "datasets": "Datasets",
+    "document_sha256": "Document SHA-256",
+    "evaluation": "Experimental evaluation",
+    "evidence": "Evidence",
+    "executive_summary": "Executive summary",
+    "generated": "Generated",
+    "hypothesis": "Hypothesis",
+    "importance": "Why it matters",
+    "key_components": "Key components",
+    "limitations": "Limitations",
+    "metadata_sha256": "Metadata SHA-256",
+    "method": "Method",
+    "metrics": "Metrics",
+    "missing_pieces": "Missing pieces",
+    "negative_results": "Negative results",
+    "novelty": "Novelty",
+    "open_questions": "Open questions",
+    "primary_metric": "Primary metric",
+    "problem": "Problem",
+    "profile": "Profile",
+    "proposed_experiments": "Proposed AIDB experiments",
+    "provenance": "Provenance",
+    "provider": "Provider",
+    "rationale": "Rationale",
+    "recommended_action": "Recommended action",
+    "repair_count": "Deterministic repair attempts",
+    "reproducibility": "Reproducibility",
+    "results": "Results",
+    "schema": "Schema",
+    "scope": "Scope",
+    "statement": "Statement",
+    "status": "Status",
+    "status_partial": "partial",
+    "status_strong": "strong",
+    "status_unknown": "unknown",
+    "status_weak": "weak",
+    "stop_condition": "Stop condition",
+    "uncertainties": "Uncertainties",
+    "usefulness": "Usefulness"
+  },
+  "language": {
+    "code": "en",
+    "name": "English"
+  },
+  "limitations": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00049-e5e85f643a",
+          "quote": "the primary benchmark contains one prespecified four-conversation trajectory"
+        },
+        {
+          "block_id": "b00049-e5e85f643a",
+          "quote": "longitudinal results are reported descriptively with conversation-block sensitivity intervals rather than population-level inference."
+        }
+      ],
+      "limitation": "The main benchmark is a single prespecified longitudinal trajectory, so checkpoint results are descriptive and do not support population-level inference."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00062-3aa6971be6",
+          "quote": "Our current evaluation isolates governance using trusted user-level semantics rather than end-to-end automatic interpretation."
+        }
+      ],
+      "limitation": "Governance receives trusted user-level event and query semantics; the experiment does not test end-to-end automatic interpretation, which may introduce additional errors."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00035-f909453718",
+          "quote": "We evaluate PLACE on Mem0 [1] with Qwen2.5-3B and Qwen2.5-7B [9] through Ollama, using Qdrant storage and Nomic embeddings."
+        }
+      ],
+      "limitation": "External validity is narrow: the supplied evaluation covers Mem0 and two sizes of the Qwen2.5 family, not diverse backends, model families, domains, or naturally occurring user histories."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00056-a23903d55f",
+          "quote": "both realize the reference-correct state for all 48 causal pairs"
+        },
+        {
+          "block_id": "b00056-a23903d55f",
+          "quote": "LeakageRate decreases from 0.125 to 0.000 at 7B and from 0.083 to 0.000 at 3B"
+        }
+      ],
+      "limitation": "Zero measured leakage is based on finite eligible causal pairs and should not be read as proof that leakage is impossible outside the tested cases."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00032-bec2b971fc",
+          "quote": "It cannot modify persistent state or recover information absent from the backend."
+        }
+      ],
+      "limitation": "Read-side governance cannot repair facts absent from physical storage, placing a hard ceiling on QASC-only performance."
+    }
+  ],
+  "method": {
+    "assumptions": [
+      "User-level update intent and query semantics are trusted rather than inferred end to end.",
+      "Evaluator semantic readback faithfully represents only facts physically evidenced in storage.",
+      "The reference state and authorization semantics used by evaluation are correct.",
+      "Paired read-policy conditions receive identical producer states; otherwise the read-side comparison is invalid.",
+      "Assistant responses retained in the closed-loop diagnostic are treated as non-authoritative context."
+    ],
+    "key_components": [
+      "Physical-state readback maps only backend-evidenced records into semantic facts; a separate reference state is reserved for evaluation.",
+      "CSS governs write-side state formation from a previous governed state and a trusted user-level event, then verifies the realized backend state.",
+      "QASC is a deterministic, read-only authorization policy over physically represented memory; it cannot repair missing stored facts.",
+      "The factorial design isolates write effects by comparing Native with CSS and read effects by comparing conditions sharing the same producer state.",
+      "Causal leakage pairs hold the query and correct authorized state fixed while changing only irrelevant history.",
+      "Utility and closed-loop diagnostics examine support preservation, inappropriate exposure, conflicting evidence, and retained assistant responses."
+    ],
+    "overview": "PLACE is a factorized layer around an unchanged memory backend and answer model. CSS accepts a trusted user-level update event, derives a governed state transition, realizes it through backend operations, and verifies the physical state through semantic readback. QASC applies entity, predicate, scope, temporal, and lifecycle eligibility constraints before context-budget truncation, exposing only authorized support. A two-by-two design crosses Native or CSS writing with Native or QASC reading, producing Native, CSS, QASC, and PLACE conditions while sharing producer states across the relevant read-policy pairs."
+  },
+  "open_questions": [
+    "How accurately can learned semantic interpretation recover trusted update and query semantics, and how do its errors propagate separately into CSS and QASC?",
+    "Do the factorial effects replicate over independently sampled long-horizon trajectories with human-validated states, eligibility decisions, and answers?",
+    "How does PLACE perform with other memory backends, embedding systems, retrieval strategies, model families, and domains?",
+    "What are the added write latency, query latency, storage overhead, and recovery behavior under backend failures or concurrent updates?",
+    "How sensitive are the conclusions to alternative semantic readback functions, authorization policies, and human adjudication of answer equivalence?"
+  ],
+  "problem": {
+    "importance": "Persistent errors can survive across sessions and affect later behavior. A system may also produce a correct answer despite an incorrect backend state, so answer accuracy or retrieval quality alone is an inadequate safety and reliability diagnostic.",
+    "scope": "The paper studies two controls: correctness of the semantic state physically maintained over lifecycle updates, and correctness of the subset of represented memory allowed to influence a query. It evaluates these controls on Mem0 with two Qwen2.5 model scales.",
+    "statement": "Persistent-memory systems may preserve obsolete or contradictory facts, or allow memory that is ineligible for a particular query to affect an answer. Final-answer quality alone cannot distinguish a storage-state failure from a query-time influence failure."
+  },
+  "proposed_experiments": [
+    {
+      "baseline": "Trusted-semantics PLACE, Native Mem0, CSS-only, and QASC-only on the same independently sampled trajectories.",
+      "hypothesis": "PLACE with automatically inferred semantics retains most of the joint-governance benefit of PLACE with trusted semantics, and interpretation errors can be localized to write or read decisions.",
+      "primary_metric": "JointSuccess, supplemented by semantic-interpretation accuracy and separate write-transition and authorization error rates.",
+      "stop_condition": "Stop after a preregistered trajectory count is complete; reject practical equivalence if the lower confidence bound for automatic-versus-trusted JointSuccess falls below the prespecified non-inferiority margin."
+    },
+    {
+      "baseline": "Native operation for each backend-model combination, with the same factorial CSS-only, QASC-only, and PLACE conditions.",
+      "hypothesis": "The write-side and read-side gains replicate across independent trajectories, domains, memory backends, and model families rather than being specific to the reported configuration.",
+      "primary_metric": "Mean paired PLACE-minus-Native JointSuccess across independently sampled trajectories, with StateCorrectness and LeakageRate as mechanism checks.",
+      "stop_condition": "Stop at the preregistered sample size; withhold adoption if the gain changes sign across most backend-model strata or if state matching fails in any primary read-policy comparison."
+    },
+    {
+      "baseline": "Native reading and a relevance-only filter, both operating on the same CSS-certified physical states.",
+      "hypothesis": "QASC continues to block ineligible influence under adversarially ranked, semantically similar, temporally stale, or scope-conflicting memories without removing required support.",
+      "primary_metric": "LeakageRate on eligible paired worlds, jointly constrained by NeededSupport.",
+      "stop_condition": "Stop when the preregistered adversarial suite is exhausted; reject the hypothesis if any attack family produces leakage above the declared safety threshold or NeededSupport below the declared utility threshold."
+    }
+  ],
+  "provenance": {
+    "block_count": 84,
+    "document_sha256": "81cced3649a3f663453bee970f6142faf186b5ad39a39b900f4c787cde9ede6d",
+    "generated_at": "2026-11-20T08:37:16.434870+00:00",
+    "metadata_sha256": "2d3a18975958e55efe4b300e6ac18d7d7b1845d8e38e29c0584228a7601d37b5",
+    "profile": "deep",
+    "provider": "codex-exec:configured-default",
+    "repair_count": 0,
+    "schema_version": "paper-summary-v1"
+  },
+  "reproducibility": {
+    "artifacts": [
+      "The paper states that project materials are available online.",
+      "The implementation stack is identified as Mem0, Ollama, Qdrant, Nomic embeddings, Qwen2.5-3B, and Qwen2.5-7B.",
+      "The factorial conditions, trajectory size, checkpoint and query counts, causal-pair construction, metrics, and bootstrap resampling count are described."
+    ],
+    "assessment": "The experimental structure and metric definitions are unusually explicit, and an artifact URL is stated. However, the supplied document blocks do not contain enough operational detail to establish exact reproduction. Reproducibility is therefore partial rather than strong.",
+    "missing": [
+      "The supplied blocks do not enumerate artifact contents, source-code version identifiers, dependency versions, model decoding parameters, prompts, hardware, random seeds, or exact runtime configuration.",
+      "The supplied blocks do not provide the full trajectory, probe records, evaluator annotations, semantic readback implementation, eligibility rules, or answer-scoring implementation.",
+      "No independent replication or human-validation results are reported."
+    ],
+    "status": "partial"
+  },
+  "results": [
+    {
+      "context": "This is the primary write-side comparison. The reported factorization check covered all 153 semantic checkpoints and found the expected producer-state matches, supporting attribution to state formation rather than retrieval policy.",
+      "evidence": [
+        {
+          "block_id": "b00054-dbc729af82",
+          "quote": "StateCorrectness increases from 0.488 to 1.000 at 7B and from 0.414 to 1.000 at 3B, corresponding to StateGain values of 0.512 and 0.586, respectively."
+        },
+        {
+          "block_id": "b00054-dbc729af82",
+          "quote": "The factorization check also holds across all 153 semantic checkpoints, with Native matching QASC and CSS matching PLACE at both model scales."
+        }
+      ],
+      "result": "CSS raised StateCorrectness from 0.488 to 1.000 for 7B and from 0.414 to 1.000 for 3B; the corresponding StateGain values were 0.512 and 0.586."
+    },
+    {
+      "context": "This is the cleanest read-side causal contrast because both conditions realize the reference-correct state and differ only in read policy. It establishes zero observed leakage in this finite test, not a universal zero leakage rate.",
+      "evidence": [
+        {
+          "block_id": "b00056-a23903d55f",
+          "quote": "LeakageRate decreases from 0.125 to 0.000 at 7B and from 0.083 to 0.000 at 3B"
+        },
+        {
+          "block_id": "b00056-a23903d55f",
+          "quote": "with 95% pair-bootstrap intervals of [0.042,0.229] and [0.021,0.167] for LeakageDrop."
+        }
+      ],
+      "result": "Within the state-correct CSS-versus-PLACE contrast, LeakageRate fell from 0.125 to 0.000 for 7B and from 0.083 to 0.000 for 3B. The reported 95% intervals for LeakageDrop were [0.042,0.229] and [0.021,0.167]."
+    },
+    {
+      "context": "The utility diagnostic argues against the trivial explanation that leakage was removed by suppressing all memory. The conclusion remains limited to the measured support and exposure probes.",
+      "evidence": [
+        {
+          "block_id": "b00057-9f00e529f6",
+          "quote": "PLACE preserves 1.000 NeededSupport at both model scales while reducing ExposureRate to 0.000."
+        },
+        {
+          "block_id": "b00057-9f00e529f6",
+          "quote": "preserving all measured query-required support."
+        }
+      ],
+      "result": "PLACE preserved 1.000 NeededSupport at both model scales while reducing ExposureRate to 0.000."
+    },
+    {
+      "context": "The combined control was strongest on the strict joint endpoint. The authors appropriately characterize this as evidence consistent with complementarity, not population-level statistical synergy.",
+      "evidence": [
+        {
+          "block_id": "b00059-cbf54091cf",
+          "quote": "PLACE reaches a JointSuccess of 0.667 at 7B and 0.625 at 3B, compared with 0.417 and 0.354 for CSS, respectively"
+        },
+        {
+          "block_id": "b00059-cbf54091cf",
+          "quote": "InteractionGain is 0.250 at 7B and 0.271 at 3B, with sensitivity intervals of [0.060,0.377] and [0.069,0.377]."
+        },
+        {
+          "block_id": "b00059-cbf54091cf",
+          "quote": "evidence consistent with complementarity rather than as population-level statistical synergy."
+        }
+      ],
+      "result": "PLACE achieved JointSuccess of 0.667 for 7B and 0.625 for 3B, versus 0.417 and 0.354 for CSS. InteractionGain was 0.250 and 0.271, with sensitivity intervals [0.060,0.377] and [0.069,0.377]."
+    },
+    {
+      "context": "This diagnostic retains earlier assistant responses as non-authoritative context. The lower 3B joint result relative to the primary evaluation shows that perfect governed state and exposure control do not guarantee correct final answers.",
+      "evidence": [
+        {
+          "block_id": "b00060-bcfb042396",
+          "quote": "PLACE maintains StateCorrectness of 1.000 and ExposureRate of 0.000 at both model scales, with JointSuccess of 0.667 at 7B and 0.458 at 3B."
+        }
+      ],
+      "result": "In the closed-loop diagnostic, PLACE retained StateCorrectness of 1.000 and ExposureRate of 0.000 at both scales, while JointSuccess was 0.667 for 7B and 0.458 for 3B."
+    }
+  ],
+  "title": "Memory, Know Your PLACE: Governing Lifecycle State and Query-Time Eligibility in Persistent-Memory Agents",
+  "uncertainties": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00062-3aa6971be6",
+          "quote": "using trusted user-level semantics rather than end-to-end automatic interpretation."
+        }
+      ],
+      "uncertainty": "It is unclear how robust CSS and QASC remain when update intent, entity identity, temporal scope, lifecycle status, or query semantics must be inferred automatically.",
+      "why_it_matters": "The trusted semantics remove a likely source of real-world governance errors; mistakes upstream could corrupt state transitions or authorization decisions."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00049-e5e85f643a",
+          "quote": "Results from Qwen2.5-3B and Qwen2.5-7B are treated as model-scale replications."
+        },
+        {
+          "block_id": "b00037-bb15ffa1cc",
+          "quote": "one prespecified 302-turn trajectory spanning four conversations"
+        }
+      ],
+      "uncertainty": "The generality of the observed gains across independent histories, users, domains, backends, and model families is unresolved.",
+      "why_it_matters": "The present design treats two sizes of one family as scale replications but does not establish broad external validity."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00019-69ad5b14be",
+          "quote": "where β maps only physically evidenced records to semantic facts and cannot introduce unsupported values."
+        },
+        {
+          "block_id": "b00047-79785441ff",
+          "quote": "AnswerCorrectness is deterministic semantic F1 over generated answers."
+        }
+      ],
+      "uncertainty": "The reliability and independence of deterministic semantic answer scoring and evaluator-side state readback are not established in the supplied blocks.",
+      "why_it_matters": "Both primary endpoints depend on semantic mappings; evaluator error could alter apparent correctness or leakage."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00026-c85bdaa716",
+          "quote": "PLACE (Persistent-memory Lifecycle Alignment and Contextual Eligibility) adds governance at the write and read boundaries of an existing persistent-memory system"
+        }
+      ],
+      "uncertainty": "The operational cost, latency, failure recovery, and scalability of certified writes and per-query authorization are unreported.",
+      "why_it_matters": "A governance layer may be accurate in a benchmark yet impractical for long-running production agents."
+    }
+  ]
+}

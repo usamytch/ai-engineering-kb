@@ -1,0 +1,708 @@
+{
+  "aidb_assessment": {
+    "confidence": "medium",
+    "novelty": "The central contribution is a clean division-of-labor test: storage either adjudicates a contradiction or exposes it to an existing debate reasoner. The strongest novelty is experimental design and diagnosis rather than a new model architecture—independent mechanism switches, pre-declared gates, explicit reachability instrumentation, and publication of a correction that enlarges both positive and negative effects.",
+    "rationale": "The controlled surface-versus-collapse comparison, paired uncertainty analysis, disclosure of the cap confound, and consequential negative results make the paper decision-relevant. However, a one-model evaluation, synthetic entity-level attacks, one judge, reduced temporal replication, and absence of genuine context overflow limit confidence in broad deployment claims. The work merits close reading and targeted internal replication before adoption.",
+    "recommended_action": "read",
+    "usefulness": "High for designers of shared agent memory and retrieval evaluations. The evidence argues for retaining provenance-labelled alternatives until a reasoning component sees them, and for instrumenting whether an ablated mechanism actually fires. It also warns that topology-based write plausibility and provenance-heavy routing can be actively harmful. Direct production adoption should remain conditional because the evaluation is narrow and full context still wins on accuracy."
+  },
+  "claims": [
+    {
+      "claim": "The paper claims that surfacing the whole ranked conflict set, rather than collapsing it to one stored winner, improves final-answer accuracy and poisoning robustness when contradictions are reachable.",
+      "evidence": [
+        {
+          "block_id": "b00054-cd35f66baf",
+          "quote": "surfacing raises F1 from 0.116 to 0.456 (Δ=+0.340, CI [+0.267,+0.414], Wilcoxon p<10−4)"
+        },
+        {
+          "block_id": "b00054-cd35f66baf",
+          "quote": "cuts attacks from 22 to 7 of 122"
+        }
+      ]
+    },
+    {
+      "claim": "The authors claim that the surfacing effect is not confined to one retrieval substrate and directionally transfers from conversational memory to document memory.",
+      "evidence": [
+        {
+          "block_id": "b00049-0cd7920c78",
+          "quote": "Two independent substrates, same direction, both CIs excluding zero."
+        },
+        {
+          "block_id": "b00057-1b731cef98",
+          "quote": "We claim a directional replication of the accuracy effect on a second corpus"
+        }
+      ]
+    },
+    {
+      "claim": "The paper claims that the write trust-gate is structurally mis-specified for attacks composed from already-known entities and can harm accuracy once conflicts reach retrieval.",
+      "evidence": [
+        {
+          "block_id": "b00045-54ec66f33f",
+          "quote": "100% of poison objects are entities already in the graph, against 53% of gold objects."
+        },
+        {
+          "block_id": "b00047-f2efa71d35",
+          "quote": "enabling the gate costs 0.075 F1 (CI [−0.133,−0.018], Wilcoxon p=0.039)"
+        }
+      ]
+    },
+    {
+      "claim": "The authors explicitly do not claim state-of-the-art performance; full context remains the strongest accuracy baseline on the studied corpus.",
+      "evidence": [
+        {
+          "block_id": "b00009-cc763efa5e",
+          "quote": "The contribution is not a new state of the art"
+        },
+        {
+          "block_id": "b00062-feab1ead36",
+          "quote": "On this corpus that is the right baseline and we do not beat it."
+        }
+      ]
+    },
+    {
+      "claim": "The paper claims that mechanism evaluation must separately verify whether the mechanism was able to act, because the original retrieval cap strongly attenuated the measured effect.",
+      "evidence": [
+        {
+          "block_id": "b00074-b08e8549fd",
+          "quote": "Our pre-declared retrieval cap left three quarters of planted contradictions unretrievable"
+        },
+        {
+          "block_id": "b00074-b08e8549fd",
+          "quote": "A mechanism can only be measured where it is able to act"
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "ablations": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00025-df515ff9b1",
+            "quote": "collapse passes only the top-ranked claim, surface passes the whole ranked set with its provenance."
+          }
+        ],
+        "text": "Conflict surface versus collapse, with all downstream debate components fixed."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00028-945849ebf7",
+            "quote": "Switch: trust_gate, which governs admission and invalidate-on-supersede"
+          }
+        ],
+        "text": "Write trust-gate, including its admission and invalidate-on-supersede behavior."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00052-5ba9c0f47b",
+            "quote": "router provenance features −0.002 −0.096∗ harms trust-weighted retrieval −0.059 −0.065 inert temporal validity in ranking +0.001 −0.004 inert"
+          }
+        ],
+        "text": "Router provenance features, trust-weighted retrieval, and temporal validity in conflict ranking."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00144-a9a54d511f",
+            "quote": "MVCC and a single lock-protected store produce serial-equivalent accuracy"
+          }
+        ],
+        "text": "Round-level snapshot isolation versus a lock-protected store."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00136-6bad8276e3",
+            "quote": "No policy beats always-vector on acc/1K, so the pre-declared gate fails."
+          }
+        ],
+        "text": "Retrieval substrate and routing policy: vector, graph, heuristic router, and bandit router."
+      }
+    ],
+    "baselines": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00042-4faaa1f61a",
+            "quote": "Full context recovers essentially all gold evidence at a 32K budget and omits nothing"
+          }
+        ],
+        "text": "Full-context input, which omits no LoCoMo content and acts as the accuracy and high-cost ceiling."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00140-99914c6a36",
+            "quote": "vector-only (Mem0-style) 0.374 — — 0.098 0.47"
+          }
+        ],
+        "text": "Always-vector retrieval, described in the ablation table as a Mem0-style baseline."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00140-99914c6a36",
+            "quote": "graph-only (Zep/G-Memory-style) 0.131 — — 0.039 0.26"
+          }
+        ],
+        "text": "Always-graph retrieval, described as a Zep/G-Memory-style baseline."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00137-27be2b07bc",
+            "quote": "heuristic router 0.321 7,584 0.0423 0.059"
+          },
+          {
+            "block_id": "b00137-27be2b07bc",
+            "quote": "bandit λ=4 0.384 6,718 0.0572 0.078"
+          }
+        ],
+        "text": "Trust-only retrieval, heuristic routing, and contextual-bandit routing under several cost weights."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00148-1d04604e46",
+            "quote": "We therefore claim transfer of the memory abstraction and its behavioural signature, and explicitly not a gain"
+          }
+        ],
+        "text": "Cross-framework execution inside AutoGen, used to test transfer of ordering rather than superiority."
+      }
+    ],
+    "datasets": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00032-5973d957b3",
+            "quote": "LoCoMo (Maharana et al., 2024): 10 conversations, 5,878 episodes, 9,769 edges"
+          },
+          {
+            "block_id": "b00032-5973d957b3",
+            "quote": "n=100 stratified items each."
+          }
+        ],
+        "text": "LoCoMo conversational memory: multihop-temporal and single-hop slices, with stratified question sets and extracted episodes and edges."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00131-17a98d246a",
+            "quote": "5,918 bridge questions are available; we sample n=100 with a fixed seed."
+          },
+          {
+            "block_id": "b00132-ad5ffbcf3f",
+            "quote": "the replication validates a reduced form of the mechanism."
+          }
+        ],
+        "text": "HotpotQA-distractor document-memory port, sampled from bridge questions; time is represented by a synthetic ingestion clock, so the replication tests a reduced mechanism."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00033-1d9a4185c2",
+            "quote": "122 of 603 items (20.2%) qualify."
+          },
+          {
+            "block_id": "b00033-1d9a4185c2",
+            "quote": "we synthesise a contradicting edge on the same (h,r)"
+          }
+        ],
+        "text": "DebateMem-Conflict, a deterministic synthetic contradiction-injection set restricted to questions whose answer is expressible as a single-valued edge object."
+      }
+    ],
+    "metrics": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00017-aecbf1254d",
+            "quote": "scored by token-F1 against gold."
+          },
+          {
+            "block_id": "b00118-24f1d52c4e",
+            "quote": "Slice Backend F1 EM tokens/q acc/1K ev. rec. omit"
+          }
+        ],
+        "text": "Token-level final-answer F1 and exact match."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00036-dd7a09f712",
+            "quote": "exact McNemar on attack-success discordance."
+          }
+        ],
+        "text": "Attack success rate and exact McNemar tests on discordant paired outcomes."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00137-27be2b07bc",
+            "quote": "Policy F1 tokens/q acc/1K ASR mode selection"
+          }
+        ],
+        "text": "Token cost per query and accuracy per thousand tokens."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00117-4fd3b0b8e0",
+            "quote": "“omit” is blocks dropped at the budget ceiling; “ev. rec.” is gold-evidence recall"
+          },
+          {
+            "block_id": "b00140-99914c6a36",
+            "quote": "confl. F1 ASR ev. rec."
+          }
+        ],
+        "text": "Gold-evidence recall, omitted blocks, conflict-resolution F1, latency, and conflict reachability."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00036-dd7a09f712",
+            "quote": "10,000-resample bootstrap (Efron, 1987) with two-sided Wilcoxon"
+          }
+        ],
+        "text": "Paired uncertainty analysis using bootstrap confidence intervals and two-sided Wilcoxon tests."
+      }
+    ],
+    "negative_results": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00042-4faaa1f61a",
+            "quote": "it loses 0.150 F1 (CI [−0.216,−0.085], p<10−4)"
+          }
+        ],
+        "text": "Graph retrieval failed its pre-declared benefit threshold and substantially underperformed vector retrieval and full context."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00045-54ec66f33f",
+            "quote": "the gate rejects 0/122 poisoned writes."
+          },
+          {
+            "block_id": "b00045-54ec66f33f",
+            "quote": "together they move rejection to 3/122."
+          }
+        ],
+        "text": "The original write gate rejected none of the injected poisoned writes; three repairs raised this only slightly."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00055-de54fed401",
+            "quote": "router’s provenance features (−0.096, CI [−0.149,−0.043], p=0.030)."
+          }
+        ],
+        "text": "At the reachable cap, router provenance features were harmful rather than neutral."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00052-5ba9c0f47b",
+            "quote": "trust-weighted retrieval −0.059 −0.065 inert temporal validity in ranking +0.001 −0.004 inert write gate (full-system ablation) +0.012 +0.004 inert"
+          }
+        ],
+        "text": "Trust-weighted retrieval, temporal validity, and the full-system write-gate ablation remained inert across both cap regimes."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00060-f726eecf4a",
+            "quote": "but not always-vector (+0.010, CI [−0.013,+0.040], marginally lower acc/1K)."
+          },
+          {
+            "block_id": "b00142-67aa864a3a",
+            "quote": "The λ sweep is flat"
+          }
+        ],
+        "text": "The learned router beat the heuristic but not always-vector on accuracy efficiency; its cost-weight sweep did not yield a meaningful frontier."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00144-a9a54d511f",
+            "quote": "The mechanism is nonetheless not load-bearing at this debate topology"
+          }
+        ],
+        "text": "Snapshot isolation preserved serial-equivalent accuracy but was not load-bearing in the tested debate topology."
+      }
+    ]
+  },
+  "executive_summary": "The paper tests whether shared memory should collapse contradictory facts before multi-agent debate or expose the ranked conflict set to agents. Its controlled ablation supports surfacing: in the reachable-conflict regime it substantially improves F1 and reduces successful poisoning at similar token cost. The initial protocol concealed much of the effect because its retrieval cap made most planted contradictions unreachable; the authors disclose and remeasure this confound. Write-time trust gating and router provenance features become harmful when conflicts are reachable. Evidence is unusually transparent, but generalization remains constrained by one model family, two corpora, synthetic attacks, a single judge, and memories that fit within the full context window.",
+  "labels": {
+    "ablations": "Ablations",
+    "action_adopt": "adopt",
+    "action_read": "read",
+    "action_reject": "reject",
+    "action_watch": "watch",
+    "aidb_assessment": "AIDB assessment",
+    "assumptions": "Assumptions",
+    "available_artifacts": "Available artifacts",
+    "baseline": "Baseline",
+    "baselines": "Baselines",
+    "blocks": "Blocks",
+    "claims": "Main claims",
+    "confidence": "Confidence",
+    "confidence_high": "high",
+    "confidence_low": "low",
+    "confidence_medium": "medium",
+    "context": "Context",
+    "datasets": "Datasets",
+    "document_sha256": "Document SHA-256",
+    "evaluation": "Experimental evaluation",
+    "evidence": "Evidence",
+    "executive_summary": "Executive summary",
+    "generated": "Generated",
+    "hypothesis": "Hypothesis",
+    "importance": "Why it matters",
+    "key_components": "Key components",
+    "limitations": "Limitations",
+    "metadata_sha256": "Metadata SHA-256",
+    "method": "Method",
+    "metrics": "Metrics",
+    "missing_pieces": "Missing pieces",
+    "negative_results": "Negative results",
+    "novelty": "Novelty",
+    "open_questions": "Open questions",
+    "primary_metric": "Primary metric",
+    "problem": "Problem",
+    "profile": "Profile",
+    "proposed_experiments": "Proposed AIDB experiments",
+    "provenance": "Provenance",
+    "provider": "Provider",
+    "rationale": "Rationale",
+    "recommended_action": "Recommended action",
+    "repair_count": "Deterministic repair attempts",
+    "reproducibility": "Reproducibility",
+    "results": "Results",
+    "schema": "Schema",
+    "scope": "Scope",
+    "statement": "Statement",
+    "status": "Status",
+    "status_partial": "partial",
+    "status_strong": "strong",
+    "status_unknown": "unknown",
+    "status_weak": "weak",
+    "stop_condition": "Stop condition",
+    "uncertainties": "Uncertainties",
+    "usefulness": "Usefulness"
+  },
+  "language": {
+    "code": "en",
+    "name": "English"
+  },
+  "limitations": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00069-228d07913f",
+          "quote": "All results use gpt-oss-120b, so we cannot separate model-specific from mechanism-level effects."
+        }
+      ],
+      "limitation": "Results rely on one model family, so model-specific behavior cannot be separated from mechanism-level behavior."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00070-c2bb200959",
+          "quote": "Every LoCoMo partition fits in 32K tokens"
+        },
+        {
+          "block_id": "b00070-c2bb200959",
+          "quote": "we do not exhibit the regime where memory genuinely overflows"
+        }
+      ],
+      "limitation": "All LoCoMo memories fit inside the context window; retrieval is a cost choice, not a necessity, and true overflow behavior is untested."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00071-bbce53b714",
+          "quote": "DebateMem-Conflict covers the 20.2% of items whose answers are single-valued edge objects"
+        },
+        {
+          "block_id": "b00071-bbce53b714",
+          "quote": "Injections are template-generated for determinism"
+        }
+      ],
+      "limitation": "The attack benchmark covers only answers represented as single-valued edge objects and uses template-generated contradictions, narrowing question type and linguistic realism."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00071-bbce53b714",
+          "quote": "A single judge sits between memory and score."
+        }
+      ],
+      "limitation": "A single judge mediates between debate and the answer metric, leaving judge sensitivity unmeasured."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00068-8627b8ef6e",
+          "quote": "not at cap 40 (5→3 of 51, p=0.63) nor on HotpotQA (3→2 of 67, p=1.00)"
+        }
+      ],
+      "limitation": "Attack-success reduction lacks statistical establishment at the original cap and on HotpotQA because few attacks land."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00067-2337724b97",
+          "quote": "We judge those unaffected rather than having verified it"
+        }
+      ],
+      "limitation": "Some experiments were not rerun in the reachable regime; the authors judge the retrieval cap irrelevant to them rather than verifying that judgment."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00132-ad5ffbcf3f",
+          "quote": "the replication validates a reduced form of the mechanism."
+        }
+      ],
+      "limitation": "The HotpotQA port substitutes ingestion order for event time, so it does not replicate genuine bi-temporal memory behavior."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00148-1d04604e46",
+          "quote": "We integrated one external framework, not the two we set out to"
+        }
+      ],
+      "limitation": "Only one external multi-agent framework was integrated; the second planned framework was not attempted."
+    }
+  ],
+  "method": {
+    "assumptions": [
+      "Only retrieved edges can form a conflict set; therefore mechanism exposure depends on retrieval reachability.",
+      "Corpus transcript facts are treated as ground truth and bypass write admission.",
+      "Single-valued relations define eligible contradictions; simultaneous assertions are treated as elaborations rather than conflicts.",
+      "The adversary can write and choose timestamps but cannot modify stored edges, inspect agent state, or alter prompts.",
+      "All agents in a round receive the same retrieved context, and one judge converts the debate into the scored answer.",
+      "The primary establishment rule is a paired bootstrap confidence interval excluding zero; subgroup analyses are pre-specified around poisoned and actually discriminating items."
+    ],
+    "key_components": [
+      "A provenance-preserving edge representation with writer, validity interval, trust, source type, support, and links back to source episodes.",
+      "Four retrieval modes—vector, one-hop, multi-hop, and hybrid—behind a shared interface and a fixed prompt budget.",
+      "A write trust-gate based on groundedness, graph compatibility, relation compatibility, writer credibility, and a contradiction penalty.",
+      "A conflict resolver that detects distinct objects for a shared subject–relation key and compares collapse against surface.",
+      "DebateMem-Conflict, which injects later, type-consistent contradictory objects under a non-debating writer.",
+      "Pre-declared phase gates and single-mechanism ablations, followed by a disclosed retrieval-reachability correction."
+    ],
+    "overview": "DebateGraph provides a common read/write/snapshot contract across four retrieval modes. Dialogue turns or document sentences become episodes; an LLM extracts provenance-linked triples into a bi-temporal store. At query time, vector, graph, or hybrid retrieval operates under a hard context budget. A resolver groups retrieved edges sharing a subject and relation but asserting distinct objects, ranks them by validity, trust, and cross-writer support, then either passes only the winner or the complete ranked conflict set. Each ablation changes one switch while downstream debate and judging remain fixed. Effects are evaluated with paired item-level comparisons, bootstrap confidence intervals, Wilcoxon tests, and exact McNemar tests for attack discordance."
+  },
+  "open_questions": [
+    "Does conflict surfacing outperform collapse with multiple independently served model families and multiple judge models?",
+    "Which surfaced fields—alternative claim text, writer identity, trust score, support count, or supersession state—cause the gain?",
+    "How does the mechanism behave when stored memory genuinely exceeds every available context window?",
+    "Can retrieval be optimized directly for conflict reachability without degrading ordinary evidence relevance or increasing prompt cost?",
+    "Does the result survive adaptive attacks involving paraphrases, coordinated writers, provenance spoofing, or several mutually supporting false edges?",
+    "Would a relative candidate-versus-incumbent admission rule avoid the trust-gate failure without suppressing truthful first mentions?"
+  ],
+  "problem": {
+    "importance": "Premature reconciliation can erase useful disagreement and creates an attack surface when an adversarial writer controls the signal used for tie-breaking. The question is consequential because debate already supplies explicit reasoning machinery that could compare the claims.",
+    "scope": "The study concerns a multi-agent question-answering pipeline with shared episodic and graph memory, provenance-labelled contradiction injection, fixed-budget retrieval, three agents, two debate rounds, and one judge. It evaluates five switchable memory mechanisms across LoCoMo and a reduced HotpotQA document port under the stated write-adversary model.",
+    "statement": "Shared-memory systems commonly reconcile competing facts and return one winner before debate begins. The paper asks whether, with debate, budget, and retrieved evidence held fixed, storage should instead preserve a ranked set of contradictory claims and delegate adjudication to the agents."
+  },
+  "proposed_experiments": [
+    {
+      "baseline": "For each of at least two additional independently served model families, compare collapse with surface using identical retrieved sets, prompts, budgets, attacks, and judges; include a judge-swap analysis.",
+      "hypothesis": "Conflict surfacing improves paired answer quality and attack robustness across model families rather than only for the reported model.",
+      "primary_metric": "Paired token-F1 difference on conflict-reachable items, with attack-success discordance as a co-primary safety endpoint and bootstrap confidence intervals reported per model.",
+      "stop_condition": "Stop and reject model-independent generalization if the confidence interval includes zero for most added model families, if any adequately powered family shows a significant reversal, or if judge swaps change the direction."
+    },
+    {
+      "baseline": "Compare collapse, unlabelled competing claims, claims plus writer, claims plus support count, claims plus trust, claims plus supersession state, and the full surfaced representation under identical retrieval.",
+      "hypothesis": "The gain comes primarily from exposing competing claim content, while provenance annotations add smaller or inconsistent value.",
+      "primary_metric": "Paired token-F1 on discriminating items, supplemented by prompt tokens and attack success rate.",
+      "stop_condition": "Stop adding provenance fields when no field yields a confidence interval excluding zero over unlabelled competing claims, or when its accuracy gain is offset by a pre-declared token-cost threshold."
+    },
+    {
+      "baseline": "Construct long-memory partitions that necessarily overflow context; compare collapse and surface under matched retrieval, then repeat with template attacks, fluent paraphrases, coordinated multi-writer attacks, and provenance-spoofing attacks.",
+      "hypothesis": "Surfacing remains beneficial when memory exceeds the model context window and under adaptive, fluent poisoning.",
+      "primary_metric": "Paired token-F1 and attack success rate on items where both truthful and poisoned alternatives are demonstrably retrieved into the conflict set.",
+      "stop_condition": "Stop and narrow the claim if surfacing fails to improve F1 with a confidence interval excluding zero in the overflow regime, or if any adaptive attack class eliminates the robustness benefit at matched cost."
+    }
+  ],
+  "provenance": {
+    "block_count": 486,
+    "document_sha256": "34c9c8be93673e6ca76e58b4b46aa7136f8309133cca746d5f14149718736564",
+    "generated_at": "2026-11-20T08:53:06.986667+00:00",
+    "metadata_sha256": "6844046e30095764015a04e0f7742fd892b3df15dcb1c28b188fb70d2bd318da",
+    "profile": "deep",
+    "provider": "reviewed-candidate",
+    "repair_count": 0,
+    "schema_version": "paper-summary-v1"
+  },
+  "reproducibility": {
+    "artifacts": [
+      "The paper states that code, per-query JSONL for all runs, the attack set, gate outputs, significance outputs, and corpus-validation outputs are released.",
+      "Every LLM call is cached on the full request payload for byte-identical replay.",
+      "Core corpora, attack construction, model, sampling parameters, budget, retrieval cap, agent and round counts, and paired statistical procedure are described.",
+      "Scripts are said to recompute tables and rebuild the harness and attack set deterministically."
+    ],
+    "assessment": "Documentation and logged artifacts are unusually extensive, and full-payload caching should reproduce the reported executions closely. The rating remains partial because this review is restricted to the supplied text: the actual release cannot be inspected, no concrete artifact location appears, and exact environment and execution commands are not shown. Replaying cached outputs is strong result verification but is not equivalent to independently regenerating model behavior.",
+    "missing": [
+      "The supplied document does not expose a concrete repository URL or artifact identifier, so availability cannot be independently checked from the provided material.",
+      "Exact runnable commands and a complete environment specification are not present in the supplied blocks.",
+      "The main model endpoint and local embedding hardware are described operationally but not with a fully portable infrastructure recipe.",
+      "The stochastic study uses cached calls; the supplied blocks do not demonstrate independent fresh-call replication across random seeds or alternative serving environments."
+    ],
+    "status": "partial"
+  },
+  "results": [
+    {
+      "context": "This is the strongest controlled comparison: collapse and surface use the same retrieval pipeline and prompt budget, while every poisonable item is attacked at the higher candidate-edge cap. It establishes both accuracy and attack-success endpoints in this regime.",
+      "evidence": [
+        {
+          "block_id": "b00054-cd35f66baf",
+          "quote": "surfacing raises F1 from 0.116 to 0.456 (Δ=+0.340, CI [+0.267,+0.414], Wilcoxon p<10−4)"
+        },
+        {
+          "block_id": "b00051-454a3a1a2a",
+          "quote": "∗ denotes a 95% bootstrap CI excluding zero."
+        },
+        {
+          "block_id": "b00054-cd35f66baf",
+          "quote": "cuts attacks from 22 to 7 of 122"
+        },
+        {
+          "block_id": "b00054-cd35f66baf",
+          "quote": "McNemar exact p=0.0003"
+        }
+      ],
+      "result": "In the reachable-conflict graph comparison, surfacing increased F1 from 0.116 to 0.456, a +0.340 change with 95% CI [+0.267,+0.414] and Wilcoxon p<10−4; successful attacks fell from 22 to 7 of 122, with exact McNemar p=0.0003."
+    },
+    {
+      "context": "This is both a validity threat and a useful diagnostic result. The cap ordered graph candidates without question relevance, so many identical prompts were tied by construction rather than demonstrating absence of treatment effect.",
+      "evidence": [
+        {
+          "block_id": "b00051-454a3a1a2a",
+          "quote": "Every conflict-dependent contrast, at the pre-declared cap of 40 and again at 200, same paired procedure."
+        },
+        {
+          "block_id": "b00050-f862da9460",
+          "quote": "rises 12/51→27/51→40/51 at caps of 40,100,200."
+        },
+        {
+          "block_id": "b00052-5ba9c0f47b",
+          "quote": "surfacing, graph backend +0.043∗ +0.340∗ helps"
+        }
+      ],
+      "result": "The declared cap of 40 exposed only 12/51 poisoned items to a retrieved contradiction; reachability rose to 27/51 and 40/51 at larger caps. Accordingly, the graph surfacing contrast grew from +0.043 at cap 40 to +0.340 at cap 200."
+    },
+    {
+      "context": "The gate was intended to reject poisoned writes, but most measured action came from supersession invalidation. This makes the negative result mechanistically informative rather than merely a failed threshold.",
+      "evidence": [
+        {
+          "block_id": "b00047-f2efa71d35",
+          "quote": "enabling the gate costs 0.075 F1 (CI [−0.133,−0.018], Wilcoxon p=0.039)"
+        },
+        {
+          "block_id": "b00047-f2efa71d35",
+          "quote": "moves attacks the wrong way, 7→9 of 122."
+        },
+        {
+          "block_id": "b00047-f2efa71d35",
+          "quote": "it fires 123 invalidations against 3 rejections."
+        }
+      ],
+      "result": "With contradictions reachable, enabling the write trust-gate cost 0.075 F1, with CI [−0.133,−0.018] and p=0.039, while attacks moved from 7 to 9 of 122. Its log showed 123 invalidations but only 3 rejections."
+    },
+    {
+      "context": "This supports directional cross-corpus replication only for the pre-specified subset where a conflict actually entered context. It does not establish a full-sample accuracy effect or an attack-success reduction.",
+      "evidence": [
+        {
+          "block_id": "b00134-0937ddcb28",
+          "quote": "ΔF1, all items +0.043∗ [+0.010, +0.082] +0.032 [-0.005, +0.077]"
+        },
+        {
+          "block_id": "b00134-0937ddcb28",
+          "quote": "ΔF1, discriminating +0.329∗ [+0.115, +0.572] +0.111∗ [+0.010, +0.232]"
+        },
+        {
+          "block_id": "b00134-0937ddcb28",
+          "quote": "attacks 5→3 of 51 3→2 of 67 McNemar exact p 0.63 1.00"
+        }
+      ],
+      "result": "On HotpotQA’s discriminating subset, surface minus collapse was +0.111 with CI [+0.010,+0.232], whereas the all-item effect was +0.032 with CI [-0.005,+0.077]. Attack success changed from 3 to 2 of 67 with McNemar p=1.00."
+    },
+    {
+      "context": "The proposed memory configuration does not beat the full-context accuracy ceiling. The graph deficit persists after relieving candidate truncation, suggesting that triple presentation—not only evidence coverage—limits performance in this setup.",
+      "evidence": [
+        {
+          "block_id": "b00118-24f1d52c4e",
+          "quote": "multihop-temp. full-context 0.503 0.20 147,702 0.0034 1.00 0.0 vector 0.304 0.10 6,405"
+        },
+        {
+          "block_id": "b00118-24f1d52c4e",
+          "quote": "graph (k-hop) 0.154 0.08 11,199 0.0137 0.30 15.8"
+        },
+        {
+          "block_id": "b00043-d2d7b9d6e2",
+          "quote": "recall rises 0.30→0.76 while F1 moves 0.154→0.155"
+        }
+      ],
+      "result": "Full context achieved F1 0.503 on the multihop-temporal slice at 147,702 tokens per query, compared with vector retrieval at 0.304 and 6,405 tokens and graph retrieval at 0.154 and 11,199 tokens. Raising graph recall from 0.30 to 0.76 moved F1 only from 0.154 to 0.155."
+    }
+  ],
+  "title": "Surfacing Disagreement Beats Resolving It: A Gated Ablation Study of Provenance-Weighted Memory for Multi-Agent Debate",
+  "uncertainties": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00069-228d07913f",
+          "quote": "the model axis is untested"
+        }
+      ],
+      "uncertainty": "It is unclear whether surfacing remains beneficial with other model families, judge models, or debate topologies.",
+      "why_it_matters": "The mechanism depends on agents recognizing and resolving explicit disagreement; this capability may vary materially across models and orchestration designs."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00070-c2bb200959",
+          "quote": "we do not exhibit the regime where memory genuinely overflows"
+        }
+      ],
+      "uncertainty": "The benefit under genuinely overflowing long-term memory is unresolved.",
+      "why_it_matters": "That is the deployment regime where retrieval and storage reconciliation are unavoidable, rather than optional cost optimizations."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00071-bbce53b714",
+          "quote": "they test contradiction handling rather than fluent adversarial paraphrase."
+        }
+      ],
+      "uncertainty": "Robustness to fluent, adaptive, multi-write, or provenance-spoofing adversaries is unknown.",
+      "why_it_matters": "Template-generated single-edge contradictions may underrepresent realistic attacks that manipulate several related claims or mimic trusted sources."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00029-540b640527",
+          "quote": "the whole ranked set enters the prompt with writer, trust, evidence count and supersession status"
+        }
+      ],
+      "uncertainty": "The causal contribution of each provenance field shown to agents is not isolated.",
+      "why_it_matters": "The full surfaced representation includes writer, trust, evidence count, and supersession status, but the evidence does not identify which fields help or whether raw contradictory text alone suffices."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00057-1b731cef98",
+          "quote": "On the full sample the HotpotQA interval contains zero."
+        }
+      ],
+      "uncertainty": "The all-sample cross-corpus effect remains unresolved despite a positive discriminating-subset result.",
+      "why_it_matters": "A practical system must handle the full query distribution, including cases where retrieval fails to surface a conflict."
+    }
+  ]
+}

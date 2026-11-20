@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "level": "abstract-or-feed-description",
+  "human_approved": false,
+  "provider": "codex-exec:configured-default",
+  "updated_at": "2026-11-20T09:13:08.862475+00:00",
+  "expected": 6393,
+  "analyzed": 6393,
+  "complete": true,
+  "priorities": {
+    "outside": 1504,
+    "reference": 2110,
+    "read": 2779
+  },
+  "topics": {
+    "other": 866,
+    "applications": 1182,
+    "memory": 571,
+    "safety": 780,
+    "runtime": 534,
+    "training": 542,
+    "retrieval": 394,
+    "evaluation": 1348,
+    "context": 176
+  },
+  "prompt_sha256": "9ad7b7bf19517d74f1809e3a9f250d2c042c5a30a2b880e57aaf84e4b68dd27b",
+  "records_sha256": "d119d78aa390645c68904065039d84fcd77fd7ecb846bfea6032e412fe2931b7"
+}

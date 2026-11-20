@@ -1,0 +1,704 @@
+{
+  "aidb_assessment": {
+    "confidence": "medium",
+    "novelty": "High conceptual novelty within the supplied paper: it separates residency from retrievability inside a KV-evicting multi-turn server and treats rotary distance as a second controlled cache objective. The engineering combination of planner foresight, bounded exact re-rotation, persistence, and non-compounding reference keys is also distinctive.",
+    "rationale": "The controlled Qwen3-8B comparisons, fresh-seed headline run, distance intervention, factorial ablations, integrity protocol, and very-long-session results make the central finding credible enough to influence evaluation design. Adoption is premature because external validity is narrow, planner robustness is under-characterized, the second-model component comparison is inconclusive, concurrency is untested, and executable artifacts are not supplied here.",
+    "recommended_action": "read",
+    "usefulness": "Potentially high for planned coding and tool agents under strict accelerator-memory budgets. The strongest immediate value is diagnostic: cache evaluations should measure both needed-token residency and physical positional distance. Production usefulness remains contingent on realistic planner errors, diverse workloads, concurrent serving, and temporal-semantics tests."
+  },
+  "claims": [
+    {
+      "claim": "Retaining needed tokens is necessary but not sufficient: correctness also depends on their rotary-position distance from the query.",
+      "evidence": [
+        {
+          "block_id": "b00026-491af0dd9f",
+          "quote": "This paper asks whether ρt≈1 suffices, and shows that it does not: at ρt≥0.99, accuracy still falls with Δt"
+        },
+        {
+          "block_id": "b00073-7087da1392",
+          "quote": "Retention only keeps 99.6% of the needed tokens at every gap, yet its accuracy falls from 93% to 64%."
+        }
+      ]
+    },
+    {
+      "claim": "PACE jointly controls retention and physical rotary distance by combining planner foresight with order-preserving key renumbering.",
+      "evidence": [
+        {
+          "block_id": "b00008-e56a3ae324",
+          "quote": "Plan-aware retention turns the dependency graph an agent planner already produces into a per-span foresight bonus"
+        },
+        {
+          "block_id": "b00035-a5202057e4",
+          "quote": "the resident row of each layer is renumbered to p′∈{0,…,R−1} in logical order, every kept key is re-rotated from p to its new position p′"
+        }
+      ]
+    },
+    {
+      "claim": "The two main components address different failure modes and both are required for the strongest Qwen3-8B result.",
+      "evidence": [
+        {
+          "block_id": "b00067-786492a920",
+          "quote": "With positions only, the needed tokens are close to the query but often gone"
+        },
+        {
+          "block_id": "b00067-786492a920",
+          "quote": "With retention only, the tokens are resident (residency 1.000 at every probe) but 30–80K positions away"
+        },
+        {
+          "block_id": "b00067-786492a920",
+          "quote": "Only when the tokens are both kept and close does the model use them reliably."
+        }
+      ]
+    },
+    {
+      "claim": "PACE is intended for planned workflows, not arbitrary recall over an entire history.",
+      "evidence": [
+        {
+          "block_id": "b00010-077fc8e3e0",
+          "quote": "PACE targets agent workloads whose planner can state what later steps depend on"
+        },
+        {
+          "block_id": "b00010-077fc8e3e0",
+          "quote": "full-context serving remains preferable for unplanned recall of arbitrary details from an entire history."
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "ablations": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00054-72db17bc39",
+            "quote": "retention only H2​O + foresight bonus as written (YaRN) ablation: no bounded positions"
+          }
+        ],
+        "text": "Retention only: planner foresight with positions as written, isolating the effect of bounded positions."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00054-72db17bc39",
+            "quote": "positions only H2​O bounded, L=8​K ablation: no foresight"
+          }
+        ],
+        "text": "Positions only: bounded positions with H2O retention, isolating planner foresight."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00054-72db17bc39",
+            "quote": "PACE (L=40​K) H2​O + foresight bonus bounded at the model’s range limit ablation"
+          }
+        ],
+        "text": "A larger position limit tests whether merely staying inside the model range is sufficient."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00088-2190f61bd0",
+            "quote": "rehydration restores it and recall is 5/5 against 1/5 without rehydration"
+          },
+          {
+            "block_id": "b00088-2190f61bd0",
+            "quote": "all restores came from the remote tier and recall stayed 5/5."
+          }
+        ],
+        "text": "Rehydration is directly tested by flagging an already-evicted definition, including a remote-only restore condition."
+      }
+    ],
+    "baselines": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00020-b3da54f750",
+            "quote": "H2​O [31] keeps the tokens with the largest cumulative attention received, plus a recent window"
+          }
+        ],
+        "text": "H2O: cumulative-attention heavy-hitter retention plus recent tokens, using positions as written where feasible."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00020-b3da54f750",
+            "quote": "SnapKV [12] ranks tokens by the attention of the last few prompt tokens"
+          }
+        ],
+        "text": "SnapKV: current-query attention ranking under the same overall budget."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00090-b04b4014c7",
+            "quote": "a StreamingLLM-style baseline that spends the budget on sink and recent tokens with in-cache positions"
+          }
+        ],
+        "text": "StreamingLLM-style sink-plus-recent cache for sessions beyond the native positional range."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00055-92895afe26",
+            "quote": "A control run with no eviction (an 8K-token session within an 8K budget) scores 100% on Qwen3-8B"
+          },
+          {
+            "block_id": "b00083-cb451f29bf",
+            "quote": "A no-eviction control first establishes the model’s own ceiling"
+          }
+        ],
+        "text": "No-eviction controls establish model-specific task ceilings, but the Qwen3-8B control is shorter than the headline sessions."
+      }
+    ],
+    "datasets": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00051-108b07d03b",
+            "quote": "We therefore built an execution-scored session benchmark in which recall of early definitions is the only path to a correct late answer."
+          },
+          {
+            "block_id": "b00052-ffaad91fd4",
+            "quote": "All arms of a run see identical sessions."
+          }
+        ],
+        "text": "A synthetic, execution-scored long-horizon coding-session benchmark. Randomized definitions are followed by Python standard-library filler and three late code probes; all arms within a run receive identical sessions."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00056-f31bd4029c",
+            "quote": "the session length is fixed at 100K tokens and the definitions are placed D tokens before the three probes at the end, so only the gap varies."
+          }
+        ],
+        "text": "Distance-layout sessions hold total length fixed while moving definitions relative to terminal probes, enabling a controlled distance intervention."
+      }
+    ],
+    "metrics": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00055-92895afe26",
+            "quote": "Each probe’s code is executed against hidden unit tests in a subprocess"
+          }
+        ],
+        "text": "Hidden unit-test checks and complete-probe pass rates, obtained by executing generated code."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00055-92895afe26",
+            "quote": "a recall metric checks whether the answer contains each session fact"
+          },
+          {
+            "block_id": "b00055-92895afe26",
+            "quote": "failed with all facts recalled (a coding error), or failed with facts missing (forgetting)"
+          }
+        ],
+        "text": "Session-fact recall, used with execution scores to distinguish forgetting from coding errors."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00069-da152a971d",
+            "quote": "the rotary gap is the mean distance, in the positions the model sees, from the query to the definitions"
+          },
+          {
+            "block_id": "b00064-f0f275d570",
+            "quote": "Residency: fraction of needed tokens resident at the probes."
+          }
+        ],
+        "text": "Needed-token residency and reconstructed rotary gap at each probe."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00060-fe73939b6e",
+            "quote": "Comparisons between arms are paired on identical sessions and use a two-sided sign test; full-pass rates use Fisher’s exact test"
+          }
+        ],
+        "text": "Paired statistical tests on identical sessions, plus full-pass and interaction tests."
+      }
+    ],
+    "negative_results": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00068-2867bc4513",
+            "quote": "the interaction, +8.3 points (CI [−8.0,+23.8], p=0.32), is not significant"
+          },
+          {
+            "block_id": "b00068-2867bc4513",
+            "quote": "not that they are super-additive at the recommended setting."
+          }
+        ],
+        "text": "At the recommended position bound, the factorial interaction was not statistically significant; the evidence supports necessity of both components, not super-additivity."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00084-e34383527b",
+            "quote": "46% vs. 36% on p1+p2; 6 better, 4 worse; p=0.75"
+          }
+        ],
+        "text": "The Mistral comparison between PACE and retention-only at the longest tested gap was not significant."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00188-3d00636bb4",
+            "quote": "the stressed arm scored 63/75 (84%; 4 probes worse, none better)"
+          },
+          {
+            "block_id": "b00188-3d00636bb4",
+            "quote": "the reference-store implementation passes 75/75 checks (0 worse)"
+          }
+        ],
+        "text": "Naive repeated re-rotation accumulated enough numerical error to degrade stressed accuracy; the reference-store implementation was required to recover it."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00094-b9e19cc531",
+            "quote": "the median filler turn rose from about 0.9​ s at the start of each session to 1.7​–​3.2​ s at the end"
+          },
+          {
+            "block_id": "b00094-b9e19cc531",
+            "quote": "we have not yet isolated it."
+          }
+        ],
+        "text": "Per-turn latency increased late in very long sessions despite a fixed resident set, and the source was not isolated."
+      }
+    ]
+  },
+  "executive_summary": "PACE addresses two distinct failures in budgeted KV caches: needed tokens can be evicted, or retained yet difficult to use because their rotary-position distance is large. It combines planner-directed retention with exact, bounded-position renumbering. Controlled Qwen3-8B results are strong: PACE substantially outperforms standard eviction and either component alone, and retains quality through very long synthetic coding sessions. The mechanism evidence is persuasive but narrow: one synthetic task family, mostly oracle plans, two small models, one GPU type, small cells, and no matched full-cache control at the headline length. The paper is valuable and merits replication before production adoption, especially under noisy plans, realistic workloads, concurrency, and time-sensitive tasks where collapsed gaps may alter semantics.",
+  "labels": {
+    "ablations": "Ablations",
+    "action_adopt": "adopt",
+    "action_read": "read",
+    "action_reject": "reject",
+    "action_watch": "watch",
+    "aidb_assessment": "AIDB assessment",
+    "assumptions": "Assumptions",
+    "available_artifacts": "Available artifacts",
+    "baseline": "Baseline",
+    "baselines": "Baselines",
+    "blocks": "Blocks",
+    "claims": "Main claims",
+    "confidence": "Confidence",
+    "confidence_high": "high",
+    "confidence_low": "low",
+    "confidence_medium": "medium",
+    "context": "Context",
+    "datasets": "Datasets",
+    "document_sha256": "Document SHA-256",
+    "evaluation": "Experimental evaluation",
+    "evidence": "Evidence",
+    "executive_summary": "Executive summary",
+    "generated": "Generated",
+    "hypothesis": "Hypothesis",
+    "importance": "Why it matters",
+    "key_components": "Key components",
+    "limitations": "Limitations",
+    "metadata_sha256": "Metadata SHA-256",
+    "method": "Method",
+    "metrics": "Metrics",
+    "missing_pieces": "Missing pieces",
+    "negative_results": "Negative results",
+    "novelty": "Novelty",
+    "open_questions": "Open questions",
+    "primary_metric": "Primary metric",
+    "problem": "Problem",
+    "profile": "Profile",
+    "proposed_experiments": "Proposed AIDB experiments",
+    "provenance": "Provenance",
+    "provider": "Provider",
+    "rationale": "Rationale",
+    "recommended_action": "Recommended action",
+    "repair_count": "Deterministic repair attempts",
+    "reproducibility": "Reproducibility",
+    "results": "Results",
+    "schema": "Schema",
+    "scope": "Scope",
+    "statement": "Statement",
+    "status": "Status",
+    "status_partial": "partial",
+    "status_strong": "strong",
+    "status_unknown": "unknown",
+    "status_weak": "weak",
+    "stop_condition": "Stop condition",
+    "uncertainties": "Uncertainties",
+    "usefulness": "Usefulness"
+  },
+  "language": {
+    "code": "en",
+    "name": "English"
+  },
+  "limitations": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00102-2464b27ee5",
+          "quote": "The benchmark is a synthetic coding session with randomized specifications."
+        },
+        {
+          "block_id": "b00102-2464b27ee5",
+          "quote": "other agent workloads (tool traces, multi-document research, multi-agent hand-offs) may weigh retention and distance differently."
+        }
+      ],
+      "limitation": "External validity is limited by a single synthetic coding task family; other agent workloads may have different retention and distance requirements."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00104-c562fef2d6",
+          "quote": "Two models at 7–8B, one GPU type."
+        },
+        {
+          "block_id": "b00104-c562fef2d6",
+          "quote": "Larger models, which may use distant context better, are untested."
+        }
+      ],
+      "limitation": "Evidence covers only two small models and one GPU type; the statistically established bounded-position advantage is confined to Qwen3-8B."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00108-ea99cf465b",
+          "quote": "Mostly an oracle planner."
+        },
+        {
+          "block_id": "b00108-ea99cf465b",
+          "quote": "How accuracy degrades with planner errors beyond that is not yet characterized."
+        }
+      ],
+      "limitation": "Most experiments use an oracle dependency graph, and sensitivity to worse planner errors is unknown."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00110-263c50e054",
+          "quote": "Extrapolated, it reaches the floor at about 5M tokens"
+        },
+        {
+          "block_id": "b00110-263c50e054",
+          "quote": "Longer sessions need a relative bonus, scaled to the current unprotected maximum at each eviction; we have not yet evaluated it."
+        }
+      ],
+      "limitation": "The fixed foresight bonus may cease to dominate attention scores at longer sessions and the proposed relative bonus is unevaluated."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00112-865f244f6a",
+          "quote": "Renumbering preserves order but not distance between kept tokens."
+        },
+        {
+          "block_id": "b00112-865f244f6a",
+          "quote": "tasks that depend on how long ago something happened could be affected."
+        }
+      ],
+      "limitation": "Renumbering destroys original temporal distances between retained tokens, potentially harming tasks whose semantics depend on elapsed distance."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00114-5b07f98541",
+          "quote": "it is disabled in the 300K, 1M and 2M runs; its benefit is shown in a scripted late-flag test."
+        }
+      ],
+      "limitation": "Rehydration evidence comes mainly from a scripted late-flag test and was disabled in the longest evaluations."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00116-38ba9e577e",
+          "quote": "we report relative overhead, not absolute serving throughput, and do not evaluate concurrent sessions."
+        },
+        {
+          "block_id": "b00116-38ba9e577e",
+          "quote": "The source, outside the bounded attention path, is not yet isolated."
+        }
+      ],
+      "limitation": "Serving evaluation omits concurrency and absolute production throughput, while unexplained per-turn work grows with session length."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00118-5a5df61d03",
+          "quote": "We do not report the same model with its full cache at 100K tokens on this hardware; the no-eviction control is an 8K-token session."
+        }
+      ],
+      "limitation": "There is no matched full-cache Qwen3-8B reference at the headline length."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00120-c1aaf4c564",
+          "quote": "Filler content matters."
+        },
+        {
+          "block_id": "b00120-c1aaf4c564",
+          "quote": "The 100K experiments also span two filler regimes (recurring vs. non-repeating files)"
+        }
+      ],
+      "limitation": "Filler topic and construction affect behavior, and the headline and later long-session studies use different filler regimes."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00122-618bf3ea65",
+          "quote": "Five to ten sessions per configuration, three probes each."
+        }
+      ],
+      "limitation": "Cells contain few sessions, making secondary patterns unstable despite strong headline significance."
+    }
+  ],
+  "method": {
+    "assumptions": [
+      "The planner can identify which earlier spans later steps will need.",
+      "The protected spans generally fit the token budget; otherwise restoration or prioritization is required.",
+      "Collapsing positional gaps preserves the semantics relevant to the evaluated task.",
+      "A fixed foresight bonus remains above the cumulative-attention scores of unprotected tokens over the tested session lengths.",
+      "The synthetic coding benchmark’s dependency and recall structure is informative about broader planned-agent workloads."
+    ],
+    "key_components": [
+      "Plan-aware retention converts a dependency blueprint into span-level future references and adds a dominant bonus to cumulative-attention scores.",
+      "Bounded positions collapse gaps left by eviction, preserve retained-token order, and exactly re-rotate cached keys to their new physical positions.",
+      "Persistent sessions append only new messages and preserve cache state and prior eviction decisions across agent steps.",
+      "Tiered rehydration restores planner-requested spans from host memory, local storage, or a remote cache.",
+      "A reference store derives later key positions from a stable copy to prevent repeated bf16 rounding from accumulating."
+    ],
+    "overview": "PACE modifies an inference engine’s KV-cache manager. A planner supplies dependencies over earlier message spans; a foresight bonus makes future-referenced spans outrank unreferenced tokens, prioritizing the soonest use. Separately, retained tokens are periodically renumbered in logical order and cached keys are re-rotated so their physical positions remain bounded. Persistent sessions carry eviction state between turns, while optional memory tiers can restore planned spans that were evicted. A reference-key store prevents rounding error from compounding across repeated renumbering."
+  },
+  "open_questions": [
+    "Does bounded-position renumbering improve real repository-scale coding, tool-use, research, and multi-agent workflows when dependencies and distractors arise naturally?",
+    "What planner precision and recall thresholds preserve an advantage over retention-only and retrieval-based alternatives?",
+    "Can the foresight bonus be made relative and stable beyond the tested length without introducing cache-score oscillations?",
+    "Which serving-path component causes per-turn latency to grow despite a fixed resident set?",
+    "How does PACE perform under many concurrent persistent sessions, tier pressure, and frequent remote restoration?",
+    "Can original temporal-distance information be retained explicitly for tasks where elapsed time or spacing is semantically meaningful?"
+  ],
+  "problem": {
+    "importance": "Long-running agents can accumulate histories whose full KV state exceeds accelerator memory. If residency alone does not ensure usable context, eviction evaluations and agent-serving designs can appear successful while late-step correctness still deteriorates.",
+    "scope": "The work targets planned agent workloads in which future dependencies can be stated. It does not claim to provide an unrestricted long-context window or reliable recall of arbitrary, unplanned historical details.",
+    "statement": "Budgeted KV-cache systems optimize whether future-needed tokens remain resident, but the paper tests whether near-perfect residency is sufficient when retained tokens remain far from the query in rotary-position space."
+  },
+  "proposed_experiments": [
+    {
+      "baseline": "Retention-only using the same planner, cache budget, persistent-session implementation, model, tasks, and generated trajectories; include H2O as a secondary reference.",
+      "hypothesis": "PACE retains a statistically meaningful advantage over retention-only on natural planned-agent workloads when dependencies come from an imperfect production planner.",
+      "primary_metric": "Paired end-to-end task success, stratified by planner edge precision and recall, with needed-span residency and rotary gap recorded at every dependent step.",
+      "stop_condition": "Stop and reject the hypothesis if the pre-registered confidence interval for PACE minus retention-only includes zero or if benefit disappears in a majority of workload families."
+    },
+    {
+      "baseline": "The same retained-token set with positions as written, plus a full-context control where hardware permits.",
+      "hypothesis": "Bounded renumbering does not degrade tasks whose answers depend on original temporal or positional distances.",
+      "primary_metric": "Accuracy on pre-registered temporal-order, elapsed-distance, recency, and timestamp-grounded queries, reported alongside ordinary recall and likelihood.",
+      "stop_condition": "Stop deployment-oriented validation if bounded positions produce a statistically significant accuracy loss or exceed a pre-declared non-inferiority margin on any safety-critical temporal category."
+    },
+    {
+      "baseline": "H2O, retention-only, and a retrieval-driven bounded-cache system under matched models, budgets, session traces, concurrency, and hardware.",
+      "hypothesis": "PACE’s bounded KV state translates into useful production throughput under concurrency despite long-session latency growth and tier restoration.",
+      "primary_metric": "Completed agent steps per second at fixed quality, with p50/p95/p99 latency, GPU and host memory, restoration frequency, and remote-tier bytes measured.",
+      "stop_condition": "Stop if PACE fails to improve quality-adjusted throughput or violates pre-declared tail-latency and memory limits at any target concurrency level."
+    }
+  ],
+  "provenance": {
+    "block_count": 188,
+    "document_sha256": "ce97b31ba35a7c197b5b78cee0e1630e24e8ed1e6a8f632a6545c73b39e0db15",
+    "generated_at": "2026-11-20T08:46:47.430147+00:00",
+    "metadata_sha256": "716498707606930345eaf74c7a4e08566d4b71086e463d1315368fc6f31a5507",
+    "profile": "deep",
+    "provider": "codex-exec:configured-default",
+    "repair_count": 0,
+    "schema_version": "paper-summary-v1"
+  },
+  "reproducibility": {
+    "artifacts": [
+      "The complete session templates and sampled-value ranges are included in the supplied document.",
+      "The paper specifies model versions, GPU and host memory, cache budget, engine path, decoding mode, position limits, statistical tests, seeds per configuration, integrity checks, and several pre-registration boundaries.",
+      "The implementation is stated to be a configuration-controlled subclass in an open-source inference engine.",
+      "Result files are stated to fingerprint instruction templates, and merge tooling rejects incompatible runs."
+    ],
+    "assessment": "The procedural description is unusually detailed and includes templates, controls, integrity safeguards, factorial ablations, pre-registration statements, and hardware. However, the supplied material does not itself expose the implementation or raw artifacts needed to independently reproduce reported tables, so reproducibility is partial rather than strong.",
+    "missing": [
+      "No repository snapshot, commit identifier, installation instructions, environment lockfile, runnable benchmark package, raw result files, pre-registration records, or exact reproduction commands are supplied in the document blocks.",
+      "The paper does not provide a matched full-cache 100K-token Qwen3-8B run.",
+      "Exact concurrent-serving and production-throughput reproduction procedures are absent."
+    ],
+    "status": "partial"
+  },
+  "results": [
+    {
+      "context": "Ten fresh 100K-token sessions, three probes per session, with a 2,048-token KV budget. This is the strongest controlled factorial comparison, although the 8K position limit had first been selected from an earlier distance sweep and was then tested on fresh seeds.",
+      "evidence": [
+        {
+          "block_id": "b00064-f0f275d570",
+          "quote": "Qwen3-8B, 100K-token sessions, B=2,048, ten fresh sessions, three probes each"
+        },
+        {
+          "block_id": "b00065-883c4b2eba",
+          "quote": "H2​O – – 63/150 (42%) 7/30 83%"
+        },
+        {
+          "block_id": "b00065-883c4b2eba",
+          "quote": "positions only – ✓ 94/150 (63%) 10/30 86%"
+        },
+        {
+          "block_id": "b00065-883c4b2eba",
+          "quote": "retention only ✓ – 94/150 (63%) 12/30 96%"
+        },
+        {
+          "block_id": "b00065-883c4b2eba",
+          "quote": "PACE ✓ ✓ 145/150 (97%) 28/30 100%"
+        }
+      ],
+      "result": "In the pre-registered Qwen3-8B headline comparison, PACE passed 145/150 hidden checks (97%) and 28/30 probes completely, versus H2O at 63/150 (42%) and 7/30. Each single-component arm reached 94/150 (63%), while PACE recalled 100% of session facts."
+    },
+    {
+      "context": "Five 100K-token sessions per distance used the same seeds while moving only the definitions. This is stronger than the pooled distance analysis because session length is fixed, though only five sessions were used per point.",
+      "evidence": [
+        {
+          "block_id": "b00069-da152a971d",
+          "quote": "five sessions per D, same seeds at every D"
+        },
+        {
+          "block_id": "b00069-da152a971d",
+          "quote": "Residency is 0.992​–​0.996 for every PACE-family arm at every D."
+        },
+        {
+          "block_id": "b00070-78619f2565",
+          "quote": "2K 44% 93% 100% 𝟗𝟕% 2.9K 2.7K"
+        },
+        {
+          "block_id": "b00070-78619f2565",
+          "quote": "90K 52% 64% 93% 𝟏𝟎𝟎% 23.9K 6.5K"
+        }
+      ],
+      "result": "The distance intervention supports the proposed mechanism: retention-only accuracy declined from 93% at a 2K logical gap to 64% at 90K despite residency of 0.992–0.996, whereas PACE with an 8K bound scored 97–100% and kept observed rotary gaps between 2.7K and 6.5K."
+    },
+    {
+      "context": "Five fresh Qwen3-8B sessions at each length placed definitions roughly 90% of the session before probes. These evaluations were pre-registered, but compare only bounded-position arms at the longest lengths and remain within the same synthetic task family.",
+      "evidence": [
+        {
+          "block_id": "b00093-19e031cb0a",
+          "quote": "PACE passes 74 of 75 checks (99%), fully passes 14 of 15 probes, and recalls all 125 session facts"
+        },
+        {
+          "block_id": "b00093-19e031cb0a",
+          "quote": "Positions only passes 33% and recalls 74%"
+        },
+        {
+          "block_id": "b00094-b9e19cc531",
+          "quote": "PACE passes all 75 checks, fully passes all 15 probes, and recalls all 125 facts."
+        },
+        {
+          "block_id": "b00094-b9e19cc531",
+          "quote": "Positions only falls from 33% at 1M to 13% (10/75), fully passes no probe, and recalls 50%"
+        }
+      ],
+      "result": "Quality persisted at extreme length on one GPU: at 1M tokens PACE passed 74/75 checks (99%) and recalled 125/125 facts; at 2M it passed 75/75 and recalled 125/125. Positions-only fell from 33% checks and 74% recall to 13% and 50%."
+    },
+    {
+      "context": "Memory values are computed from model dimensions. Timing uses the same eager decode path but does not characterize concurrent serving or absolute production throughput.",
+      "evidence": [
+        {
+          "block_id": "b00089-4f7a08fd4b",
+          "quote": "PACE took 1,047​ s against H2​O’s 963​ s (+9%)"
+        },
+        {
+          "block_id": "b00089-4f7a08fd4b",
+          "quote": "2,048 tokens, 0.30​ GB for Qwen3-8B"
+        },
+        {
+          "block_id": "b00089-4f7a08fd4b",
+          "quote": "the reference store (at most 0.30​ GB)"
+        },
+        {
+          "block_id": "b00089-4f7a08fd4b",
+          "quote": "the full cache would need 14.7​ GB at 100K tokens and 147​ GB at 1M."
+        }
+      ],
+      "result": "The resident state remained bounded while execution overhead was measurable: PACE used 0.30 GB for the 2,048-token KV budget plus at most 0.30 GB for reference keys, versus a 147 GB full cache at 1M, and took 1,047 s versus 963 s (+9%) over ten 100K-token sessions."
+    },
+    {
+      "context": "This negative result limits the claim that bounded positions improve test-pass accuracy across models. The authors attribute limited separation partly to Mistral’s coding ceiling, while recall provides a less ceiling-constrained signal.",
+      "evidence": [
+        {
+          "block_id": "b00083-cb451f29bf",
+          "quote": "it recalls 99% of facts but passes only 40% of checks"
+        },
+        {
+          "block_id": "b00084-e34383527b",
+          "quote": "The pre-declared paired test of PACE against retention only at D=90​K is not significant (46% vs. 36% on p1+p2; 6 better, 4 worse; p=0.75"
+        }
+      ],
+      "result": "Generalization to the second model was mixed but informative: Mistral’s no-eviction control passed 40% of checks; PACE stayed near that ceiling, but its pre-declared 90K comparison against retention-only was not significant (46% versus 36%, p=0.75)."
+    }
+  ],
+  "title": "PACE: Keeping the Right Tokens in the KV Cache Is Not Enough for Long-Horizon LLM Agents",
+  "uncertainties": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00104-c562fef2d6",
+          "quote": "Larger models, which may use distant context better, are untested."
+        }
+      ],
+      "uncertainty": "Whether the measured rotary-distance effect persists on larger or stronger models.",
+      "why_it_matters": "If stronger models use distant retained context reliably, bounded positions may yield less benefit relative to planner retention alone."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00081-fb690020a2",
+          "quote": "Foresight is only as good as the plan."
+        },
+        {
+          "block_id": "b00108-ea99cf465b",
+          "quote": "How accuracy degrades with planner errors beyond that is not yet characterized."
+        }
+      ],
+      "uncertainty": "How performance changes under realistic false-positive and false-negative dependency graphs.",
+      "why_it_matters": "Planner quality determines which spans receive protection or restoration; systematic misses could erase PACE’s advantage or waste the fixed budget."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00040-57b8e62e36",
+          "quote": "This is a deliberate change of what the model observes"
+        },
+        {
+          "block_id": "b00112-865f244f6a",
+          "quote": "tasks that depend on how long ago something happened could be affected."
+        }
+      ],
+      "uncertainty": "Whether positional gap collapse harms tasks that encode time, delay, or original spacing.",
+      "why_it_matters": "The intervention deliberately changes model-visible distances, so success on order-dependent coding recall does not establish semantic safety elsewhere."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00094-b9e19cc531",
+          "quote": "the growth comes from per-turn work that scales with the session elsewhere in the serving path; we have not yet isolated it."
+        }
+      ],
+      "uncertainty": "What causes late-session latency growth outside the bounded attention path.",
+      "why_it_matters": "Unexplained work that scales with total session length may weaken the claimed operational benefit even when KV memory remains bounded."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00058-c03fc2a31b",
+          "quote": "it was rarely triggered, because in these sessions the protected set fits the budget"
+        },
+        {
+          "block_id": "b00114-5b07f98541",
+          "quote": "its benefit is shown in a scripted late-flag test."
+        }
+      ],
+      "uncertainty": "How PACE behaves when planned protected spans exceed the resident budget frequently.",
+      "why_it_matters": "The main benchmark rarely exercises rehydration, so end-to-end quality and latency under sustained oversubscription remain unclear."
+    }
+  ]
+}

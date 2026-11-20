@@ -1,0 +1,33 @@
+{
+  "abstract": "Persistent memory turns prior interactions into durable agent state, but existing systems provide limited control over whether that state remains valid and whether it should influence a later query. We argue that reliable memory requires governance over both state formation and query-time influence. We introduce PLACE, a factorized governance layer that adds write-side state certification and read-side authorization to a memory backend. A factorial evaluation on Mem0 with Qwen2.5-3B and Qwen2.5-7B isolates the contribution of each mechanism. Results show that write-side governance substantially improves lifecycle state correctness, while read-side governance eliminates measured causal leakage from ineligible memory in the state-correct setting. Their combination achieves the strongest joint performance while preserving query-relevant support. These findings show that reliable persistent memory requires explicit control over both maintained state and query-time information influence.",
+  "arxiv_id": "2610.25179v1",
+  "authors": [
+    "Chen-Fang Hu",
+    "Hong-Han Shuai",
+    "Woan-Shiuan Chien"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2610.25179v1",
+  "categories": [
+    "cs.AI",
+    "cs.CL"
+  ],
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2610.25179v1",
+  "latest_seen_version": 1,
+  "paper_id": "2610.25179",
+  "paper_version_id": "2610.25179v1",
+  "published": "2026-10-18T11:05:37+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "Memory, Know Your PLACE: Governing Lifecycle State and Query-Time Eligibility in Persistent-Memory Agents",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-10-18T11:05:37+00:00",
+  "url": "https://arxiv.org/abs/2610.25179v1"
+}

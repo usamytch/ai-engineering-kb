@@ -1,0 +1,33 @@
+{
+  "abstract": "Large language model (LLM) agents keep a long-term memory that the model itself writes: summaries, extracted facts and embeddings derived from what users said. Deleting a message is therefore not enough: its derivatives, storage residue and backups survive. We define lineage-complete forward-secure erasure: after a forget request, an adversary that later obtains all storage and the agent's current keys learns nothing about the forgotten input or any memory derived from it. We present LinEra, which encrypts each memory under a key derived from its parents' keys along the derivation graph; source keys come from a puncturable pseudorandom function, so forgetting is a single puncture and every descendant becomes unreadable without being located. A sound lineage rule records as parents everything the writer saw, which confines all influence of a source to its descendants. We prove security and lineage integrity and integrate LinEra with mem0. With real LLMs from two families (1.5B to 7B parameters) writing the memory of LoCoMo conversations, an attacker holding every file and the current keys recovers, on all ten conversations written by the largest model, 70 of 71 forgotten secrets after logical deletion, 67 with per-object or epoch keys, and none with LinEra; the same holds for every writer tested. The price is a larger forgetting radius, which follows a simple law in the writer's fan-in: forgetting 1% of turns erases 73.0% of derived memories with session-level summaries but only 3.8% with four-turn windows, which also answer better; re-deriving restores what is lost.",
+  "arxiv_id": "2611.18133v1",
+  "authors": [
+    "Yulliwas Ameur",
+    "Billal Mokhtari",
+    "Samia Bouzefrane"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2611.18133v1",
+  "categories": [
+    "cs.CR"
+  ],
+  "comment": "14 pages, 2 figures. Submitted to the Journal of Information Security and Applications. Code and LLM-call logs: https://github.com/yulliwasameur/linera (archived at https://doi.org/10.5281/zenodo.24166476)",
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2611.18133v1",
+  "latest_seen_version": 1,
+  "paper_id": "2611.18133",
+  "paper_version_id": "2611.18133v1",
+  "published": "2026-11-13T13:01:47+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "Forget the Lineage: Forward-Secure, Lineage-Complete Cryptographic Erasure for LLM-Agent Memory",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-11-13T13:01:47+00:00",
+  "url": "https://arxiv.org/abs/2611.18133v1"
+}

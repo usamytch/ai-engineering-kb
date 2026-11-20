@@ -1,0 +1,619 @@
+{
+  "aidb_assessment": {
+    "confidence": "high",
+    "novelty": "The strongest novelty is the factorial, matched-condition audit showing how judge, answer prompt, answer model, and baseline layout alter LoCoMo scores. The Becos evaluation is informative but less conclusive because it is proprietary and tuned on the benchmark.",
+    "rationale": "Read and use the evaluation protocol as a reporting template. Do not treat the Becos scores as sufficient for adoption until an unseen benchmark, stronger full-context layouts, independent human evaluation, and end-to-end cost measurements are available. Confidence is high in this assessment because the paper directly exposes its major confounds and releases auditable outputs, while clearly identifying what cannot be reproduced.",
+    "recommended_action": "read",
+    "usefulness": "Highly useful for benchmark governance and for reviewing long-term-memory claims: it identifies minimum reporting requirements and demonstrates why published scores with unmatched prompts, judges, and layouts should not be compared directly. Evidence for adopting Becos is narrower: it shows context compression and model-dependent gains on one development benchmark, not generalization to coding work."
+  },
+  "claims": [
+    {
+      "claim": "The paper’s primary contribution is a controlled sensitivity study rather than a conventional memory leaderboard comparison.",
+      "evidence": [
+        {
+          "block_id": "b00006-3b7f07d2e2",
+          "quote": "This paper is primarily a controlled study of that sensitivity, with a black-box evaluation of one memory system alongside it."
+        }
+      ]
+    },
+    {
+      "claim": "Becos is evaluated under every crossing of the two answer models, two prompts, and three judges on all ten conversations.",
+      "evidence": [
+        {
+          "block_id": "b00010-08b30f0131",
+          "quote": "A black-box evaluation of Becos on all ten conversations under 2 answer models × 2 answer prompts × 3 judges, with paired uncertainty estimates"
+        }
+      ]
+    },
+    {
+      "claim": "The authors warn that published results cannot be made controlled merely by matching the judge model.",
+      "evidence": [
+        {
+          "block_id": "b00074-4d7c9350e0",
+          "quote": "Matching the judge model does not make these controlled comparisons: answer prompts and other settings may differ."
+        }
+      ]
+    },
+    {
+      "claim": "The human diagnostic suggests that primary-judge error does not create Becos’s observed lead in the tested setting, but the authors explicitly do not treat it as a corrected score.",
+      "evidence": [
+        {
+          "block_id": "b00065-68939f25c4",
+          "quote": "we read this as a check that judge error does not explain Becos’s lead, not as a corrected score."
+        }
+      ]
+    },
+    {
+      "claim": "The release supports score reproduction and baseline rerunning, but not independent reproduction of the memory system.",
+      "evidence": [
+        {
+          "block_id": "b00103-3084c53687",
+          "quote": "memory-system reproduction—not possible from the release, since Becos’s retrieved contexts and implementation are not included."
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "ablations": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00067-b6e4016e8f",
+            "quote": "The 7-step prompt changes three things at once"
+          }
+        ],
+        "text": "Answer prompt sensitivity: short versus 7-step while other settings are held fixed, although the intervention simultaneously changes reasoning instructions, answer-length limits, and judged text."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00063-912545e397",
+            "quote": "On identical answers the three judges differ by up to 7.2 points"
+          }
+        ],
+        "text": "Judge sensitivity: three judges score identical saved answers independently."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00069-af88e1f783",
+            "quote": "A diagnostic judge that also accepts dates within seven days of the gold date"
+          },
+          {
+            "block_id": "b00069-af88e1f783",
+            "quote": "We do not report it as a score."
+          }
+        ],
+        "text": "Date-lenient diagnostic judge accepts dates within seven days of the gold answer; the authors do not present this as an official score."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00071-79f545cfd4",
+            "quote": "Putting the session date on every message instead of once per session"
+          },
+          {
+            "block_id": "b00071-79f545cfd4",
+            "quote": "We ran this on one conversation only"
+          }
+        ],
+        "text": "Baseline-layout diagnostic repeats the session date on every message, but only for one conversation."
+      }
+    ],
+    "baselines": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00033-6b2de658c2",
+            "quote": "This is the standard baseline [2, 3, 5]; we rerun it under the same answer models, prompts and judges."
+          }
+        ],
+        "text": "Whole conversation: the complete conversation in the released layout, rerun under the same models, prompts, and judges."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00035-ff557329fe",
+            "quote": "The question alone, as a floor."
+          },
+          {
+            "block_id": "b00046-fd8bc09391",
+            "quote": "The no-memory row was not judged by DeepSeek."
+          }
+        ],
+        "text": "No memory: the question alone, used as a floor; it is only partially reported."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00074-4d7c9350e0",
+            "quote": "answer prompts and other settings may differ."
+          },
+          {
+            "block_id": "b00076-a7a034ac05",
+            "quote": "their comparability with ours is unknown pending the authors’ clarification."
+          }
+        ],
+        "text": "Published Mem0, Zep, LangMem, Nemori, full-context, and hybrid-curation numbers are contextual comparisons, not controlled baselines because settings may differ or be unstated."
+      }
+    ],
+    "datasets": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00028-d46f6ebc73",
+            "quote": "leaving 1,540 questions: 841 single-hop, 282 multi-hop, 321 temporal and 96 open-domain"
+          }
+        ],
+        "text": "LoCoMo question answering: ten two-person conversations with 1,540 retained questions after excluding the adversarial category; category counts are 841 single-hop, 282 multi-hop, 321 temporal, and 96 open-domain."
+      }
+    ],
+    "metrics": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00042-d069d99b95",
+            "quote": "a score is the share of questions judged correct, so the overall score weights each category by its number of questions. Judges are never averaged."
+          }
+        ],
+        "text": "Overall LLM-judge accuracy: the share of questions receiving CORRECT, with categories weighted by their question counts and judges never averaged."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00048-0ff42120bc",
+            "quote": "The 95% interval is a paired bootstrap that resamples whole conversations (20,000 replicates), conditional on the saved answers and verdicts"
+          }
+        ],
+        "text": "Paired difference in additional correct answers and percentage points, with a conversation-resampled bootstrap interval conditional on saved outputs."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00060-9d576a6209",
+            "quote": "These counts cover answering only; Becos’s own cost of storing and searching the conversation is not included."
+          }
+        ],
+        "text": "Context efficiency measured in characters and API-counted tokens for answering only."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00065-68939f25c4",
+            "quote": "One author graded 150 answers (gpt-4o-mini answers, short prompt) blind to system and judge, as correct, wrong or cannot tell"
+          }
+        ],
+        "text": "Blind human agreement diagnostic using correct, wrong, or cannot tell labels."
+      }
+    ],
+    "negative_results": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00050-6b71826a61",
+            "quote": "With gpt-4.1-mini answers the two score about the same"
+          },
+          {
+            "block_id": "b00050-6b71826a61",
+            "quote": "and both intervals include zero."
+          }
+        ],
+        "text": "Becos does not show a clear advantage over the full conversation when gpt-4.1-mini generates answers; paired intervals include zero."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00067-b6e4016e8f",
+            "quote": "Our comparison does not separate these."
+          }
+        ],
+        "text": "The prompt experiment cannot attribute gains specifically to written reasoning because multiple prompt properties change together."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00071-79f545cfd4",
+            "quote": "its effect across the benchmark is unknown."
+          }
+        ],
+        "text": "The layout experiment cannot establish the effect across LoCoMo because it covers only one conversation."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00103-3084c53687",
+            "quote": "memory-system reproduction—not possible from the release"
+          }
+        ],
+        "text": "The released artifacts cannot reproduce Becos retrieval or implementation."
+      }
+    ]
+  },
+  "executive_summary": "This controlled LoCoMo study shows that evaluation choices can move scores enough to confound comparisons: changing only the judge moves a score by up to 7.2 points, while changing the answer prompt moves it by up to 9.3. Becos beats the identically rerun whole-conversation baseline when gpt-4o-mini answers, but is effectively tied when gpt-4.1-mini answers, despite using about one tenth of the answering context. The evidence is unusually auditable because answers, verdicts, human grades, and scoring code are released. However, Becos is proprietary, was developed on LoCoMo without a fully held-out set, and its storage/search costs are omitted. The strongest contribution is therefore the evaluation-sensitivity audit, not an independent demonstration that Becos generalizes.",
+  "labels": {
+    "ablations": "Ablations",
+    "action_adopt": "adopt",
+    "action_read": "read",
+    "action_reject": "reject",
+    "action_watch": "watch",
+    "aidb_assessment": "AIDB assessment",
+    "assumptions": "Assumptions",
+    "available_artifacts": "Available artifacts",
+    "baseline": "Baseline",
+    "baselines": "Baselines",
+    "blocks": "Blocks",
+    "claims": "Main claims",
+    "confidence": "Confidence",
+    "confidence_high": "high",
+    "confidence_low": "low",
+    "confidence_medium": "medium",
+    "context": "Context",
+    "datasets": "Datasets",
+    "document_sha256": "Document SHA-256",
+    "evaluation": "Experimental evaluation",
+    "evidence": "Evidence",
+    "executive_summary": "Executive summary",
+    "generated": "Generated",
+    "hypothesis": "Hypothesis",
+    "importance": "Why it matters",
+    "key_components": "Key components",
+    "limitations": "Limitations",
+    "metadata_sha256": "Metadata SHA-256",
+    "method": "Method",
+    "metrics": "Metrics",
+    "missing_pieces": "Missing pieces",
+    "negative_results": "Negative results",
+    "novelty": "Novelty",
+    "open_questions": "Open questions",
+    "primary_metric": "Primary metric",
+    "problem": "Problem",
+    "profile": "Profile",
+    "proposed_experiments": "Proposed AIDB experiments",
+    "provenance": "Provenance",
+    "provider": "Provider",
+    "rationale": "Rationale",
+    "recommended_action": "Recommended action",
+    "repair_count": "Deterministic repair attempts",
+    "reproducibility": "Reproducibility",
+    "results": "Results",
+    "schema": "Schema",
+    "scope": "Scope",
+    "statement": "Statement",
+    "status": "Status",
+    "status_partial": "partial",
+    "status_strong": "strong",
+    "status_unknown": "unknown",
+    "status_weak": "weak",
+    "stop_condition": "Stop condition",
+    "uncertainties": "Uncertainties",
+    "usefulness": "Usefulness"
+  },
+  "language": {
+    "code": "en",
+    "name": "English"
+  },
+  "limitations": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00037-708cf45e45",
+          "quote": "their overall results under an earlier configuration were seen before the last change was adopted, so there is no fully held-out set."
+        }
+      ],
+      "limitation": "There is no fully held-out evaluation: the configuration was developed on LoCoMo, and aggregate results from even the least-used conversations were observed before freezing it."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00082-3e79f28386",
+          "quote": "One answer pass per question, and ten conversations; the paired intervals are approximate and conditional on the saved answers and verdicts."
+        }
+      ],
+      "limitation": "Statistical uncertainty omits generation variability because each question has one answer pass, and the paired intervals are approximate with only ten conversation clusters."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00084-a97fbbd5f9",
+          "quote": "a date on every message helped it on the one conversation we tried"
+        }
+      ],
+      "limitation": "The baseline uses a potentially disadvantaged date layout; a stronger layout helped in the sole tested conversation."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00086-98761ea31e",
+          "quote": "These results do not show how Becos does on coding work."
+        }
+      ],
+      "limitation": "External validity for the intended product domain is untested because LoCoMo personal chat differs from coding work."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00088-b3ddd2974e",
+          "quote": "LoCoMo’s answer key has errors [6], and its judge is lenient; both cap what a score can mean."
+        }
+      ],
+      "limitation": "Benchmark validity is constrained by answer-key errors and judge leniency."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00092-049ab2f5c5",
+          "quote": "loading again may store slightly different attributes. Retrieval was checked to return identical text across two runs."
+        }
+      ],
+      "limitation": "Becos ingestion may be stochastic: each conversation was loaded once, although retrieval text was stable across two checks."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00094-6a48f0135f",
+          "quote": "Part of Becos’s gain with gpt-4o-mini answers may come from a different model having processed the conversation at storage time."
+        }
+      ],
+      "limitation": "A separate, undisclosed storage-time LLM may contribute to Becos’s gain, complicating attribution to retrieval or memory organization."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00096-0ede592942",
+          "quote": "The human check has one grader, an author, on 150 answers from one setting"
+        }
+      ],
+      "limitation": "The human check uses one author-grader, one answer setting, and a limited sample, so it cannot support definitive human-judged scores."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00098-4f138ae032",
+          "quote": "Becos’s own cost and latency of storing and searching are not measured."
+        }
+      ],
+      "limitation": "The efficiency analysis excludes Becos ingestion and retrieval latency and cost."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00101-f08ced0f99",
+          "quote": "Both authors work at becosAI, which develops Becos."
+        }
+      ],
+      "limitation": "Both authors work for the company developing the evaluated system, creating a declared competing interest."
+    }
+  ],
+  "method": {
+    "assumptions": [
+      "An LLM judge’s binary agreement with the supplied gold answer is an adequate operational metric, despite acknowledged key errors and judge leniency.",
+      "The released whole-conversation layout is a suitable standard baseline, although the paper demonstrates that another date layout can improve it.",
+      "Saved single-pass answers and verdicts are treated as fixed in the paired bootstrap; generation variability is therefore outside the interval.",
+      "The least-used conversations provide a useful robustness view, but they are not a held-out set because aggregate earlier results were observed during development.",
+      "Context-length comparisons cover answering only and do not represent total system computation, storage, latency, or cost."
+    ],
+    "key_components": [
+      "LoCoMo retains 1,540 non-adversarial questions from ten long two-person conversations, divided into single-hop, multi-hop, temporal, and open-domain categories.",
+      "Becos ingests turns chronologically, decomposes messages into attributes, searches its store at query time, and returns at most 8,950 characters; gold answers are reserved for judging and scoring.",
+      "The matched whole-conversation baseline places the full conversation in the answer prompt using the released data layout, with one line per message and one date header per session.",
+      "Answer generation crosses two fixed model snapshots with a short prompt and a seven-step prompt at temperature 0, using one pass per question.",
+      "Three judges use the same Nemori judge prompt and produce CORRECT or WRONG; scores are the question-weighted share judged correct, and judges are reported separately.",
+      "Paired uncertainty is estimated by resampling whole conversations from saved answers and verdicts; the human check is used as a diagnostic rather than a replacement score."
+    ],
+    "overview": "The authors rerun a whole-conversation baseline and evaluate proprietary Becos as a black box under matched conditions. Each retained LoCoMo question is answered from Becos retrieval, the full conversation, or no memory. Answers use either gpt-4o-mini or gpt-4.1-mini and either a short-answer prompt or a seven-step prompt. Three LLM judges independently assign binary verdicts. Paired bootstrap intervals resample conversations. A blinded single-author check examines a stratified answer sample, while additional diagnostics alter date tolerance and the full-context date layout."
+  },
+  "open_questions": [
+    "Does Becos retain a measurable advantage on a fully unseen conversational-memory benchmark and on real coding-agent histories?",
+    "What are Becos’s end-to-end ingestion, storage, retrieval, and answering costs and latencies relative to long-context answering?",
+    "Would repeating every answer and ingestion run change the paired uncertainty enough to alter the conclusions?",
+    "How much of the 7-step improvement remains under length-matched final answers and independent human scoring?",
+    "Does repeating dates on every message across all conversations eliminate a substantial part of Becos’s temporal advantage?",
+    "Can the authors release retrieved contexts or a reproducible retrieval interface that permits independent system-level replication?",
+    "Would multiple independent human graders confirm that primary-judge errors work against Becos in other model and prompt settings?"
+  ],
+  "problem": {
+    "importance": "Reported LoCoMo scores span a wide range, yet incompletely reported evaluation settings can change results materially. Without controlled reruns, a higher score may reflect the evaluation configuration rather than better long-term memory.",
+    "scope": "The paper studies LoCoMo question answering on all ten conversations, excluding the adversarial category. It varies context source, two answer models, two answer prompts, and three LLM judges; it also performs limited diagnostics for human judging, date leniency, and baseline layout.",
+    "statement": "Published LoCoMo scores combine memory quality with answer-model, prompt, judge, and baseline-layout choices, making cross-paper differences difficult to interpret as memory-system improvements."
+  },
+  "proposed_experiments": [
+    {
+      "baseline": "Whole conversation in both the released layout and the date-per-message layout, compared with the frozen Becos configuration under identical answer model, prompt, and judge settings.",
+      "hypothesis": "Becos’s advantage over the whole conversation with gpt-4o-mini will shrink when the baseline repeats the session date on every message across the complete benchmark, especially on temporal questions.",
+      "primary_metric": "Paired difference in human-judged temporal-question accuracy between Becos and the date-per-message baseline, with conversation-level uncertainty.",
+      "stop_condition": "Conclude the layout hypothesis is unsupported if the date-per-message baseline fails to improve temporal accuracy or fails to reduce the Becos-minus-baseline gap under a preregistered interval criterion."
+    },
+    {
+      "baseline": "The original short prompt and original 7-step prompt, supplemented by factorial variants that independently control reasoning visibility, final-answer length, and final-answer extraction.",
+      "hypothesis": "Most of the 7-step score gain comes from longer, more specific final answers and judge leniency rather than written reasoning steps.",
+      "primary_metric": "Independent multi-grader human accuracy, with LLM-judge accuracy reported secondarily and stratified by answer length.",
+      "stop_condition": "Stop attributing the gain to written reasoning if the reasoning-only variant does not exceed the length-matched no-reasoning variant under a preregistered paired interval."
+    },
+    {
+      "baseline": "A frozen Becos configuration versus optimized whole-conversation prompting on an unseen conversational benchmark and representative coding-agent histories.",
+      "hypothesis": "Becos’s context compression preserves accuracy on unseen data but its end-to-end efficiency advantage is smaller after ingestion and retrieval costs are included.",
+      "primary_metric": "Human-judged accuracy per total end-to-end cost and latency, including ingestion, storage, retrieval, and answering.",
+      "stop_condition": "Do not claim practical superiority unless Becos improves the preregistered efficiency metric without a meaningful accuracy loss on both unseen evaluation domains."
+    }
+  ],
+  "provenance": {
+    "block_count": 129,
+    "document_sha256": "e5fb06adb916cebde40c84dc532f56be25c1ece9b730d72a38ab30f8d3581eb0",
+    "generated_at": "2026-11-20T08:00:47.713593+00:00",
+    "metadata_sha256": "f48ac7f5c40d646d9c87e78b7b48570cae21e671d4e45aabcd94568c7cec404e",
+    "profile": "deep",
+    "provider": "codex-exec:configured-default",
+    "repair_count": 1,
+    "schema_version": "paper-summary-v1"
+  },
+  "reproducibility": {
+    "artifacts": [
+      "Every question’s generated answer and every judge verdict behind the reported tables.",
+      "The human-check sample, key, and grades.",
+      "A standalone Python-standard-library scoring and baseline-running script.",
+      "Prompts, fixed answer-model snapshots, temperature, run dates, licensing, and approximate API costs.",
+      "Commands capable of rescoring released verdicts, re-judging answers, and rerunning whole-conversation and no-memory baselines."
+    ],
+    "assessment": "Score reproduction and end-to-end regeneration of public baselines appear strong from the stated release. Reproduction of the headline proprietary system is not possible because its implementation and retrieved contexts are absent. The fixed outputs make judging and scoring auditable, but they do not validate that an independent Becos run would recreate the same contexts or answers.",
+    "missing": [
+      "Becos source code and implementation details sufficient for independent reproduction.",
+      "The retrieved Becos contexts used to generate the reported answers.",
+      "Independent access to the proprietary ingestion and retrieval pipeline without requesting author-provided API access.",
+      "The identity and configuration of the storage-time LLM.",
+      "Repeated Becos ingestion and repeated answer-generation runs to quantify stochastic variation.",
+      "End-to-end storage/search cost, latency, and resource accounting."
+    ],
+    "status": "partial"
+  },
+  "results": [
+    {
+      "context": "Controlled sensitivity comparisons; the prompt intervention is bundled and does not isolate reasoning, answer length, or final-answer extraction.",
+      "evidence": [
+        {
+          "block_id": "b00063-912545e397",
+          "quote": "On identical answers the three judges differ by up to 7.2 points"
+        },
+        {
+          "block_id": "b00067-b6e4016e8f",
+          "quote": "raises scores by 4.6 to 9.3 points under the gpt-4o-mini judge"
+        },
+        {
+          "block_id": "b00067-b6e4016e8f",
+          "quote": "The 7-step prompt changes three things at once"
+        }
+      ],
+      "result": "Evaluation configuration has large effects on unchanged answers. The three judges differ by up to 7.2 points, while changing from the short prompt to the 7-step prompt raises scores by 4.6 to 9.3 points under the primary judge. These shifts are comparable to, or larger than, many system differences, so unmatched LoCoMo scores are not reliable evidence of memory superiority."
+    },
+    {
+      "context": "All ten conversations; comparisons hold answer model, answer prompt, and judge fixed. Development on the benchmark limits generalization.",
+      "evidence": [
+        {
+          "block_id": "b00050-6b71826a61",
+          "quote": "With gpt-4o-mini answers Becos scores higher than the whole conversation under every judge: by 6.8, 8.2 and 10.4 points with the short prompt"
+        },
+        {
+          "block_id": "b00050-6b71826a61",
+          "quote": "and by 11.2 to 12.5 with the 7-step prompt."
+        },
+        {
+          "block_id": "b00050-6b71826a61",
+          "quote": "The paired interval under the gpt-4o-mini judge excludes zero (+3.8 to +9.5 short, +9.2 to +13.1 7-step)"
+        }
+      ],
+      "result": "With gpt-4o-mini answers, Becos consistently outperforms the matched whole-conversation baseline: its margin is 6.8, 8.2, and 10.4 points across judges with the short prompt and 11.2 to 12.5 with the 7-step prompt. Under the primary judge, paired intervals exclude zero: +3.8 to +9.5 and +9.2 to +13.1."
+    },
+    {
+      "context": "All ten conversations, primary gpt-4o-mini judge; this is a consequential negative result against a model-independent Becos advantage.",
+      "evidence": [
+        {
+          "block_id": "b00050-6b71826a61",
+          "quote": "With gpt-4.1-mini answers the two score about the same: Becos answers 1 more question correctly than the whole conversation"
+        },
+        {
+          "block_id": "b00050-6b71826a61",
+          "quote": "with the short prompt and 5 more with the 7-step prompt, out of 1,540, and both intervals include zero."
+        }
+      ],
+      "result": "With gpt-4.1-mini answers, Becos and the full conversation are effectively tied: Becos adds only 1 correct answer with the short prompt and 5 with the 7-step prompt out of 1,540, and both paired intervals include zero. Thus the retrieval advantage depends strongly on answer-model capability."
+    },
+    {
+      "context": "Context and token accounting for answering; not an end-to-end cost or latency comparison.",
+      "evidence": [
+        {
+          "block_id": "b00060-9d576a6209",
+          "quote": "the whole-conversation context per question averages 89,048 characters over the 1,540 questions"
+        },
+        {
+          "block_id": "b00060-9d576a6209",
+          "quote": "Becos’s context averages 8,774 characters (6,226 to 8,950), 9.9% as much (90.1% fewer characters)"
+        },
+        {
+          "block_id": "b00060-9d576a6209",
+          "quote": "the context is 2,337 tokens with Becos against 20,525 with the whole conversation (88.6% fewer)"
+        },
+        {
+          "block_id": "b00060-9d576a6209",
+          "quote": "Becos’s own cost of storing and searching the conversation is not included."
+        }
+      ],
+      "result": "Becos substantially reduces answering context: average context is 8,774 rather than 89,048 characters, or 90.1% fewer; API-counted context is 2,337 rather than 20,525 tokens, or 88.6% fewer. This efficiency excludes Becos’s own ingestion and retrieval cost."
+    },
+    {
+      "context": "A limited diagnostic on conv-47, not a full ablation across the benchmark.",
+      "evidence": [
+        {
+          "block_id": "b00071-79f545cfd4",
+          "quote": "Putting the session date on every message instead of once per session raises the whole conversation on conv-47 from 67.3 to 73.3 (temporal 26.5 to 44.1)."
+        },
+        {
+          "block_id": "b00071-79f545cfd4",
+          "quote": "We ran this on one conversation only, so its effect across the benchmark is unknown."
+        }
+      ],
+      "result": "Baseline layout is itself a confound: adding the session date to every message on one conversation raises the full-context score from 67.3 to 73.3 and its temporal score from 26.5 to 44.1. Because this was tested on only one conversation, the benchmark-wide effect remains unknown."
+    }
+  ],
+  "title": "What Moves a LoCoMo Score? Memory Context, Answer Prompts and Judges",
+  "uncertainties": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00080-071c629caa",
+          "quote": "LoCoMo is not an unseen benchmark for this configuration."
+        }
+      ],
+      "uncertainty": "Whether Becos’s advantage generalizes beyond LoCoMo or survives evaluation on an unseen benchmark.",
+      "why_it_matters": "Development and evaluation used the same benchmark, so the reported advantage may include benchmark-specific tuning."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00067-b6e4016e8f",
+          "quote": "Our comparison does not separate these."
+        }
+      ],
+      "uncertainty": "Whether the 7-step gains arise from reasoning, longer final answers, final-answer extraction, or judge generosity.",
+      "why_it_matters": "The prompt effect is large enough to distort comparisons, but the bundled intervention prevents causal attribution."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00071-79f545cfd4",
+          "quote": "Our comparisons are therefore against the baseline as laid out in the released data, not against every possible layout"
+        }
+      ],
+      "uncertainty": "Whether a fully optimized whole-conversation representation would close the temporal gap.",
+      "why_it_matters": "A simple layout change materially improved the one tested conversation, so the chosen baseline may underestimate long-context performance."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00094-6a48f0135f",
+          "quote": "Becos uses an LLM when storing each turn, and that model is not one of the answer models."
+        }
+      ],
+      "uncertainty": "How much Becos’s storage-time model, rather than retrieval compression itself, contributes to performance.",
+      "why_it_matters": "An additional model processes the conversation before the answer model, making compute and capability unequal across contexts."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00096-0ede592942",
+          "quote": "a second grader and a larger sample would be needed to report human-judged scores."
+        }
+      ],
+      "uncertainty": "Whether the single-author human diagnostic replicates with independent graders and a larger, randomly sampled set.",
+      "why_it_matters": "The diagnostic supports the direction of judge bias but cannot establish a reliable human score."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00076-a7a034ac05",
+          "quote": "their comparability with ours is unknown pending the authors’ clarification."
+        }
+      ],
+      "uncertainty": "Whether published hybrid-curation results are comparable after resolving unstated settings and apparent category-table inconsistencies.",
+      "why_it_matters": "Unresolved reporting differences prevent a fair ranking against an important published comparator."
+    }
+  ]
+}

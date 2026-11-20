@@ -13,6 +13,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from html.parser import HTMLParser
 from pathlib import Path
+import xml.etree.ElementTree as ET
 
 from aidb.weekly import current_iso_week, write_week_batch
 
@@ -161,6 +162,9 @@ def parse_since(value: str) -> datetime:
 
 
 def parse_feed(payload: bytes, feed: dict[str, object]) -> list[Entry]:
+    xml = ET.fromstring(payload)
+    if xml.tag == "rss":
+        return parse_rss(xml, feed)
     parser = FeedParser()
     parser.feed(payload.decode("utf-8", errors="replace"))
     result: list[Entry] = []
@@ -201,6 +205,40 @@ def parse_feed(payload: bytes, feed: dict[str, object]) -> list[Entry]:
             )
         )
     return result
+
+
+class _FeedText(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.parts = []
+
+    def handle_data(self, data):
+        self.parts.append(data)
+
+
+def parse_rss(xml: ET.Element, feed: dict[str, object]) -> list[Entry]:
+    """Parse XML CDATA before removing optional HTML from RSS descriptions."""
+    entries = []
+    for item in xml.findall("./channel/item"):
+        url = item.findtext("link") or item.findtext("guid") or ""
+        if not url.strip():
+            if feed.get("coverage") == "dated-feed-snapshot":
+                raise ValueError("dated feed snapshot contains an item without a link")
+            continue
+        text = _FeedText()
+        text.feed(item.findtext("description") or "")
+        author = item.findtext("{http://purl.org/dc/elements/1.1/}creator") or item.findtext("author")
+        entries.append(Entry(
+            title=" ".join((item.findtext("title") or "Untitled").split()),
+            url=url.strip(),
+            published=parse_date(item.findtext("pubDate") or ""),
+            feed_name=str(feed["name"]),
+            topics=tuple(str(topic) for topic in feed.get("topics", [])),
+            summary=" ".join(" ".join(text.parts).split()),
+            authors=(author,) if author else (),
+            categories=tuple(category.text for category in item.findall("category") if category.text),
+        ))
+    return entries
 
 
 def fetch(feed: dict[str, object], timeout: float) -> list[Entry]:

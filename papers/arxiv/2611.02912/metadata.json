@@ -1,0 +1,36 @@
+{
+  "abstract": "Long-lived agents rely on persistent memory of users, tasks and decisions, and this memory must stay consistent with a world that keeps changing. When an upstream fact changes, however, memory systems can revise the contradicted memory itself while the beliefs, plans and actions derived from it remain accepted, even though they have lost their support. We therefore formulate dependency-aware state revision, which asks not only what changed but also which dependent states should no longer be trusted. To address it, StateGraph maintains an evolving state dependency graph whose edges are recovered from interaction histories. Its core design is counterfactual verification: each candidate edge is tested by asking whether the dependent state would survive the loss of its premise, which separates support dependence from semantic relatedness, and revision then invalidates a dependent state only when a strict dependency fails and no independent support path survives. To test this design, we introduce StateChangeBench, a controlled benchmark of 50 author-constructed cases annotated with cascade depth, hard negatives and action consequences. On it, StateGraph's Impact-F1 margin over a CUPMem reimplementation is 6.9 percentage points at depth 1 and 26.0 at depth 3+. On public long-term memory benchmarks, its point estimates are comparable to or higher than those of the evaluated baselines on most datasets. These results provide initial evidence that explicit dependency tracking can improve selective memory revision under changing conditions.",
+  "arxiv_id": "2611.02912v1",
+  "authors": [
+    "Yiqi Wang",
+    "Tongyuan Zhao",
+    "Jiaqi Zhang",
+    "Yiqun Duan",
+    "Zhangkai Wu",
+    "Mingkai Zheng",
+    "Taotao Cai"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2611.02912v1",
+  "categories": [
+    "cs.CL"
+  ],
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2611.02912v1",
+  "latest_seen_version": 1,
+  "paper_id": "2611.02912",
+  "paper_version_id": "2611.02912v1",
+  "published": "2026-11-02T10:44:02+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "A State Change Is Local, Its Consequences Are Not: Dependency-Aware State Revision for Long-Term Agent Memory",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-11-02T10:44:02+00:00",
+  "url": "https://arxiv.org/abs/2611.02912v1"
+}

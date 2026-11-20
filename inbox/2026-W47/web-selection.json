@@ -1,0 +1,17 @@
+{
+  "level": "full-text editorial review",
+  "articles": [
+    {"url": "https://www.anthropic.com/research/components-of-agent-memory", "reason": "Memory hierarchy, offline verification and raw transcript search."},
+    {"url": "https://www.anthropic.com/research/building-strong-safety-evaluations", "reason": "Construct validity, causal controls and reporting in safety evaluations."},
+    {"url": "https://research.google/blog/the-sleep-framework-a-new-way-for-llms-to-retain-knowledge-in-continual-learning/", "reason": "Distinguish consolidation into weights from external agent memory."},
+    {"url": "https://huggingface.co/blog/token-pooling", "reason": "Storage and retrieval tradeoffs in multi-vector embeddings."},
+    {"url": "https://huggingface.co/blog/moe-expert-streaming", "reason": "Memory, bandwidth and latency tradeoffs in local MoE inference."},
+    {"url": "https://huggingface.co/blog/amazon/higher-order-pruning-experts", "reason": "Compare expert pruning with streaming as alternative inference compromises."},
+    {"url": "https://huggingface.co/blog/allenai/xybench", "reason": "Evaluate whether assistants identify the user's underlying problem."},
+    {"url": "https://huggingface.co/blog/cwe-bench", "reason": "Check the validity and execution environment of vulnerability evaluations."},
+    {"url": "https://deepmind.google/blog/introducing-alphaproof-code", "reason": "Separate verified formal specifications from broader software correctness claims."},
+    {"url": "https://openai.com/index/inside-the-codex-sandbox", "reason": "Review concrete containment boundaries for tool-using agents."},
+    {"url": "https://openai.com/index/how-openai-performance-factory-keeps-chatgpt-fast", "reason": "Review performance diagnosis, validation and deployment feedback loops."},
+    {"url": "https://openai.com/index/control-room", "reason": "Inspect workload observability and interruption mechanisms."}
+  ]
+}

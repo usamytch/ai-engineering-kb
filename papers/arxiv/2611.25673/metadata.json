@@ -1,0 +1,40 @@
+{
+  "abstract": "As language-model agents are applied to increasingly extended tasks, their working context continuously accumulates interaction history, tool observations, intermediate decisions, and task progress. Context compaction offers a practical way to reduce this growing history while allowing execution to continue, yet the compaction ability of modern LLMs remains insufficiently understood. We introduce CompAct-Bench, a benchmark for evaluating working-context compaction through its downstream effect on agent task completion. Starting from successful agent trajectories, we insert compaction boundaries at different stages of execution, compress the preceding working context with the model under evaluation, and let the same executor continue the original task. To enable fair comparison across compactors, we evaluate them under controlled retention ratios using a lightweight iterative ratio-adjustment procedure. CompAct-Bench covers information-seeking, software-engineering, and workspace-oriented tasks through BrowseComp, SWE-bench, and an internal CompanyBench evaluation. Our experiments show that working-context compaction remains highly lossy even for frontier models: Claude- and GPT-family models perform strongest overall, yet substantial degradation in downstream task accuracy persists under aggressive compaction. Further analysis reveals that failures are often caused not only by omitted information, but also by distorted task state, such as turning unresolved issues into apparent conclusions or forgetting previously established results, which can lead to incorrect decisions or redundant execution. These findings highlight working-context compaction as a distinct and still challenging ability for LLMs operating in extended agent tasks.",
+  "arxiv_id": "2611.25673v1",
+  "authors": [
+    "Jiayi Chen",
+    "Lizhe Chen",
+    "Yujia Chen",
+    "Shihan Dou",
+    "Ming Zhang",
+    "Chendi Ge",
+    "Shiguang Ni",
+    "Tao Gui",
+    "Qi Zhang",
+    "Xuanjing Huang",
+    "Maxm Pan"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2611.25673v1",
+  "categories": [
+    "cs.AI"
+  ],
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2611.25673v1",
+  "latest_seen_version": 1,
+  "paper_id": "2611.25673",
+  "paper_version_id": "2611.25673v1",
+  "published": "2026-11-19T07:49:37+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "CompAct-Bench: A Benchmark for Working-Context Compaction in Long-Horizon Agent Tasks",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-11-19T07:49:37+00:00",
+  "url": "https://arxiv.org/abs/2611.25673v1"
+}

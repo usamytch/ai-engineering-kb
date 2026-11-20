@@ -1,0 +1,690 @@
+{
+  "aidb_assessment": {
+    "confidence": "medium",
+    "novelty": "High conceptual novelty in treating persistent-memory privacy as an endogenous dialogue process rather than static record inference. The multi-session loop-breaking intervention adds stronger causal evidence than correlational leakage comparisons alone.",
+    "rationale": "The controlled design, paired conditions, causal response interventions, robustness checks, and explicit utility measurements make this a decision-relevant paper. Confidence stops short of high because simulated users dominate the evidence, the human sample is tiny, central measurements are model-based, and implementation coverage is narrow. The response-side instruction merits independent replication before adoption as a general safeguard.",
+    "recommended_action": "read",
+    "usefulness": "High for designers of persistent-memory assistants. The response-side control is simple, provider-deployable, and consistently favorable across the evaluated models and memory formats, while the analysis explains why user-side filtering and refusals are insufficient."
+  },
+  "claims": [
+    {
+      "claim": "The experiment isolates dialogue-time memory access because both settings accumulate the same kind of record and inference reads each setting’s full record.",
+      "evidence": [
+        {
+          "block_id": "b00009-1c71551f1d",
+          "quote": "Both settings summarize every session into the same kind of record, and inference always reads the full record"
+        },
+        {
+          "block_id": "b00021-2435995526",
+          "quote": "They thus have the same access to their history, which differs only because memory changes the conversations."
+        }
+      ]
+    },
+    {
+      "claim": "The proposed mechanism is a three-link loop from recorded values or cues, through agent mentions, to user reactions that are recorded again.",
+      "evidence": [
+        {
+          "block_id": "b00042-6cabbdefec",
+          "quote": "A value or cue in memory leads to a mention in a later session (memory → response)."
+        },
+        {
+          "block_id": "b00042-6cabbdefec",
+          "quote": "The user reacts by affirming the value, correcting it, declining to discuss it, or leaving it uncorrected"
+        },
+        {
+          "block_id": "b00042-6cabbdefec",
+          "quote": "The summary of that session records the reaction (user → memory)."
+        }
+      ]
+    },
+    {
+      "claim": "The authors argue that the loop operates implicitly as well as through explicit statements, including summaries that preserve uncorrected agent-proposed values.",
+      "evidence": [
+        {
+          "block_id": "b00049-31af66748d",
+          "quote": "Every link occurs in both explicit and implicit forms"
+        },
+        {
+          "block_id": "b00049-31af66748d",
+          "quote": "Summaries record cues as well as values, including values introduced by the agent and left uncorrected"
+        }
+      ]
+    },
+    {
+      "claim": "The paper’s preferred mitigation changes the support agent’s response behavior rather than filtering user speech or sanitizing stored memory.",
+      "evidence": [
+        {
+          "block_id": "b00063-83b467adbd",
+          "quote": "it does not state, presuppose, or ask to confirm the user’s attributes unless the user raises them"
+        },
+        {
+          "block_id": "b00066-5202815422",
+          "quote": "The other conditions lower leakage only by giving up quality."
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "ablations": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00257-65c3941a8d",
+            "quote": "we construct the original and a regeneration from the same within-session context without the memory block"
+          },
+          {
+            "block_id": "b00257-65c3941a8d",
+            "quote": "a version in which the editing model removes every mention"
+          }
+        ],
+        "text": "Single-response replay compares the original memory-conditioned response with a response regenerated without memory and a version with all mentions removed."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00269-866c8a59c3",
+            "quote": "removes all mentions of attributes in the first group (all removed)"
+          },
+          {
+            "block_id": "b00269-866c8a59c3",
+            "quote": "only references and confirmation questions about attributes in the second"
+          }
+        ],
+        "text": "Multi-session loop breaking separately removes all mentions or only explicit references and confirmation questions for randomized attribute groups."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00209-fe496b8ec2",
+            "quote": "we repeat the main experiment with Mistral Small 4"
+          },
+          {
+            "block_id": "b00209-fe496b8ec2",
+            "quote": "in every role that Claude Sonnet 5 plays in Section 3.1"
+          }
+        ],
+        "text": "Alternative user-side model repeats the main experiment with Mistral Small 4 in all roles originally assigned to Claude Sonnet 5."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00216-3312a36842",
+            "quote": "We therefore repeat the main comparison and the response-side instruction with two further formats"
+          },
+          {
+            "block_id": "b00220-dec45ea911",
+            "quote": "We use Mem0 (Chhikara et al., 2025) (version 2.0.2)"
+          },
+          {
+            "block_id": "b00222-b3f6efb8ae",
+            "quote": "the five summaries most similar to that turn by cosine similarity are retrieved"
+          }
+        ],
+        "text": "Memory-format ablation compares append-only summaries, Mem0 update-based memory, and relevance retrieval."
+      }
+    ],
+    "baselines": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00021-2435995526",
+            "quote": "in the no-memory setting it receives nothing. A no-memory run still accumulates its own record"
+          }
+        ],
+        "text": "No-memory dialogue baseline: the agent receives no earlier summaries during dialogue, while its complete accumulated record remains available to checkpoint inference."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00023-2873c8afb1",
+            "quote": "The direct filter rejects it if the direct judge flags any attribute, and the strict filter if either judge does."
+          },
+          {
+            "block_id": "b00063-83b467adbd",
+            "quote": "user-side anonymization"
+          }
+        ],
+        "text": "User-side controls: direct and strict idealized filters, plus adversarial user-turn anonymization."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00063-83b467adbd",
+            "quote": "write-time anonymization"
+          }
+        ],
+        "text": "Memory-side control: anonymization of each summary before storage."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00033-3d93a49b3f",
+            "quote": "Dashed lines show the majority-category reference."
+          },
+          {
+            "block_id": "b00199-c898d5cb48",
+            "quote": "The inference models are Gemini 3.1 Pro (gemini-3.1-pro-preview) and Kimi K3 (kimi-k3)."
+          }
+        ],
+        "text": "Reference baselines include majority-category prediction and stronger post-hoc inference models."
+      }
+    ],
+    "datasets": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00127-7506b2ebf2",
+            "quote": "User profiles are built from the Public Use Microdata Sample (PUMS) of the American Community Survey"
+          },
+          {
+            "block_id": "b00154-65020c85ca",
+            "quote": "We use M=100,000, N=300, and K=300. A further 30 development profiles, disjoint from these"
+          }
+        ],
+        "text": "Main profile source: linked person and household records from the public 2024 American Community Survey one-year Public Use Microdata Sample, with 300 main profiles and 30 disjoint development profiles."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00176-c3ff712718",
+            "quote": "Eight adult participants, none of whom served as annotators"
+          },
+          {
+            "block_id": "b00180-118fea606a",
+            "quote": "Participants chose their own requests from matters in their actual lives"
+          }
+        ],
+        "text": "Human pilot: eight adult participants completed real-life support requests under alternating memory access."
+      }
+    ],
+    "metrics": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00025-fe781b6b04",
+            "quote": "The answer “undetermined” is allowed and scored as incorrect"
+          },
+          {
+            "block_id": "b00027-b9d4839967",
+            "quote": "a weighted accuracy that we call leakage"
+          }
+        ],
+        "text": "Empirical leakage: dependency-weighted accuracy over correctly inferred personal-attribute values; “undetermined” is scored incorrect."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00027-b9d4839967",
+            "quote": "rates each response in sessions 40,45,…,80 on two five-point scales"
+          },
+          {
+            "block_id": "b00027-b9d4839967",
+            "quote": "Helpfulness is how well the response serves the request"
+          },
+          {
+            "block_id": "b00027-b9d4839967",
+            "quote": "Coherence is whether the response is consistent with and carries forward what the user said"
+          }
+        ],
+        "text": "Response quality: helpfulness and cross-session coherence on five-point scales."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00042-6cabbdefec",
+            "quote": "states a value for the user (a reference), asks the user to confirm one (a confirmation question), or tailors its content"
+          },
+          {
+            "block_id": "b00053-8fd2a56125",
+            "quote": "A larger reduction means that the mention also made later mentions, and thus later disclosures, more likely."
+          }
+        ],
+        "text": "Mechanism measures: disclosure rate and specificity, mention source and form, user reaction, recorded values or cues, first disclosures, newly inferred attributes, and observed-to-predicted reduction."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00158-ac7748cd5f",
+            "quote": "Intervals are 95% percentile bootstrap intervals from 1,000 resamples of the N profiles."
+          }
+        ],
+        "text": "Uncertainty: paired profile comparisons with 95% percentile bootstrap intervals from 1,000 profile resamples."
+      }
+    ],
+    "negative_results": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00035-2b2da7f441",
+            "quote": "Earlier in the run, memory can yield lower leakage, for up to about the first half with Qwen3.8-27B."
+          }
+        ],
+        "text": "Memory can initially produce lower leakage than no memory, including for roughly the first half of the Qwen run, so the effect is not uniformly positive over time."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00038-384c01547d",
+            "quote": "under the strict filter they land close to it"
+          },
+          {
+            "block_id": "b00038-384c01547d",
+            "quote": "Filtering thus lowers leakage and quality together"
+          }
+        ],
+        "text": "Strict filtering largely sacrifices the response-quality gains of memory rather than cleanly resolving the privacy–utility trade-off."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00061-7c1c3f9adf",
+            "quote": "Declining to discuss the attribute does not help either."
+          },
+          {
+            "block_id": "b00061-7c1c3f9adf",
+            "quote": "After a refusal, the next prediction leans toward these values"
+          }
+        ],
+        "text": "Refusal is not a dependable escape: it can shift later inference toward values treated as sensitive by the simulated user model."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00207-5c52ee3d3c",
+            "quote": "except for Kimi K3 on Qwen3.8-27B records, where the reduction is not significant"
+          }
+        ],
+        "text": "The response-side mitigation was not significant against Kimi K3 for Qwen records, leaving one stronger-inference exception."
+      }
+    ]
+  },
+  "executive_summary": "The paper presents controlled multi-session evidence that dialogue-time access to persistent memory changes subsequent user speech and increases the personal attributes recoverable from accumulated records. Its strongest contribution is causal localization: replay and multi-session mention-removal interventions identify agent references and presuppositions as a self-reinforcing disclosure mechanism. A response-side instruction restores leakage to roughly the no-memory level while retaining most quality gains. The design is extensive and paired, but external validity remains limited by simulated users, a very small human pilot, model-based measurement, fixed attribute categories, and only a few memory implementations.",
+  "labels": {
+    "ablations": "Ablations",
+    "action_adopt": "adopt",
+    "action_read": "read",
+    "action_reject": "reject",
+    "action_watch": "watch",
+    "aidb_assessment": "AIDB assessment",
+    "assumptions": "Assumptions",
+    "available_artifacts": "Available artifacts",
+    "baseline": "Baseline",
+    "baselines": "Baselines",
+    "blocks": "Blocks",
+    "claims": "Main claims",
+    "confidence": "Confidence",
+    "confidence_high": "high",
+    "confidence_low": "low",
+    "confidence_medium": "medium",
+    "context": "Context",
+    "datasets": "Datasets",
+    "document_sha256": "Document SHA-256",
+    "evaluation": "Experimental evaluation",
+    "evidence": "Evidence",
+    "executive_summary": "Executive summary",
+    "generated": "Generated",
+    "hypothesis": "Hypothesis",
+    "importance": "Why it matters",
+    "key_components": "Key components",
+    "limitations": "Limitations",
+    "metadata_sha256": "Metadata SHA-256",
+    "method": "Method",
+    "metrics": "Metrics",
+    "missing_pieces": "Missing pieces",
+    "negative_results": "Negative results",
+    "novelty": "Novelty",
+    "open_questions": "Open questions",
+    "primary_metric": "Primary metric",
+    "problem": "Problem",
+    "profile": "Profile",
+    "proposed_experiments": "Proposed AIDB experiments",
+    "provenance": "Provenance",
+    "provider": "Provider",
+    "rationale": "Rationale",
+    "recommended_action": "Recommended action",
+    "repair_count": "Deterministic repair attempts",
+    "reproducibility": "Reproducibility",
+    "results": "Results",
+    "schema": "Schema",
+    "scope": "Scope",
+    "statement": "Statement",
+    "status": "Status",
+    "status_partial": "partial",
+    "status_strong": "strong",
+    "status_unknown": "unknown",
+    "status_weak": "weak",
+    "stop_condition": "Stop condition",
+    "uncertainties": "Uncertainties",
+    "usefulness": "Usefulness"
+  },
+  "language": {
+    "code": "en",
+    "name": "English"
+  },
+  "limitations": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00186-5b67652b8f",
+          "quote": "With eight participants, the pilot indicates the direction of the effect rather than its size."
+        }
+      ],
+      "limitation": "Most evidence comes from LLM-simulated users; the human study has only eight participants and establishes direction rather than a stable population effect size."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00178-d038667203",
+          "quote": "The target set is the first eight attributes of Table 4, which contain no special-category attribute."
+        },
+        {
+          "block_id": "b00178-d038667203",
+          "quote": "Location is evaluated at the state level instead of the PUMA"
+        }
+      ],
+      "limitation": "The human pilot covers only the first eight attributes, excludes special-category attributes, and evaluates location more coarsely than the main experiment."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00172-91b698f0d8",
+          "quote": "Helpfulness, evaluator vs. annotators (Spearman) 300 0.67"
+        },
+        {
+          "block_id": "b00172-91b698f0d8",
+          "quote": "Coherence, evaluator vs. annotators (Spearman) 300 0.64"
+        },
+        {
+          "block_id": "b00172-91b698f0d8",
+          "quote": "Specificity 100 0.62"
+        }
+      ],
+      "limitation": "Several central labels and quality judgments are produced by LLM components. Human validation is useful but imperfect, with reported agreements and correlations well below identity for multiple measures."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00209-fe496b8ec2",
+          "quote": "the judges and the evaluator in this setting are not validated against human annotation."
+        }
+      ],
+      "limitation": "Validation does not cover the alternative Mistral user-side judges and evaluator, creating an additional measurement-validity gap for those robustness experiments."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00230-a432c83941",
+          "quote": "Each format is one configuration of one implementation"
+        },
+        {
+          "block_id": "b00230-a432c83941",
+          "quote": "other retrieval depths, queries, or stored units for retrieval, may change the size of the effects."
+        }
+      ],
+      "limitation": "Each alternative memory format is represented by only one configuration; extraction prompts, retrieval depth, queries, and storage units may alter effect size."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00138-913ca55402",
+          "quote": "per-attribute accuracies are not comparable across attributes"
+        },
+        {
+          "block_id": "b00138-913ca55402",
+          "quote": "The weights of Appendix A.3 account for pairwise dependence but not for differences in attribute difficulty."
+        }
+      ],
+      "limitation": "The leakage metric compares conditions across heterogeneous candidate spaces and does not normalize for differing attribute difficulty."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00286-c63bd18e37",
+          "quote": "these comparisons are associations"
+        },
+        {
+          "block_id": "b00286-c63bd18e37",
+          "quote": "which need not match that of human users."
+        }
+      ],
+      "limitation": "The refusal analysis is associational and reflects the simulated user model’s concept of sensitivity, which may differ from that of humans."
+    }
+  ],
+  "method": {
+    "assumptions": [
+      "The simulated user model reacts sufficiently like a human user for the main causal mechanism to transfer beyond simulation.",
+      "Correctly inferred categorical attributes from the accumulated record are a meaningful operational proxy for privacy leakage.",
+      "The chosen 24 ACS-derived attributes and their candidate spaces adequately represent the personal information at issue.",
+      "Automated judges, annotators, and quality evaluators are accurate enough that their residual errors do not reverse paired comparisons.",
+      "Providing all summaries or selected retrieved memories to the support model approximates relevant deployed memory behavior."
+    ],
+    "key_components": [
+      "Profiles combine linked person and household records from the 2024 ACS PUMS; weighted sampling is followed by selection designed to cover rare attribute values.",
+      "The main factorial comparison crosses memory versus no memory with unfiltered, direct-filter, and strict-filter user responses, producing six conditions.",
+      "Four support models are studied over 300 profiles, 80 sessions, and up to 10 turns per session; Claude Sonnet 5 supplies the main user-side generation, judging, and evaluation roles.",
+      "Empirical leakage is weighted accuracy over 24 inferred attributes; attribute weights reduce domination by mutually dependent attributes.",
+      "Helpfulness and coherence are rated on five-point scales. Comparisons are paired by profile with percentile bootstrap intervals.",
+      "Mechanism tests include turn-level and session-level annotation, single-response replay, selective removal of references, confirmation questions, and presuppositions, plus continuation over later sessions.",
+      "Mitigations intervene on user turns, stored summaries, or agent responses; additional tests use stronger inference models, an alternative user-side model, and append-only, update-based, and retrieval-based memory."
+    ],
+    "overview": "For each sampled profile, an LLM user follows the same pre-generated request sequence across paired conditions. A support model either receives prior session summaries during dialogue or starts each session without them; both conditions nevertheless accumulate summaries, and inference always reads the condition’s full record. The study periodically predicts all profile attributes, evaluates response quality late in the run, annotates agent mentions and user reactions, and intervenes by removing mentions or changing where privacy controls act."
+  },
+  "open_questions": [
+    "Does response-side mitigation preserve utility and suppress leakage in a large, preregistered human study with realistic months-long use?",
+    "Can provenance-aware memory that distinguishes user statements, agent hypotheses, refusals, and corrections prevent entrenchment without suppressing useful personalization?",
+    "How does the effect scale when attributes are inferred in an open world rather than chosen from fixed candidate lists?",
+    "Which response behaviors are essential to retain: can references, confirmation questions, and presuppositions be controlled separately to obtain a better privacy–utility frontier?",
+    "Do user-facing correction and memory-inspection interfaces reduce entrenchment without forcing users to disclose the very attributes they wish to protect?"
+  ],
+  "problem": {
+    "importance": "Persistent records can reveal attributes that users never directly state, and may later be exposed through external-service interactions or unauthorized access. The risk can arise during ordinary personalization without an adversarial agent.",
+    "scope": "The main study simulates repeated English-language support conversations for profiles defined by 24 ACS-derived attributes. It contrasts dialogue-time memory access with no memory, evaluates user-turn filters and several mitigations, and adds response replay, loop-breaking interventions, stronger inference models, alternate user models, memory formats, and a small human pilot.",
+    "statement": "The paper asks whether an ordinary support agent’s use of persistent memory changes what users subsequently disclose and therefore what personal attributes become inferable from the accumulated record, rather than treating that record as fixed."
+  },
+  "proposed_experiments": [
+    {
+      "baseline": "Randomized within-participant comparison of no memory, ordinary memory, and memory with response-side instruction, using identical task schedules and independent blinded human quality ratings.",
+      "hypothesis": "In a preregistered longitudinal human study, response-side instruction will reduce final-record attribute leakage to the no-memory range while retaining most of memory’s coherence benefit.",
+      "primary_metric": "Paired difference in final empirical leakage between instructed memory and ordinary memory, jointly reported with retained coherence gain relative to no memory.",
+      "stop_condition": "Conclude support only if the leakage interval excludes no reduction, instructed-memory leakage is statistically equivalent to no memory under a preregistered margin, and at least 75% of the ordinary-memory coherence gain is retained; otherwise reject or redesign the mitigation."
+    },
+    {
+      "baseline": "Ordinary append-only summaries, released write-time anonymization, and the paper’s response-side instruction on the same profiles, requests, and support models.",
+      "hypothesis": "Provenance-aware storage that never converts an uncorrected agent proposal or refusal into a user fact will reduce error entrenchment and leakage without the quality loss of general write-time anonymization.",
+      "primary_metric": "Rate of incorrect carried-forward values predicted again at the next checkpoint, with final leakage and coherence as co-primary safety and utility checks.",
+      "stop_condition": "Stop favoring provenance-aware storage if it does not significantly reduce repeated incorrect predictions relative to ordinary memory, or if its coherence loss is no better than write-time anonymization."
+    },
+    {
+      "baseline": "Full-history append-only memory compared with retrieval depths of 1, 3, 5, 10, and all summaries, using fixed retrieval queries and identical requests.",
+      "hypothesis": "The disclosure loop weakens monotonically as the amount of history exposed during dialogue decreases, while inference continues to read the complete accumulated record.",
+      "primary_metric": "Memory-minus-no-memory final leakage gap, analyzed against retrieval depth, with coherence and mention rate reported alongside it.",
+      "stop_condition": "Reject the monotonicity hypothesis if the preregistered trend test is non-significant or reverses, or if two adjacent retrieval depths show materially different leakage without a corresponding change in mention exposure."
+    }
+  ],
+  "provenance": {
+    "block_count": 335,
+    "document_sha256": "44ca642e6484aae6dae89565aa90774998cdfdc1fe0e134d4ddeb9cb5d4c1ae3",
+    "generated_at": "2026-11-20T09:03:37.213819+00:00",
+    "metadata_sha256": "53f8f89b0d78d269431a243635d08ced15b6033e939efd39a2a2b19e7e2801ae",
+    "profile": "deep",
+    "provider": "codex-exec:configured-default",
+    "repair_count": 1,
+    "schema_version": "paper-summary-v1"
+  },
+  "reproducibility": {
+    "artifacts": [
+      "Public 2024 ACS PUMS source data is identified.",
+      "Attribute encodings, candidate lists, and weights are stated to appear in Appendix A.",
+      "Prompts are stated to be reproduced verbatim in Appendix M.",
+      "Model names, model IDs, comparison procedures, and bootstrap methods are documented.",
+      "Released implementations and versions are identified for update-based memory and anonymization."
+    ],
+    "assessment": "Methodological reporting is unusually detailed and includes model IDs, sampling settings, prompts by reference, statistical procedures, and implementation versions. However, the supplied material does not identify a code or data release for the generated experimental artifacts, and dependence on hosted or preview models limits exact reruns. The work is therefore reproducible in design but only partially reproducible in execution.",
+    "missing": [
+      "No released experiment code or repository is identified in the supplied blocks.",
+      "No generated dialogue records, sampled profile identifiers, request sequences, annotations, or random seeds are identified as released artifacts.",
+      "Commercial and preview model behavior may not be reproducible without immutable model snapshots.",
+      "The supplied prompt appendix headings do not include the full prompt text, so exact prompt-level verification is unavailable from these blocks alone."
+    ],
+    "status": "partial"
+  },
+  "results": [
+    {
+      "context": "Unfiltered records at the final checkpoint. Daggers in the source table denote paired differences whose intervals exclude zero. This shows that self-inference by the support model is not the worst evaluated disclosure case.",
+      "evidence": [
+        {
+          "block_id": "b00203-cde6151c75",
+          "quote": "Mean 59.3 53.3 +6.0† 66.3 58.5 +7.8† 64.8 57.3 +7.5†"
+        },
+        {
+          "block_id": "b00199-c898d5cb48",
+          "quote": "The inference models are Gemini 3.1 Pro (gemini-3.1-pro-preview) and Kimi K3 (kimi-k3)."
+        },
+        {
+          "block_id": "b00202-925f060ede",
+          "quote": "Leakage (%) at the final checkpoint of unfiltered runs."
+        }
+      ],
+      "result": "At the final checkpoint, mean leakage across the four support models was 59.3 with memory versus 53.3 without memory, a +6.0 difference. Stronger inference increased both absolute recovery and the gap: Gemini 3.1 Pro reached 66.3 versus 58.5 (+7.8), while Kimi K3 reached 64.8 versus 57.3 (+7.5)."
+    },
+    {
+      "context": "These comparisons support the response-mediated mechanism rather than a pre-response difference in user behavior. The session-1 comparison is a placebo because memory is empty.",
+      "evidence": [
+        {
+          "block_id": "b00045-9736a2ebc5",
+          "quote": "Session 1 (placebo) 14.3 13.9 0.4 Opening turn 21.2 20.5 0.7 Later turns 18.5 12.1 6.4†"
+        },
+        {
+          "block_id": "b00045-9736a2ebc5",
+          "quote": "Mention from an earlier session only 38.1 0.0 38.1†"
+        },
+        {
+          "block_id": "b00045-9736a2ebc5",
+          "quote": "Affirmations 3.0 1.2 1.8†"
+        },
+        {
+          "block_id": "b00255-9980b8edd3",
+          "quote": "Trigger and specificity rows count flagged disclosures per 1,000 user words"
+        }
+      ],
+      "result": "The turn-level pattern localizes the additional disclosure after an agent response: value-level disclosure was 14.3 versus 13.9 in session 1, 21.2 versus 20.5 on opening turns, but 18.5 versus 12.1 on later turns. Memory responses carried earlier-session-only values in 38.1% of responses versus 0.0% without memory, and affirmations occurred at 3.0 versus 1.2 per 1,000 user words."
+    },
+    {
+      "context": "Counts are per 1,000 attributes over sessions 41 to 50. Because observed reductions exceed replay-based next-turn predictions, the intervention supports a multi-session self-reinforcement effect rather than only an immediate response effect.",
+      "evidence": [
+        {
+          "block_id": "b00054-00c19ec897",
+          "quote": "Counts are per 1,000 attributes over sessions 41 to 50."
+        },
+        {
+          "block_id": "b00055-70ce41a695",
+          "quote": "Newly inferred Untouched 96 68 Explicit removed 86 61 All removed 58 44"
+        },
+        {
+          "block_id": "b00055-70ce41a695",
+          "quote": "Observed / predicted Explicit removed 1.6† 1.4† All removed 2.3† 2.0†"
+        }
+      ],
+      "result": "Removing all agent mentions produced reductions 2.3 times the single-turn prediction without filtering and 2.0 times under the direct filter; removing only explicit references and confirmation questions produced ratios of 1.6 and 1.4. Newly inferred attributes fell from 96 to 58 in the unfiltered condition and from 68 to 44 under the direct filter."
+    },
+    {
+      "context": "The no-memory reference was leakage 53, helpfulness 3.1, coherence 3.2, and mentions 31. This is the strongest reported privacy–utility trade-off, although it is averaged over only two support models.",
+      "evidence": [
+        {
+          "block_id": "b00290-5cdbac2af1",
+          "quote": "Averages over the two open-weight support models, with leakage and mentions in percent"
+        },
+        {
+          "block_id": "b00291-2bffe38a91",
+          "quote": "No memory 53 3.1 3.2 31 Memory 58 4.2 4.5 54"
+        },
+        {
+          "block_id": "b00291-2bffe38a91",
+          "quote": "User-side anonymization 49† 3.6† 3.3† 35†"
+        },
+        {
+          "block_id": "b00291-2bffe38a91",
+          "quote": "Write-time anonymization 51† 4.0† 3.5† 39†"
+        },
+        {
+          "block_id": "b00291-2bffe38a91",
+          "quote": "Response-side instruction 53† 4.3 4.2† 12†"
+        }
+      ],
+      "result": "For the two open-weight models, response-side instruction reduced leakage from 58 to 53 and mentions from 54 to 12, while helpfulness changed from 4.2 to 4.3 and coherence from 4.5 to 4.2. By comparison, user-side anonymization reached leakage 49 but coherence 3.3, and write-time anonymization reached leakage 51 but coherence 3.5."
+    },
+    {
+      "context": "This provides directional human evidence, not a reliable effect-size estimate. Participants completed alternating memory-on and memory-off blocks and were instructed not to state the target attributes.",
+      "evidence": [
+        {
+          "block_id": "b00186-5b67652b8f",
+          "quote": "Gon exceeds Goff for all eight participants (one-sided sign test, p=0.004)"
+        },
+        {
+          "block_id": "b00186-5b67652b8f",
+          "quote": "seven of the eight had at least one correctly inferred attribute that they did not recall stating."
+        },
+        {
+          "block_id": "b00186-5b67652b8f",
+          "quote": "With eight participants, the pilot indicates the direction of the effect rather than its size."
+        }
+      ],
+      "result": "In the human pilot, every one of eight participants had more attributes first inferred during memory-on sessions; the one-sided sign test was p=0.004, and seven had at least one correctly inferred attribute they did not recall stating."
+    }
+  ],
+  "title": "Disclosure Begets Disclosure: A Self-Reinforcing Privacy Loop in LLM Agents with Persistent Memory",
+  "uncertainties": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00073-71c6e2b6cd",
+          "quote": "whether its rates hold across many users remains to be measured."
+        },
+        {
+          "block_id": "b00140-e67549e2b8",
+          "quote": "all conversations are in English."
+        }
+      ],
+      "uncertainty": "Whether the leakage increase and loop dynamics generalize to diverse human populations, languages, cultures, and real long-term use.",
+      "why_it_matters": "The main claim concerns ordinary users, but simulated behavior and a small English-language pilot may not capture how real users affirm, correct, ignore, or resist personalized assumptions."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00299-8269198870",
+          "quote": "It names the categories of attributes but not their values"
+        },
+        {
+          "block_id": "b00297-9ef72190fb",
+          "quote": "The attributes it protects are the 24 attributes of 𝒜"
+        }
+      ],
+      "uncertainty": "Whether the response-side instruction remains effective under broader attribute ontologies and attributes not explicitly named by the policy.",
+      "why_it_matters": "The mitigation names categories from a fixed target set; open-world inference may exploit unlisted or emergent attributes."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00207-5c52ee3d3c",
+          "quote": "Their advantage over the support models reflects both a stronger model and enabled reasoning, which we do not separate."
+        }
+      ],
+      "uncertainty": "How much of the stronger-inference result comes from model capability versus enabled reasoning.",
+      "why_it_matters": "This affects predictions about future attackers and whether reasoning configuration alone materially changes leakage."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00049-31af66748d",
+          "quote": "values introduced by the agent and left uncorrected"
+        },
+        {
+          "block_id": "b00220-dec45ea911",
+          "quote": "the default extraction prompt does not instruct the model to leave out the assistant’s assumptions"
+        }
+      ],
+      "uncertainty": "Whether model-based summaries specifically amplify the loop relative to structured, provenance-aware, or user-confirmed memory stores.",
+      "why_it_matters": "The mechanism depends partly on agent-originated assumptions being recorded as user facts; alternative memory provenance controls could change both leakage and utility."
+    }
+  ]
+}

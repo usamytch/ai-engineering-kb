@@ -1,0 +1,556 @@
+{
+  "aidb_assessment": {
+    "confidence": "medium",
+    "novelty": "High at the evaluation-and-systems boundary: the central contribution is not a new storage primitive, but an auditable combination of temporal entries, source precedence, explicit deletion, evidence-level scoring, and scrubbed episodic fallback.",
+    "rationale": "The controlled evidence-level results, held-out seeds, cost accounting, and explicit failure taxonomy justify close study and replication. Adoption would be premature because the strongest advantage comes from a co-designed synthetic workload, deletion guarantees are conditional and incomplete across storage surfaces, and no downstream-agent benefit has been demonstrated.",
+    "recommended_action": "read",
+    "usefulness": "Potentially high for agent systems where facts change and privacy-sensitive deletion matters. Fallback is the most defensible configuration for conflicting facts; augment is better suited to one-off conversational details but transfers correctness responsibility back to the answer model."
+  },
+  "claims": [
+    {
+      "claim": "The architectural contribution is a division of responsibility: language models propose and route facts, while fixed rules alone determine currency, trust conflicts, and deletion state.",
+      "evidence": [
+        {
+          "block_id": "b00053-5dae3b6f24",
+          "quote": "The ledger core applies fixed write rules to each claim, and it alone decides what is current, trusted or deleted."
+        }
+      ]
+    },
+    {
+      "claim": "The evaluation is designed to audit both memory evidence and the answer produced by a shared answering model.",
+      "evidence": [
+        {
+          "block_id": "b00020-e18f238676",
+          "quote": "We introduce an evaluation protocol that audits both the evidence packet supplied to a fixed answering model and the resulting answer"
+        }
+      ]
+    },
+    {
+      "claim": "The claimed deletion guarantee is conditional rather than absolute because it depends on successful extraction and identification of affected slots.",
+      "evidence": [
+        {
+          "block_id": "b00093-adb9c35d66",
+          "quote": "This holds when the affected slots are found (A2) and the extractor captured the statements of the value (A1)."
+        }
+      ]
+    },
+    {
+      "claim": "Episode retrieval broadens recall but can reintroduce old or less-trusted content that bypasses ledger rules.",
+      "evidence": [
+        {
+          "block_id": "b00061-04b32870c0",
+          "quote": "Raw turns are not filtered by the rules, so they can carry an old or less trusted value"
+        }
+      ]
+    }
+  ],
+  "evaluation": {
+    "ablations": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00149-5e6b5b3efe",
+            "quote": "Rule-based → LLM extractor evidence 38.7 91.7"
+          },
+          {
+            "block_id": "b00151-bd7d22d1e4",
+            "quote": "The extractor row changes the whole extraction method."
+          }
+        ],
+        "text": "Replacing the rule-based extractor with the language-model extractor raised evidence accuracy from 38.7 to 91.7, but changed the entire extraction method."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00149-5e6b5b3efe",
+            "quote": "Ledger → Ledger+Ep fallback answer 90.9 94.3"
+          },
+          {
+            "block_id": "b00151-bd7d22d1e4",
+            "quote": "it does not isolate the episode store."
+          }
+        ],
+        "text": "Adding the episode configuration raised answer accuracy from 90.9 to 94.3, but also changed low-trust-event extraction and therefore does not isolate the episode store."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00149-5e6b5b3efe",
+            "quote": "Hold document-first values too (trust 3)∗ evidence 91.5 89.7"
+          },
+          {
+            "block_id": "b00150-101d79a953",
+            "quote": "Holding documents as well (trust 3) costs nine correct answers and fixes none"
+          }
+        ],
+        "text": "A single-factor trust change that also held document-first values reduced evidence accuracy from 91.5 to 89.7; the authors report that it cost correct answers without fixing errors."
+      }
+    ],
+    "baselines": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00108-6d6d02795b",
+            "quote": "No memory; full replay (the whole history, unbounded); transcript RAG (BM25 over events, top 5, within the budget); Mem0 [10]"
+          },
+          {
+            "block_id": "b00108-6d6d02795b",
+            "quote": "Ledger with the LLM extractor and with a rule-based extractor"
+          }
+        ],
+        "text": "No memory; unbounded full-history replay; BM25 transcript RAG; Mem0 in its original and coding-prompt configurations; and a rule-based LEDGER extractor as a model-free floor."
+      }
+    ],
+    "datasets": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00098-ec32b656ef",
+            "quote": "A seeded generator produces multi-user, multi-session coding-agent timelines."
+          },
+          {
+            "block_id": "b00098-ec32b656ef",
+            "quote": "At checkpoints the generator asks probes of six types: current, post-update, historical (with an as-of time), contamination, post-delete and abstention."
+          }
+        ],
+        "text": "Synthetic multi-user, multi-session coding-agent workload with planted state transitions, controlled source conflicts, deletions, six probe types, development and held-out seeds, plus a long replay preset."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00104-ac54c6e398",
+            "quote": "We group the questions into seven categories (six question types and abstention) and draw 30 from each"
+          },
+          {
+            "block_id": "b00104-ac54c6e398",
+            "quote": "210 questions; ids in the artifact"
+          }
+        ],
+        "text": "A stratified LongMemEval_S subset containing 210 questions, sampled as 30 questions from each of seven categories."
+      }
+    ],
+    "metrics": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00110-2ef6ee640d",
+            "quote": "Each probe of the coding workload is scored twice. The evidence verdict scores what memory sent to the model; the answer verdict applies the same rules"
+          },
+          {
+            "block_id": "b00111-95d1ddddcb",
+            "quote": "false abstention if the system abstained; otherwise correct"
+          },
+          {
+            "block_id": "b00110-2ef6ee640d",
+            "quote": "resurrected (stated before the last deletion), and after it stale (set before the target time), future (set after the as-of time) or contaminated"
+          }
+        ],
+        "text": "Answer accuracy and evidence accuracy, with verdicts for correct, polluted, wrong, missed, leaked, false abstention, and no abstention; forbidden values are typed as resurrected, stale, future, or contaminated."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00113-a1620a154d",
+            "quote": "We report write cost per session or history, read and answering cost per question, injected tokens, latency and store size."
+          }
+        ],
+        "text": "Efficiency metrics include injected tokens, write/read/answering cost, ingest and retrieval latency, model calls, and storage size."
+      }
+    ],
+    "negative_results": [
+      {
+        "evidence": [
+          {
+            "block_id": "b00131-a70d9b6441",
+            "quote": "The ledger alone answers only 41.0%: the benchmark mostly asks for one detail buried in unrelated chats"
+          }
+        ],
+        "text": "The ledger alone performed poorly on LongMemEval because the benchmark often asks for isolated details outside its single-current-fact representation."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00146-536c046223",
+            "quote": "Ten answers carry a forbidden value: four are the ledger’s own stale facts above, and six are old values taken from a raw turn."
+          },
+          {
+            "block_id": "b00146-536c046223",
+            "quote": "mostly because BM25 did not find the right turn."
+          }
+        ],
+        "text": "Fallback still produced forbidden answers from stale ledger facts and raw turns, while BM25 often failed to retrieve the needed turn."
+      },
+      {
+        "evidence": [
+          {
+            "block_id": "b00152-db0f2ffb03",
+            "quote": "We did not run leave-one-out ablations of the final system, or ablate the trust ranking itself, the episode retriever or the token budget."
+          }
+        ],
+        "text": "The final system lacks leave-one-out ablations for safeguards, trust ranking, the episode retriever, and token budget."
+      }
+    ]
+  },
+  "executive_summary": "LEDGER separates fallible language-model extraction and routing from deterministic rules for supersession, source trust, temporal validity, and deletion; LEDGER+EP optionally retrieves scrubbed raw turns. Its strongest evidence is on an author-built synthetic coding workload: fallback substantially improves answer accuracy over full replay while exposing far fewer forbidden values and no deleted values in evaluated description-only deletion probes. Held-out seeds preserve but reduce the advantage. On LongMemEval, augment matches full replay’s observed accuracy with much less context, but confidence intervals do not establish equivalence or superiority. The design is promising for auditable memory, yet downstream agent utility, real-world deletion safety, delayed facts, broader models, and independent workloads remain unvalidated.",
+  "labels": {
+    "ablations": "Ablations",
+    "action_adopt": "adopt",
+    "action_read": "read",
+    "action_reject": "reject",
+    "action_watch": "watch",
+    "aidb_assessment": "AIDB assessment",
+    "assumptions": "Assumptions",
+    "available_artifacts": "Available artifacts",
+    "baseline": "Baseline",
+    "baselines": "Baselines",
+    "blocks": "Blocks",
+    "claims": "Main claims",
+    "confidence": "Confidence",
+    "confidence_high": "high",
+    "confidence_low": "low",
+    "confidence_medium": "medium",
+    "context": "Context",
+    "datasets": "Datasets",
+    "document_sha256": "Document SHA-256",
+    "evaluation": "Experimental evaluation",
+    "evidence": "Evidence",
+    "executive_summary": "Executive summary",
+    "generated": "Generated",
+    "hypothesis": "Hypothesis",
+    "importance": "Why it matters",
+    "key_components": "Key components",
+    "limitations": "Limitations",
+    "metadata_sha256": "Metadata SHA-256",
+    "method": "Method",
+    "metrics": "Metrics",
+    "missing_pieces": "Missing pieces",
+    "negative_results": "Negative results",
+    "novelty": "Novelty",
+    "open_questions": "Open questions",
+    "primary_metric": "Primary metric",
+    "problem": "Problem",
+    "profile": "Profile",
+    "proposed_experiments": "Proposed AIDB experiments",
+    "provenance": "Provenance",
+    "provider": "Provider",
+    "rationale": "Rationale",
+    "recommended_action": "Recommended action",
+    "repair_count": "Deterministic repair attempts",
+    "reproducibility": "Reproducibility",
+    "results": "Results",
+    "schema": "Schema",
+    "scope": "Scope",
+    "statement": "Statement",
+    "status": "Status",
+    "status_partial": "partial",
+    "status_strong": "strong",
+    "status_unknown": "unknown",
+    "status_weak": "weak",
+    "stop_condition": "Stop condition",
+    "uncertainties": "Uncertainties",
+    "usefulness": "Usefulness"
+  },
+  "language": {
+    "code": "en",
+    "name": "English"
+  },
+  "limitations": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00099-b900820beb",
+          "quote": "We wrote the workload, the oracle and Ledger together, and the workload encodes the same trust policy"
+        },
+        {
+          "block_id": "b00099-b900820beb",
+          "quote": "It therefore tests whether a memory follows this policy, not whether the policy is right (A3)."
+        }
+      ],
+      "limitation": "The primary coding workload, oracle, and system were co-developed, use templates, and encode the same trust policy; the experiment tests compliance with that policy rather than whether it is correct in real deployments."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00116-1b36d3c93d",
+          "quote": "the main gap, no agent performs a downstream task."
+        }
+      ],
+      "limitation": "No downstream agent task was evaluated, so better memory evidence has not been shown to improve bug fixing, deployment, or other operational outcomes."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00093-adb9c35d66",
+          "quote": "One case remains open in Ledger+Ep: a trusted turn whose value the extractor missed"
+        },
+        {
+          "block_id": "b00093-adb9c35d66",
+          "quote": "Deletion does not reach earlier snapshots, the response cache or run logs"
+        }
+      ],
+      "limitation": "Deletion does not cover prior snapshots, response caches, or run logs, and LEDGER+EP retains an open exposure case when extraction and lexical scrubbing both miss a trusted turn."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00092-93ac720f4c",
+          "quote": "Scrubbing more turns lowers the risk of exposure but can also remove useful details; we did not measure this loss of recall."
+        }
+      ],
+      "limitation": "Episode scrubbing may remove useful information, but the resulting recall loss was not measured."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00161-4bacef868b",
+          "quote": "All extraction, routing and answering use one model family"
+        },
+        {
+          "block_id": "b00161-4bacef868b",
+          "quote": "all text is English."
+        },
+        {
+          "block_id": "b00161-4bacef868b",
+          "quote": "Besides the baselines, we compare against one memory product, Mem0; Zep and A-MEM are not evaluated."
+        }
+      ],
+      "limitation": "External validity is narrow: English text, templated facts, one main model family, and only one dedicated memory product baseline."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00105-8ca86379a6",
+          "quote": "Ten pilot questions are also in the 210, so mode selection saw part of the evaluation set"
+        },
+        {
+          "block_id": "b00106-9fbf710c7d",
+          "quote": "Mem0, Ledger and fallback mode were not audited"
+        }
+      ],
+      "limitation": "LongMemEval mode selection used a pilot overlapping the evaluation subset, and only part of the judge behavior was human-audited."
+    }
+  ],
+  "method": {
+    "assumptions": [
+      "Extraction must produce the correct value and stable slot key and must avoid claims from questions, plans, or negations.",
+      "Routing must find every relevant slot and no irrelevant slot; a missed deletion slot is a privacy failure.",
+      "The configured source ranking must reflect actual reliability.",
+      "Valid time begins when a value is stated; dates expressed inside text are not interpreted.",
+      "The caller must supply the correct user identifier and all reads and deletions must use the partitioned interface."
+    ],
+    "key_components": [
+      "Per-user entity/attribute slots containing value entries with validity intervals and event provenance.",
+      "Five deterministic ingestion rules for restatement, trusted supersession, lower-trust disputes, trusted introduction, and unconfirmed low-trust claims.",
+      "Lexical grounding and enumerated-event safeguards applied before ledger writes.",
+      "Question and deletion routing over known slots, with explicit abstention reasons.",
+      "A scrubbed raw-turn episode store using BM25 retrieval in fallback or augment mode.",
+      "Evidence-level scoring that separately labels stale, future, contaminated, resurrected, and deleted values."
+    ],
+    "overview": "A language-model extractor converts session events into slot-value claims and a router maps questions or deletion descriptions to known slots. A deterministic ledger core applies source-precedence, supersession, temporal-history, deduplication, abstention, and deletion rules. Each entry records validity, source kind, trust, and provenance. LEDGER+EP adds a BM25 episode store: fallback searches raw turns only when the ledger returns no fact, whereas augment always fills remaining context with turns. Deletion erases ledger records, retains value-free tombstones, blocks source events, and scrubs related episode turns."
+  },
+  "open_questions": [
+    "Can source trust be learned or configured per domain while remaining auditable and resistant to manipulation?",
+    "How should valid and recording time be separated when users report changes retrospectively?",
+    "Can deletion be made end-to-end across snapshots, caches, logs, embeddings, backups, and provider requests?",
+    "Does cleaner evidence improve success and safety on real multi-session coding tasks rather than checkpoint question answering?",
+    "Which component causes the gain: deterministic rules, extraction quality, routing, episode retrieval, scrubbing, or their interaction?"
+  ],
+  "problem": {
+    "importance": "Answer-only evaluation can conceal unsafe evidence: a model may select the right answer from stale or conflicting context, while deleted information has still been disclosed to the answering provider.",
+    "scope": "The paper studies single-current-value facts in English coding-agent sessions and LongMemEval chats. It evaluates evidence packets and question answers, not an agent completing downstream software-engineering tasks.",
+    "statement": "Persistent agent memories must decide which changing fact is current, resolve conflicts between sources of unequal reliability, answer historical questions, abstain when evidence is absent, and honor deletion without resurfacing erased values."
+  },
+  "proposed_experiments": [
+    {
+      "baseline": "Full replay and transcript RAG using the same agent, model, tools, task budget, and repositories.",
+      "hypothesis": "On real multi-session repository work, deterministic ledger evidence improves downstream task success and reduces regressions caused by stale configuration facts.",
+      "primary_metric": "Blindly graded downstream task success, paired with the rate of actions attributable to stale, conflicting, or deleted evidence.",
+      "stop_condition": "Stop after the preregistered task set is complete, or earlier if a safety rule is violated; reject the hypothesis if the paired confidence interval does not exclude no improvement."
+    },
+    {
+      "baseline": "Current LEDGER+EP deletion pipeline, compared with a stricter semantic scrubber and storage-wide deletion across snapshots, caches, logs, and indexes.",
+      "hypothesis": "End-to-end deletion testing with adversarial paraphrases will reveal exposure paths not covered by slot routing and lexical episode scrubbing.",
+      "primary_metric": "Deleted-value exposure rate across evidence, restored state, caches, logs, and answer outputs, plus retained-answer accuracy on unrelated facts.",
+      "stop_condition": "Stop when the preregistered adversarial suite is exhausted; require zero observed exposure and a predefined bound on unrelated recall loss before considering the stronger pipeline acceptable."
+    },
+    {
+      "baseline": "The final fallback configuration with extraction, routing, trust rules, episodic retrieval, scrubbing, and token budget independently removed or replaced.",
+      "hypothesis": "Factorial ablation will show that deterministic conflict and temporal rules, rather than co-varying extraction changes, account for most of the coding-workload advantage.",
+      "primary_metric": "Held-out evidence accuracy and answer accuracy, supplemented by stale, contaminated, deleted, and false-abstention rates.",
+      "stop_condition": "Stop after all preregistered component combinations and independent workload seeds are evaluated; reject the hypothesis if rule removal does not cause the largest reproducible degradation."
+    }
+  ],
+  "provenance": {
+    "block_count": 189,
+    "document_sha256": "3f209bc3d1b371590c229bdae1ec03ae309324e0286dd14d83440a7e8449672c",
+    "generated_at": "2026-11-20T08:53:07.944210+00:00",
+    "metadata_sha256": "1ef1a6c98944ad7c9bac6719b1b1c478159b0dfa0ae13c408daaf283d2bb8bca",
+    "profile": "deep",
+    "provider": "reviewed-candidate",
+    "repair_count": 0,
+    "schema_version": "paper-summary-v1"
+  },
+  "reproducibility": {
+    "artifacts": [
+      "Code",
+      "Synthetic workloads and generator settings",
+      "Pinned model snapshot and sampling settings",
+      "On-disk response cache keyed by provider, model, prompt, and schema",
+      "Pinned prices and cost breakdown",
+      "Run logs and per-seed results",
+      "Sampled LongMemEval identifiers and pilot analysis",
+      "Supplement"
+    ],
+    "assessment": "The paper provides unusually extensive artifacts, fixed model snapshots, deterministic workload scoring, sampled identifiers, logs, caches, and per-seed outputs. Reproduction should be practical, although external model access and the lack of reported independent replication remain concerns.",
+    "missing": [
+      "Independent reproduction is not reported.",
+      "The supplied document does not report immutable artifact commit hashes or archival identifiers.",
+      "Provider-side determinism beyond cached responses is not guaranteed.",
+      "Crash behavior during non-atomic snapshot writes was not tested."
+    ],
+    "status": "strong"
+  },
+  "results": [
+    {
+      "context": "This is the strongest controlled comparison, but it uses the development seeds on which the rules and safeguards were developed.",
+      "evidence": [
+        {
+          "block_id": "b00119-9a2f3124ac",
+          "quote": "Full replay 82.1 ± 3.0 21.9 ± 1.8 65 249 (129/93/93)"
+        },
+        {
+          "block_id": "b00119-9a2f3124ac",
+          "quote": "Ledger+Ep fallback 94.3 ± 4.2 66.8 ± 4.6 10 16 (6/8/3)"
+        }
+      ],
+      "result": "On development coding seeds, LEDGER+EP fallback achieved 94.3 ± 4.2 answer accuracy, versus 82.1 ± 3.0 for full replay; its evidence contained forbidden values in 16 probes versus 249 for full replay."
+    },
+    {
+      "context": "The held-out result preserves the ranking but shows that development results favored the proposed systems.",
+      "evidence": [
+        {
+          "block_id": "b00127-a0698dace9",
+          "quote": "Full replay 83.3 ± 2.8 21.1 ± 0.7 58"
+        },
+        {
+          "block_id": "b00127-a0698dace9",
+          "quote": "Ledger+Ep fallback 91.1 ± 5.4 64.2 ± 4.8 15"
+        },
+        {
+          "block_id": "b00128-75f073c710",
+          "quote": "so its lead shrinks from 12.2 to 7.8 points."
+        }
+      ],
+      "result": "On held-out coding seeds, LEDGER+EP fallback scored 91.1 ± 5.4, while full replay scored 83.3 ± 2.8; the reported lead contracted to 7.8 points."
+    },
+    {
+      "context": "This comparison applies only to the evaluated adapters: transcript baselines deleted only by event identifier, and Mem0 relied on its ordinary update step.",
+      "evidence": [
+        {
+          "block_id": "b00123-75e78e0368",
+          "quote": "Full replay sends the deleted value to the model in 46 probes and repeats it to the user in 4"
+        },
+        {
+          "block_id": "b00123-75e78e0368",
+          "quote": "it reached the model in 18 probes and the user in 17"
+        },
+        {
+          "block_id": "b00123-75e78e0368",
+          "quote": "Ledger and Ledger+Ep sent no deleted value, in either mode."
+        }
+      ],
+      "result": "For description-only deletion requests, full replay exposed deleted values in 46 evidence probes and repeated them in 4 answers; Mem0 exposed them in 18 probes and 17 answers, whereas LEDGER and both LEDGER+EP modes exposed none in the evaluated probes."
+    },
+    {
+      "context": "The observation supports context compression, not statistical equivalence or superiority.",
+      "evidence": [
+        {
+          "block_id": "b00129-2c652fba7c",
+          "quote": "LongMemEval_S, stratified subset of 210 questions (30 per category)."
+        },
+        {
+          "block_id": "b00131-a70d9b6441",
+          "quote": "Ledger+Ep (augment) has the same observed accuracy, 74.8%, with 1,087 injected tokens, 1% of the context."
+        },
+        {
+          "block_id": "b00131-a70d9b6441",
+          "quote": "The paired 95% interval of the difference (−6.2 to +6.2 points) still allows a real difference of several points either way"
+        }
+      ],
+      "result": "On the 210-question LongMemEval subset, LEDGER+EP augment and full replay both observed 74.8% accuracy; LEDGER+EP used 1,087 injected tokens, described as 1% of full replay’s context, but the paired 95% difference interval was −6.2 to +6.2 points."
+    },
+    {
+      "context": "This tests growing facts and updates more strongly than truly long context because the histories remained comparatively short.",
+      "evidence": [
+        {
+          "block_id": "b00134-b5d4d0e079",
+          "quote": "Fig. 2 replays 540 simulated days on the long preset, with eight checkpoints."
+        },
+        {
+          "block_id": "b00134-b5d4d0e079",
+          "quote": "full replay falls from 89.4% to 70.5%"
+        },
+        {
+          "block_id": "b00134-b5d4d0e079",
+          "quote": "Ledger stays between 85.0% and 93.3%"
+        },
+        {
+          "block_id": "b00134-b5d4d0e079",
+          "quote": "Ledger+Ep (fallback) between 89.7% and 96.2%"
+        }
+      ],
+      "result": "Across the simulated 540-day replay, full replay fell from 89.4% to 70.5%, while LEDGER stayed between 85.0% and 93.3% and LEDGER+EP fallback between 89.7% and 96.2%."
+    }
+  ],
+  "title": "LEDGER: Auditable Agent Memory Under Change",
+  "uncertainties": [
+    {
+      "evidence": [
+        {
+          "block_id": "b00083-5ec19051bb",
+          "quote": "When this assumption is wrong, the policy fails in a known way: a newer and correct document cannot override an older user statement"
+        }
+      ],
+      "uncertainty": "Whether the fixed source hierarchy remains beneficial when documents or tools are more reliable than users in real repositories.",
+      "why_it_matters": "The ledger deterministically enforces the hierarchy, so a mismatched policy can preserve an older incorrect value and reject a newer correct one."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00048-baf4872edd",
+          "quote": "We do not read dates written in the text."
+        },
+        {
+          "block_id": "b00048-baf4872edd",
+          "quote": "A change reported late, such as “we migrated last Tuesday”, is therefore dated to the message that reports it."
+        }
+      ],
+      "uncertainty": "Whether delayed reports and dates embedded in natural language can be supported without breaking temporal correctness.",
+      "why_it_matters": "The current implementation equates recording time with valid-time start, so retrospective updates are assigned the message timestamp."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00112-79ceb6cb57",
+          "quote": "accuracy describes the balanced subset, not the benchmark’s own mix."
+        },
+        {
+          "block_id": "b00131-a70d9b6441",
+          "quote": "this is not evidence of equivalence."
+        }
+      ],
+      "uncertainty": "Whether equal observed LongMemEval accuracy persists on the full benchmark or under other question mixtures.",
+      "why_it_matters": "The evaluated subset is balanced rather than representative of the benchmark mix, and the confidence interval permits meaningful differences in either direction."
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "b00092-93ac720f4c",
+          "quote": "we did not measure this loss of recall."
+        }
+      ],
+      "uncertainty": "How much useful recall episode scrubbing sacrifices and whether the remaining open deletion case appears in realistic conversations.",
+      "why_it_matters": "Privacy and recall are directly traded off, but only exposure—not lost utility from scrubbing—was measured."
+    }
+  ]
+}

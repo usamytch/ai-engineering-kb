@@ -1,0 +1,35 @@
+{
+  "abstract": "Agent memory systems are mostly evaluated on fixed histories, and only their final answers are scored. In real use, facts change, sources differ in reliability, and users ask the agent to forget things. We present LEDGER, a memory layer in which a language model proposes facts and explicit rules decide which value is current, which source to trust, and what to delete. Each fact keeps its source and the period in which it held. LEDGER+EP adds a search over raw conversation turns for questions the ledger does not cover, and scrubs these turns on deletion. We compare both against no memory, full-history replay, retrieval over raw transcripts, and Mem0, with the same answering model and prompt, on a synthetic multi-session coding-agent workload and a 210-question subset of LongMemEval, and we score both the evidence each memory sends to the model and the answer. On the coding workload, LEDGER+EP in fallback mode answers 94.3% of questions correctly on five development seeds and 91.1% on five held-out seeds, against 82.1% and 83.3% for full replay, the strongest baseline. When a deletion request only describes the fact, no deleted value reached our systems' evidence in any evaluated probe. On LongMemEval, LEDGER+EP in augment mode has the same observed accuracy as full replay (74.8%) with 1% of its context. The main limitation is that the coding workload is synthetic and built by us; on LongMemEval, the differences between the strongest systems are within the confidence intervals.",
+  "arxiv_id": "2611.20927v1",
+  "authors": [
+    "Md Aidul Islam",
+    "Md Nasir Uddin Shuvo",
+    "Muhammad Waseem",
+    "Pekka Abrahamsson"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2611.20927v1",
+  "categories": [
+    "cs.MA",
+    "cs.PF",
+    "cs.SE"
+  ],
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2611.20927v1",
+  "latest_seen_version": 1,
+  "paper_id": "2611.20927",
+  "paper_version_id": "2611.20927v1",
+  "published": "2026-11-16T11:37:23+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "LEDGER: Auditable Agent Memory Under Change",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-11-16T11:37:23+00:00",
+  "url": "https://arxiv.org/abs/2611.20927v1"
+}

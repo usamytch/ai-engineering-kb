@@ -175,7 +175,7 @@ class WeeklyInboxTest(unittest.TestCase):
             updated = json.loads((batch / "manifest.json").read_text())
             self.assertEqual(updated["entries"][0]["status"], "summarized")
             self.assertEqual(updated["discovery"], report)
-            self.assertIn("полное для настроенных источников", index.read_text())
+            self.assertIn("обход завершён в границах источников", index.read_text())
 
 
 if __name__ == "__main__":

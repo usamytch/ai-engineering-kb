@@ -1,0 +1,32 @@
+{
+  "abstract": "Task success, retrieval quality, and cost do not show whether an LLM agent used a delivered memory or what followed from that use. We introduce MemUse, which evaluates memory at its point of use in recorded trajectories: each memory delivery is compared with what the agent could already see and followed through the agent's later actions and their consequences. An agentic judge rates each delivered entry's relevance, accuracy, novelty, influence, and observed effect; programmatic checks enforce complete reading of cited evidence, and fixed rules aggregate the ratings into verdicts linked to memory histories and delivery cost. On 8,000 SWE-bench Verified episodes from three memory systems, resolve rates stay within 0.4 percentage points of a no-memory baseline, yet MemUse shows that most delivered entries were irrelevant, most relevant entries went unused, and in two systems most deliveries restated content the agent could still see. It also surfaces effects that outcomes hide: 23.2\\% of episodes with beneficial memory use still failed, and 5 of 16 with harmful use still succeeded.",
+  "arxiv_id": "2611.01718v1",
+  "authors": [
+    "Changran Xu",
+    "Zeju Li",
+    "Qiang Xu"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2611.01718v1",
+  "categories": [
+    "cs.AI"
+  ],
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2611.01718v1",
+  "latest_seen_version": 1,
+  "paper_id": "2611.01718",
+  "paper_version_id": "2611.01718v1",
+  "published": "2026-11-01T09:09:43+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "Delivered, Not Used: Evaluating Agent Memory at Its Point of Use",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-11-01T09:09:43+00:00",
+  "url": "https://arxiv.org/abs/2611.01718v1"
+}

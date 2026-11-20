@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Read a declared selection sequentially, checkpointing each completed paper."""
+"""Read a declared selection, checkpointing each completed paper."""
 
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 import json
 import os
@@ -61,12 +62,49 @@ def require_note_decision(entry):
         raise ValueError(f"refusing to replace a different triage decision for {entry.url}")
 
 
+def read_paper(ref, metadata, provider, log_dir, fetch_only):
+    print(f"READ {ref.version_id}: {metadata['title']}", flush=True)
+    if fetch_only:
+        paths = paper_paths(ROOT, ref)
+        if paths.document_jsonl.exists():
+            return None
+        write_paper_metadata(ROOT, ref, metadata)
+        fetched = fetch_paper(ROOT, ref)
+        document = extract_paper(ROOT, ref, fetched=fetched)
+        print(f"FETCHED {ref.version_id}: {len(document.blocks)} blocks", flush=True)
+        return None
+    recorded = RecordedProvider(provider, log_dir / ref.version_id.replace("/", "--"))
+    return process_paper(ROOT, ref, recorded, metadata=metadata)
+
+
+def checkpoint_paper(batch, ref, result):
+    # Only the coordinator changes the shared inbox; workers own distinct papers.
+    content = (batch / "index.md").read_text()
+    entry = next(
+        entry for entry in parse_entries(content) if entry.url == ref.canonical_abs_url
+    )
+    require_note_decision(entry)
+    if entry.marker != "x":
+        updated = mark_processed(entry.raw, "note")
+        for label, path in (("Paper", result.paths.paper_index), ("Summary", result.paths.summary)):
+            link = Path(os.path.relpath(path, batch)).as_posix()
+            updated = append_metadata_line(updated, f"  - {label}: [{ref.version_id} {label.lower()}]({link})")
+        (batch / "index.md").write_text(content[:entry.start] + updated + content[entry.end:])
+    manifest = json.loads((batch / "manifest.json").read_text())
+    candidate = next(item for item in manifest["entries"] if item.get("paper_version_id") == ref.version_id)
+    candidate.update(decision="note", status="summarized")
+    manifest["processed_at"] = datetime.now(timezone.utc).isoformat()
+    save_manifest(batch, manifest)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--week", required=True, type=validate_week)
     parser.add_argument("--timeout", type=int, default=900)
     parser.add_argument("--paper", action="append", help="restrict this run to a selected version")
     parser.add_argument("--fetch-only", action="store_true", help="cache and extract full text without summarizing")
+    parser.add_argument("--resume", action="store_true", help="skip already summarized versions with saved artifacts")
+    parser.add_argument("--workers", type=int, choices=range(1, 5), default=1, help="independent paper readers; inbox writes remain sequential")
     parser.add_argument("--candidate", type=Path, help="revalidate a reviewed JSON candidate for exactly one --paper")
     args = parser.parse_args()
     if args.candidate and (not args.paper or len(args.paper) != 1 or args.fetch_only):
@@ -87,53 +125,44 @@ def main():
     provider = ReviewedCandidateProvider(args.candidate) if args.candidate else CodexExecProvider(timeout_seconds=args.timeout)
     failure_path = log_dir / ("fetch-failures.json" if args.fetch_only else "failures.json")
     failures = json.loads(failure_path.read_text()) if failure_path.exists() else []
-    for number, selected in enumerate(selection["papers"], 1):
+    jobs = []
+    seen_papers = set()
+    for selected in selection["papers"]:
         ref = ArxivRef.parse(selected["id"])
         if args.paper and ref.version_id not in args.paper:
             continue
+        if ref.base_id in seen_papers:
+            raise ValueError(f"selection contains multiple entries for {ref.base_id}")
+        seen_papers.add(ref.base_id)
         failures = [failure for failure in failures if failure.get("id") != ref.version_id]
         manifest = json.loads((batch / "manifest.json").read_text())
         candidate = next(item for item in manifest["entries"] if item.get("paper_version_id") == ref.version_id)
         content = (batch / "index.md").read_text()
         entry = next(entry for entry in parse_entries(content) if entry.url == ref.canonical_abs_url)
         require_note_decision(entry)
-        metadata = {key: value for key, value in candidate.items() if key not in {"decision", "status", "error"}}
-        print(f"[{number}/{len(selection['papers'])}] Reading {ref.version_id}: {candidate['title']}", flush=True)
-        try:
-            if args.fetch_only:
-                paths = paper_paths(ROOT, ref)
-                if paths.document_jsonl.exists():
-                    print(f"CACHED {ref.version_id}", flush=True)
-                    continue
-                write_paper_metadata(ROOT, ref, metadata)
-                fetched = fetch_paper(ROOT, ref)
-                document = extract_paper(ROOT, ref, fetched=fetched)
-                print(f"FETCHED {ref.version_id}: {len(document.blocks)} blocks", flush=True)
+        if args.resume and candidate.get("status") == "summarized" and not args.candidate:
+            paths = paper_paths(ROOT, ref)
+            if paths.analysis.exists() and paths.summary.exists():
+                print(f"COMPLETE {ref.version_id}", flush=True)
                 continue
-            recorded = RecordedProvider(provider, log_dir / ref.version_id.replace("/", "--"))
-            result = process_paper(ROOT, ref, recorded, metadata=metadata)
-        except (OSError, ValueError, RuntimeError) as error:
-            failures.append({"id": ref.version_id, "error": str(error)})
-            print(f"FAILED {ref.version_id}: {str(error)[:500]}", flush=True)
+        metadata = {key: value for key, value in candidate.items() if key not in {"decision", "status", "error"}}
+        jobs.append((ref, metadata))
+    with ThreadPoolExecutor(max_workers=args.workers) as executor:
+        pending = {
+            executor.submit(read_paper, ref, metadata, provider, log_dir, args.fetch_only): ref
+            for ref, metadata in jobs
+        }
+        for future in as_completed(pending):
+            ref = pending[future]
+            try:
+                result = future.result()
+                if result is not None:
+                    checkpoint_paper(batch, ref, result)
+                    print(f"DONE {ref.version_id}: {result.source_format}, {result.block_count} blocks", flush=True)
+            except (OSError, ValueError, RuntimeError) as error:
+                failures.append({"id": ref.version_id, "error": str(error)})
+                print(f"FAILED {ref.version_id}: {str(error)[:500]}", flush=True)
             failure_path.write_text(json.dumps(failures, ensure_ascii=False, indent=2) + "\n")
-            continue
-        content = (batch / "index.md").read_text()
-        entry = next(
-            entry for entry in parse_entries(content) if entry.url == ref.canonical_abs_url
-        )
-        require_note_decision(entry)
-        if entry.marker != "x":
-            updated = mark_processed(entry.raw, "note")
-            for label, path in (("Paper", result.paths.paper_index), ("Summary", result.paths.summary)):
-                link = Path(os.path.relpath(path, batch)).as_posix()
-                updated = append_metadata_line(updated, f"  - {label}: [{ref.version_id} {label.lower()}]({link})")
-            (batch / "index.md").write_text(content[:entry.start] + updated + content[entry.end:])
-        manifest = json.loads((batch / "manifest.json").read_text())
-        candidate = next(item for item in manifest["entries"] if item.get("paper_version_id") == ref.version_id)
-        candidate.update(decision="note", status="summarized")
-        manifest["processed_at"] = datetime.now(timezone.utc).isoformat()
-        save_manifest(batch, manifest)
-        print(f"DONE {ref.version_id}: {result.source_format}, {result.block_count} blocks", flush=True)
     failure_path.write_text(json.dumps(failures, ensure_ascii=False, indent=2) + "\n")
     return 1 if failures else 0
 

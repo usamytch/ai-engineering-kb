@@ -1,0 +1,36 @@
+{
+  "abstract": "LLM memory is widely used in long-term conversation understanding. Agentic memory systems often use mutation, structural organization, learned retrieval strategies, or other complex operations. Is this complexity always necessary? We study Raw-RAG, a naive RAG baseline using dense retrieval and reranking over raw history to supply evidence to a reader LLM. Across LoCoMo, LongMemEval, MEME, and MemoryAgentBench, Raw-RAG ranks first among the compared memory systems in six of seven benchmark-model settings, outperforming the strongest compared agentic memory system by 0.13-5.53 points. We investigate why raw-history retrieval remains competitive. Evidence analysis shows that its higher coverage of necessary evidence can offset lower utilization. Useful evidence includes both answer values and the relations and dependency paths needed to derive them. Even complete access to transformed memory stores leaves an accuracy gap relative to raw evidence, highlighting the importance of preserving raw information. These findings challenge the necessity of complex agentic memory for the evaluated conversation tasks and establish naive RAG as an essential baseline.",
+  "arxiv_id": "2610.30755v1",
+  "authors": [
+    "Zhengye Bao",
+    "Shengtao Zhang",
+    "Haokai Zhang",
+    "Shiqi Lou",
+    "Muning Wen",
+    "Minnan Luo"
+  ],
+  "canonical_url": "https://arxiv.org/abs/2610.30755v1",
+  "categories": [
+    "cs.AI"
+  ],
+  "comment": "62 pages, 5 figures. Includes appendices",
+  "feeds": [
+    "arXiv: agents and RAG"
+  ],
+  "id": "arxiv:2610.30755v1",
+  "latest_seen_version": 1,
+  "paper_id": "2610.30755",
+  "paper_version_id": "2610.30755v1",
+  "published": "2026-10-22T05:23:16+00:00",
+  "schema_version": 1,
+  "source": "arxiv",
+  "source_type": "paper",
+  "title": "Is Complex Agentic Memory Always Needed? Naive RAG Is Stronger Than We Thought",
+  "topics": [
+    "agents",
+    "rag",
+    "research"
+  ],
+  "updated": "2026-10-22T05:23:16+00:00",
+  "url": "https://arxiv.org/abs/2610.30755v1"
+}
